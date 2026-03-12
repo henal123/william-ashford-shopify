@@ -339,10 +339,10 @@ async function createHubPages() {
           title: page.title,
           body: page.body_html,
           isPublished: true,
-          seo: {
-            title: page.seo_title,
-            description: page.seo_description,
-          },
+          metafields: [
+            { namespace: 'global', key: 'title_tag', type: 'single_line_text_field', value: page.seo_title },
+            { namespace: 'global', key: 'description_tag', type: 'multi_line_text_field', value: page.seo_description },
+          ],
         },
       });
 
@@ -458,10 +458,10 @@ async function createPSEOPages() {
           body: `<p>This page is being prepared. Check back soon.</p>`,
           isPublished: false,
           templateSuffix: page.template,
-          seo: {
-            title: page.seo_title,
-            description: page.seo_desc,
-          },
+          metafields: [
+            { namespace: 'global', key: 'title_tag', type: 'single_line_text_field', value: page.seo_title },
+            { namespace: 'global', key: 'description_tag', type: 'multi_line_text_field', value: page.seo_desc },
+          ],
         },
       });
 
