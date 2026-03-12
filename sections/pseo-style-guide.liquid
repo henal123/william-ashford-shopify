@@ -1,0 +1,412 @@
+{%- comment -%}
+----------------------------------------------------------------------------------------------------------------------
+PSEO STYLE GUIDE SECTION
+----------------------------------------------------------------------------------------------------------------------
+Looks up use_case_guide metaobject by page handle directly.
+Same data source as use-case but styled for style guide pages.
+{%- endcomment -%}
+
+{%- assign entry = shop.metaobjects.use_case_guide[page.handle] -%}
+
+{%- if entry != blank -%}
+  <style>
+    #shopify-section-{{ section.id }} {
+      --product-list-items-per-row: 2;
+    }
+    @media screen and (min-width: 700px) {
+      #shopify-section-{{ section.id }} {
+        --product-list-items-per-row: {{ section.settings.products_per_row }};
+      }
+    }
+    .pseo-tip-card {
+      background: rgb(var(--background-secondary, 245 245 245));
+      border-radius: 8px;
+      padding: 16px 20px;
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+    }
+    .pseo-tip-number {
+      background: rgb(var(--text-color));
+      color: rgb(var(--background));
+      font-weight: 700;
+      min-width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+    .pseo-check-item {
+      border: 1px solid rgba(var(--text-color), 0.12);
+      border-radius: 8px;
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .pseo-do-dont-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    @media screen and (max-width: 699px) {
+      .pseo-do-dont-grid { grid-template-columns: 1fr; }
+    }
+    .pseo-do-card {
+      border-radius: 8px;
+      padding: 20px 24px;
+      background: rgba(22, 163, 74, 0.06);
+      border: 1px solid rgba(22, 163, 74, 0.2);
+    }
+    .pseo-dont-card {
+      border-radius: 8px;
+      padding: 20px 24px;
+      background: rgba(220, 38, 38, 0.04);
+      border: 1px solid rgba(220, 38, 38, 0.15);
+    }
+    .pseo-do-card h3, .pseo-dont-card h3 {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .pseo-do-card h3 { color: #16a34a; }
+    .pseo-dont-card h3 { color: #dc2626; }
+    .pseo-do-card ul, .pseo-dont-card ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: 8px;
+    }
+    .pseo-do-card li, .pseo-dont-card li {
+      font-size: 14px;
+      line-height: 1.6;
+    }
+    .pseo-intro-card {
+      background: rgb(var(--background-secondary, 245 245 245));
+      border-radius: 8px;
+      padding: 24px 28px;
+    }
+    .pseo-related-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+    }
+    .pseo-related-link {
+      display: block;
+      border: 1px solid rgba(var(--text-color), 0.12);
+      border-radius: 8px;
+      padding: 18px 20px;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color 0.2s, background 0.2s;
+      font-weight: 600;
+      font-size: 14px;
+    }
+    .pseo-related-link:hover {
+      border-color: rgba(var(--text-color), 0.3);
+      background: rgb(var(--background-secondary, 245 245 245));
+    }
+    .pseo-cta-bar { text-align: center; margin-top: 20px; }
+  </style>
+{%- endif -%}
+
+<div class="section-spacing color-scheme color-scheme--{{ section.settings.color_scheme.id }}">
+  <div class="container container--md">
+    <div class="section-stack">
+      {%- render 'pseo-breadcrumbs',
+        hub_title: 'Style Guides',
+        hub_url: '/pages/style-guides',
+        page_title: page.title
+      -%}
+
+      {%- if entry != blank -%}
+        <header class="section-header">
+          <h1 class="h2">{{ entry.heading.value | default: page.title }}</h1>
+        </header>
+
+        {%- comment -%}Introduction Card{%- endcomment -%}
+        {%- if entry.intro_text.value != blank -%}
+          <div class="pseo-intro-card">
+            <div class="prose" style="font-size:1.05rem;line-height:1.75;">
+              <p>{{ entry.intro_text.value }}</p>
+            </div>
+          </div>
+        {%- endif -%}
+
+        {%- comment -%}Style Tips — numbered cards{%- endcomment -%}
+        {%- if entry.style_tips.value != blank -%}
+          <div class="section-spacing">
+            <div class="section-header">
+              <h2 class="h3">Style Tips</h2>
+            </div>
+            {%- assign tips_lines = entry.style_tips.value | strip | newline_to_br | split: '<br />' -%}
+            <div class="v-stack gap-4">
+              {%- assign tip_number = 0 -%}
+              {%- for line in tips_lines -%}
+                {%- assign stripped_line = line | strip | strip_html -%}
+                {%- if stripped_line != blank -%}
+                  {%- assign tip_number = tip_number | plus: 1 -%}
+                  <div class="pseo-tip-card">
+                    <span class="pseo-tip-number">{{ tip_number }}</span>
+                    <div class="prose" style="flex:1;">
+                      <p>{{ stripped_line }}</p>
+                    </div>
+                  </div>
+                {%- endif -%}
+              {%- endfor -%}
+            </div>
+          </div>
+        {%- endif -%}
+
+        {%- comment -%}Recommended Pieces — checklist{%- endcomment -%}
+        {%- if entry.recommended_pieces.value != blank -%}
+          <div class="section-spacing">
+            <div class="section-header">
+              <h2 class="h3">Recommended Pieces</h2>
+            </div>
+            {%- assign pieces_lines = entry.recommended_pieces.value | strip | newline_to_br | split: '<br />' -%}
+            <div class="v-stack gap-3">
+              {%- for line in pieces_lines -%}
+                {%- assign stripped_line = line | strip | strip_html -%}
+                {%- if stripped_line != blank -%}
+                  <div class="pseo-check-item">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" style="flex-shrink:0;"><path d="M16.7 5L7.5 14.2 3.3 10" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    <span style="flex:1;font-size:15px;">{{ stripped_line }}</span>
+                  </div>
+                {%- endif -%}
+              {%- endfor -%}
+            </div>
+          </div>
+        {%- endif -%}
+
+        {%- comment -%}Do's and Don'ts{%- endcomment -%}
+        {%- if entry.dos_and_donts.value != blank -%}
+          <div class="section-spacing">
+            <div class="section-header">
+              <h2 class="h3">Do's and Don'ts</h2>
+            </div>
+            {%- assign dd_lines = entry.dos_and_donts.value | strip | newline_to_br | split: '<br />' -%}
+            {%- assign do_items = '' -%}
+            {%- assign dont_items = '' -%}
+            {%- for line in dd_lines -%}
+              {%- assign stripped_line = line | strip | strip_html -%}
+              {%- if stripped_line != blank -%}
+                {%- assign lower_line = stripped_line | downcase -%}
+                {%- if lower_line contains "don't" or lower_line contains "dont" or lower_line contains "avoid" or lower_line contains "never" or lower_line contains "skip" -%}
+                  {%- capture dont_items %}{{ dont_items }}|||{{ stripped_line }}{% endcapture -%}
+                {%- else -%}
+                  {%- capture do_items %}{{ do_items }}|||{{ stripped_line }}{% endcapture -%}
+                {%- endif -%}
+              {%- endif -%}
+            {%- endfor -%}
+            <div class="pseo-do-dont-grid">
+              <div class="pseo-do-card">
+                <h3>
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#16a34a" stroke-width="2"><path d="M16.7 5L7.5 14.2 3.3 10" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  Do
+                </h3>
+                <ul>
+                  {%- assign do_split = do_items | split: '|||' -%}
+                  {%- for item in do_split -%}
+                    {%- assign clean_item = item | strip -%}
+                    {%- if clean_item != blank -%}
+                      <li>{{ clean_item }}</li>
+                    {%- endif -%}
+                  {%- endfor -%}
+                </ul>
+              </div>
+              <div class="pseo-dont-card">
+                <h3>
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#dc2626" stroke-width="2"><line x1="15" y1="5" x2="5" y2="15"/><line x1="5" y1="5" x2="15" y2="15"/></svg>
+                  Don't
+                </h3>
+                <ul>
+                  {%- assign dont_split = dont_items | split: '|||' -%}
+                  {%- for item in dont_split -%}
+                    {%- assign clean_item = item | strip -%}
+                    {%- if clean_item != blank -%}
+                      <li>{{ clean_item }}</li>
+                    {%- endif -%}
+                  {%- endfor -%}
+                </ul>
+              </div>
+            </div>
+          </div>
+        {%- endif -%}
+
+        {%- comment -%}Product Recommendations{%- endcomment -%}
+        {%- if section.settings.collection != blank and section.settings.collection.products_count > 0 -%}
+          <div class="section-spacing">
+            <div class="section-header">
+              <div class="v-stack gap-2">
+                <h2 class="h3">{{ section.settings.products_heading | default: 'Shop the Look' }}</h2>
+                {%- if section.settings.products_subheading != blank -%}
+                  <p class="text-subdued">{{ section.settings.products_subheading }}</p>
+                {%- endif -%}
+              </div>
+            </div>
+            <product-list class="product-list justify-center">
+              {%- for product in section.settings.collection.products limit: section.settings.products_count -%}
+                {%- render 'product-card', product: product, show_badges: true, show_rating: true, show_quick_buy: true -%}
+              {%- endfor -%}
+            </product-list>
+            <div class="pseo-cta-bar">
+              <a href="{{ section.settings.collection.url }}" class="button button--secondary">
+                View All {{ section.settings.collection.title }}
+              </a>
+            </div>
+          </div>
+        {%- endif -%}
+
+        {%- comment -%}FAQ Section{%- endcomment -%}
+        {%- render 'pseo-faq', faq_data: entry.faq_data.value -%}
+
+        {%- comment -%}Related Pages{%- endcomment -%}
+        {%- if section.settings.show_related_links -%}
+          <div class="section-spacing">
+            <div class="section-header">
+              <h2 class="h3">Explore More</h2>
+            </div>
+            <div class="pseo-related-grid">
+              {%- if section.settings.related_page_1_url != blank -%}
+                <a href="{{ section.settings.related_page_1_url }}" class="pseo-related-link">{{ section.settings.related_page_1_title }}</a>
+              {%- endif -%}
+              {%- if section.settings.related_page_2_url != blank -%}
+                <a href="{{ section.settings.related_page_2_url }}" class="pseo-related-link">{{ section.settings.related_page_2_title }}</a>
+              {%- endif -%}
+              {%- if section.settings.related_page_3_url != blank -%}
+                <a href="{{ section.settings.related_page_3_url }}" class="pseo-related-link">{{ section.settings.related_page_3_title }}</a>
+              {%- endif -%}
+              <a href="/pages/style-guides" class="pseo-related-link">All Style Guides →</a>
+            </div>
+          </div>
+        {%- endif -%}
+
+        {%- comment -%}Article Schema{%- endcomment -%}
+        <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "Article",
+          "headline": {{ entry.heading.value | default: page.title | json }},
+          "description": {{ entry.intro_text.value | default: page.title | strip_html | truncatewords: 30 | json }},
+          "url": "{{ shop.url }}{{ page.url }}",
+          "publisher": {
+            "@type": "Organization",
+            "name": {{ shop.name | json }},
+            "url": "{{ shop.url }}"
+          }
+        }
+        </script>
+
+      {%- else -%}
+        <header class="section-header">
+          <h1 class="h2">{{ page.title }}</h1>
+        </header>
+        {%- if page.content != empty -%}
+          <div class="prose">{{ page.content }}</div>
+        {%- endif -%}
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "PSEO Style Guide",
+  "class": "shopify-section--pseo-style-guide",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Product recommendations"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "range",
+      "id": "products_count",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "default": 4,
+      "label": "Products to show"
+    },
+    {
+      "type": "range",
+      "id": "products_per_row",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 4,
+      "label": "Products per row (desktop)"
+    },
+    {
+      "type": "text",
+      "id": "products_heading",
+      "label": "Products heading",
+      "default": "Shop the Look"
+    },
+    {
+      "type": "text",
+      "id": "products_subheading",
+      "label": "Products subheading"
+    },
+    {
+      "type": "header",
+      "content": "Related pages"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_related_links",
+      "label": "Show related pages",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "related_page_1_title",
+      "label": "Related page 1 title"
+    },
+    {
+      "type": "url",
+      "id": "related_page_1_url",
+      "label": "Related page 1 URL"
+    },
+    {
+      "type": "text",
+      "id": "related_page_2_title",
+      "label": "Related page 2 title"
+    },
+    {
+      "type": "url",
+      "id": "related_page_2_url",
+      "label": "Related page 2 URL"
+    },
+    {
+      "type": "text",
+      "id": "related_page_3_title",
+      "label": "Related page 3 title"
+    },
+    {
+      "type": "url",
+      "id": "related_page_3_url",
+      "label": "Related page 3 URL"
+    }
+  ]
+}
+{% endschema %}

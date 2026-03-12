@@ -1,0 +1,381 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "slideshow": {
+      "type": "slideshow",
+      "blocks": {
+        "video_mbfmAt": {
+          "type": "video",
+          "settings": {
+            "video": "shopify://files/videos/hero-banner-video.mp4",
+            "mobile_video": "shopify://files/videos/William Ashford 2026-02-10_1.mp4",
+            "allow_sound": false,
+            "subheading": "",
+            "title": "",
+            "mobile_text_position": "place-self-center text-center",
+            "desktop_text_position": "sm:place-self-center sm:text-center",
+            "content_max_width": 780,
+            "button_1_text": "",
+            "button_1_link": "shopify://collections",
+            "button_1_style": "solid",
+            "button_1_background": "#ffffff",
+            "button_1_text_color": "#000000",
+            "button_2_text": "",
+            "button_2_link": "",
+            "button_2_style": "outline",
+            "button_2_background": "#ffffff",
+            "button_2_text_color": "#000000",
+            "background": "",
+            "background_opacity": 0,
+            "text_color": "#ffffff",
+            "border_color": "",
+            "gradient_overlay": "linear-gradient(180deg, rgba(218, 214, 214, 0.2), rgba(4, 4, 4, 0.65) 100%)"
+          }
+        }
+      },
+      "block_order": [
+        "video_mbfmAt"
+      ],
+      "settings": {
+        "allow_transparent_header": false,
+        "show_next_section_button": false,
+        "media_size": "auto",
+        "show_initial_transition": false,
+        "autoplay": true,
+        "autoplay_pause_on_video": true,
+        "cycle_speed": 5,
+        "background": "#000000",
+        "controls_color": "#ffffff"
+      }
+    },
+    "rich_text_XmqMge": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_6wQd6R": {
+          "type": "heading",
+          "settings": {
+            "text": "The Making of William Ashford Cargos",
+            "heading_tag": "h1"
+          }
+        },
+        "richtext_hmEjJC": {
+          "type": "richtext",
+          "settings": {
+            "content": "<p>We Don't Chase Trends We respond to reality. Our designs aren't created to match this season's color palette. They're engineered to survive real conditions the commute, the jobsite, the weekend escape, the years ahead. </p><p>Every cargo pocket, every reinforced seam, every cut exists for a reason not because it's trending, but because it works.<br/>Fashion fades. Function doesn't.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_6wQd6R",
+        "richtext_hmEjJC"
+      ],
+      "disabled": true,
+      "name": "t:sections.rich_text.presets.rich_text.name",
+      "settings": {
+        "color_scheme": "",
+        "separate_section_with_border": true,
+        "content_width": "sm",
+        "text_position": "center",
+        "remove_vertical_spacing": false
+      }
+    },
+    "featured-collections": {
+      "type": "featured-collections",
+      "blocks": {
+        "collection-1": {
+          "type": "collection",
+          "settings": {
+            "collection": "frontpage",
+            "products_count": 8,
+            "title": "",
+            "link_url": "",
+            "link_text": "View all"
+          }
+        }
+      },
+      "block_order": [
+        "collection-1"
+      ],
+      "custom_css": [],
+      "settings": {
+        "color_scheme": "",
+        "separate_section_with_border": false,
+        "hide_product_information": false,
+        "stack_products": false,
+        "products_per_row_mobile": "2",
+        "products_per_row_desktop": 4,
+        "horizontal_spacing_factor": 1,
+        "vertical_spacing_factor": 1,
+        "subheading": ""
+      }
+    },
+    "rich_text_WEiKNt": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_XNwHXc": {
+          "type": "heading",
+          "settings": {
+            "text": "WHY   WILLIAM  ASHFORD",
+            "heading_tag": "h1"
+          }
+        },
+        "richtext_eh9faf": {
+          "type": "richtext",
+          "settings": {
+            "content": ""
+          }
+        }
+      },
+      "block_order": [
+        "heading_XNwHXc",
+        "richtext_eh9faf"
+      ],
+      "name": "t:sections.rich_text.presets.rich_text.name",
+      "settings": {
+        "color_scheme": "",
+        "separate_section_with_border": false,
+        "content_width": "sm",
+        "text_position": "center",
+        "remove_vertical_spacing": false
+      }
+    },
+    "kyx_feature_cards_TK4W9V": {
+      "type": "kyx-feature-cards",
+      "blocks": {
+        "image_kV79W9": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Frame_15.png"
+          }
+        },
+        "image_BUimek": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Frame_17.png"
+          }
+        },
+        "image_zz4qDV": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Frame_16.png"
+          }
+        }
+      },
+      "block_order": [
+        "image_kV79W9",
+        "image_BUimek",
+        "image_zz4qDV"
+      ],
+      "name": "KYX Image Row",
+      "settings": {}
+    },
+    "image_with_text_overlay_mi7U7k": {
+      "type": "image-with-text-overlay",
+      "blocks": {
+        "link_FcPYAY": {
+          "type": "link",
+          "settings": {
+            "text": ".",
+            "url": "shopify://collections/all"
+          }
+        }
+      },
+      "block_order": [
+        "link_FcPYAY"
+      ],
+      "name": "t:sections.image_with_text_overlay.presets.image_with_text_overlay.name",
+      "settings": {
+        "color_scheme": "",
+        "image_size": "auto",
+        "image": "shopify://shop_images/2-new-banner.jpg",
+        "mobile_image": "shopify://shop_images/2-new-banner.jpg",
+        "allow_transparent_header": false,
+        "reveal_on_scroll": true,
+        "remove_vertical_spacing": true,
+        "content_width": "md",
+        "mobile_text_position": "place-self-center text-center",
+        "desktop_text_position": "sm:place-self-center sm:text-center",
+        "overlay_color": "#000000",
+        "overlay_opacity": 0
+      }
+    },
+    "collection_list_KEGEWN": {
+      "type": "collection-list",
+      "blocks": {
+        "collection_F67cTA": {
+          "type": "collection",
+          "settings": {
+            "color_scheme": "",
+            "collection": "cargos",
+            "image": "shopify://shop_images/Generated_Image_February_28_2026_-_2_16PM_jpg.jpg",
+            "expand_collection": false,
+            "content_position": "place-self-end-start text-start",
+            "subheading": "",
+            "title": "",
+            "button_text": "View products",
+            "button_link": "",
+            "overlay_color": "#000000",
+            "overlay_opacity": 3
+          }
+        },
+        "collection_B8kVQa": {
+          "type": "collection",
+          "settings": {
+            "color_scheme": "",
+            "collection": "chinos",
+            "image": "shopify://shop_images/Generated_Image_February_28_2026_-_2_06PM_jpg.jpg",
+            "expand_collection": false,
+            "content_position": "place-self-end-start text-start",
+            "subheading": "",
+            "title": "",
+            "button_text": "View products",
+            "button_link": "",
+            "overlay_color": "#000000",
+            "overlay_opacity": 3
+          }
+        }
+      },
+      "block_order": [
+        "collection_F67cTA",
+        "collection_B8kVQa"
+      ],
+      "disabled": true,
+      "name": "t:sections.collection_list.presets.collection_list.name",
+      "settings": {
+        "color_scheme": "",
+        "separate_section_with_border": true,
+        "image_size": "auto",
+        "show_text_outside": false,
+        "space_items": true,
+        "stack_collections": true,
+        "collections_per_row_desktop": 2,
+        "subheading": "",
+        "title": "",
+        "content": ""
+      }
+    },
+    "featured_collections_ETC48c": {
+      "type": "featured-collections",
+      "blocks": {
+        "collection_PrREkj": {
+          "type": "collection",
+          "settings": {
+            "collection": "cargos",
+            "products_count": 8,
+            "title": "",
+            "link_url": "",
+            "link_text": "View all"
+          }
+        }
+      },
+      "block_order": [
+        "collection_PrREkj"
+      ],
+      "settings": {
+        "color_scheme": "",
+        "separate_section_with_border": true,
+        "hide_product_information": false,
+        "stack_products": false,
+        "products_per_row_mobile": "2",
+        "products_per_row_desktop": 4,
+        "horizontal_spacing_factor": 1,
+        "vertical_spacing_factor": 1,
+        "subheading": ""
+      }
+    },
+    "1771060000d48cee99": {
+      "type": "apps",
+      "blocks": {
+        "judge_me_reviews_testimonials_carousel_c9mMai": {
+          "type": "shopify://apps/judge-me-reviews/blocks/testimonials_carousel/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {
+            "show_sample_reviews": true,
+            "reviews_selection": "all",
+            "products": [],
+            "star_rating": "all",
+            "max_reviews": 20,
+            "quote_marks_size": "small",
+            "product_name_text_size": "small",
+            "verified_badge_style": "icon",
+            "card_height": "medium",
+            "text_size": "small",
+            "stars_size": "medium",
+            "arrows_position": "bottom",
+            "max_width": 1100,
+            "corner_styling": "soft",
+            "quote_marks_style": "serif",
+            "card_color": "#f9f9f9",
+            "stars_and_quote_marks_color": "#108474",
+            "text_color": "#000000",
+            "arrows_color": "#000000",
+            "show_border": false,
+            "border_color": "#108474",
+            "show_drop_shadow": false,
+            "transition_speed": 5,
+            "header_text": "Customers are saying",
+            "show_average_rating": true
+          }
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_testimonials_carousel_c9mMai"
+      ],
+      "settings": {
+        "color_scheme": "",
+        "separate_section_with_border": true,
+        "remove_vertical_spacing": false,
+        "remove_horizontal_spacing": false
+      }
+    },
+    "image_with_text_overlay_LzRCw4": {
+      "type": "image-with-text-overlay",
+      "blocks": {
+        "link_fykQ8W": {
+          "type": "link",
+          "settings": {
+            "text": ".",
+            "url": "shopify://collections/all"
+          }
+        }
+      },
+      "block_order": [
+        "link_fykQ8W"
+      ],
+      "name": "t:sections.image_with_text_overlay.presets.image_with_text_overlay.name",
+      "settings": {
+        "color_scheme": "",
+        "image_size": "auto",
+        "image": "shopify://shop_images/1-new-banner.jpg",
+        "mobile_image": "shopify://shop_images/1-new-banner.jpg",
+        "allow_transparent_header": false,
+        "reveal_on_scroll": true,
+        "remove_vertical_spacing": true,
+        "content_width": "md",
+        "mobile_text_position": "place-self-center text-center",
+        "desktop_text_position": "sm:place-self-center sm:text-center",
+        "overlay_color": "#000000",
+        "overlay_opacity": 0
+      }
+    }
+  },
+  "order": [
+    "slideshow",
+    "rich_text_XmqMge",
+    "featured-collections",
+    "rich_text_WEiKNt",
+    "kyx_feature_cards_TK4W9V",
+    "image_with_text_overlay_mi7U7k",
+    "collection_list_KEGEWN",
+    "featured_collections_ETC48c",
+    "1771060000d48cee99",
+    "image_with_text_overlay_LzRCw4"
+  ]
+}

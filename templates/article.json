@@ -1,0 +1,47 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-article",
+      "settings": {}
+    },
+    "prev-next-blog-posts": {
+      "type": "prev-next-blog-posts",
+      "settings": {}
+    },
+    "related-products": {
+      "type": "featured-collections",
+      "settings": {
+        "heading": "Shop Related Products"
+      }
+    },
+    "blog-posts": {
+      "type": "blog-posts",
+      "settings": {
+        "heading": "Related Articles"
+      }
+    },
+    "cross-links": {
+      "type": "cross-links",
+      "settings": {
+        "heading": "Explore More",
+        "content_width": "md"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "prev-next-blog-posts",
+    "related-products",
+    "blog-posts",
+    "cross-links"
+  ]
+}

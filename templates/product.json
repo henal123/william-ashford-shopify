@@ -1,0 +1,311 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "title": {
+          "type": "title",
+          "settings": {
+            "heading_tag": "h3"
+          }
+        },
+        "text_jYjzAi": {
+          "type": "text",
+          "settings": {
+            "text": "<p><strong>Limited Edition. Vintage Finish</strong></p>"
+          }
+        },
+        "judge_me_reviews_preview_badge_f6EzA7": {
+          "type": "shopify://apps/judge-me-reviews/blocks/preview_badge/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {}
+        },
+        "price": {
+          "type": "price",
+          "settings": {
+            "show_taxes_notice": false
+          }
+        },
+        "text_QVJzFp": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Inclusive of all taxes and shipping.</p>"
+          }
+        },
+        "payment_terms": {
+          "type": "payment_terms",
+          "settings": {}
+        },
+        "separator": {
+          "type": "separator",
+          "settings": {}
+        },
+        "liquid_8REfbe": {
+          "type": "liquid",
+          "settings": {
+            "liquid": "<div class=\"app-offer-box\">\n  \n  <p class=\"offer-price\">\n   <strong>Discounts</strong>\n  </p>\n\n  <div class=\"offer-line\">\n    <span class=\"offer-icon\">✺</span>\n    <div>\n      Get Flat 5% Off on First Purchase. <br>\n      Use Code: <strong>FIRST5</strong>\n    </div>\n  </div>\n\n  \n\n  <div class=\"offer-line\">\n    <span class=\"offer-icon\">✺</span>\n    <div>\n      Buy 2 & Above Get Flat 10% Off,<br>\n      Use Code: <strong>GET10</strong>\n    </div>\n  </div>\n\n</div>\n\n<style>\n.app-offer-box{\n  font-family: Georgia, serif;\n  color:#222;\n  line-height:1.6;\n  max-width:650px;\n}\n\n.offer-price{\n  margin:8px 0 10px;\n  font-size:15px;\n}\n\n.offer-line{\n  display:flex;\n  gap:12px;\n  margin-bottom:18px;\n  font-size:15px;\n}\n\n.offer-icon{\n  color:#c7a96b;\n  font-size:15px;\n  line-height:1.4;\n}\n</style>"
+          }
+        },
+        "variant_picker": {
+          "type": "variant_picker",
+          "settings": {
+            "hide_sold_out_variants": false,
+            "selector_style": "block",
+            "swatch_selector_style": "swatch",
+            "variant_image_options": "Color",
+            "size_chart_page": "size-chart"
+          }
+        },
+        "buy_buttons": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_payment_button": true,
+            "show_gift_card_recipient": true,
+            "atc_button_background": "",
+            "atc_button_text_color": "",
+            "payment_button_background": "",
+            "payment_button_text_color": ""
+          }
+        },
+        "text_RHnUCh": {
+          "type": "text",
+          "settings": {
+            "text": "<p><strong>Guarantee Safe Checkout:</strong></p>"
+          }
+        },
+        "image_JD6NHK": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/image-Photoroom_2.png",
+            "alignment": "center",
+            "width_mode": "custom",
+            "max_width": 300,
+            "mobile_max_width": 200
+          }
+        },
+        "accordion_e4RdFb": {
+          "type": "accordion",
+          "settings": {
+            "show_below_gallery": false,
+            "icon": "none",
+            "title": "Description",
+            "content": "{{ product.description }}",
+            "liquid": "",
+            "page": ""
+          }
+        },
+        "accordion_yY88Jk": {
+          "type": "accordion",
+          "settings": {
+            "show_below_gallery": false,
+            "icon": "none",
+            "title": "Wash & Care",
+            "content": "<p><strong>Easy on the Detergent</strong></p><ul><li>Mild Detergent</li><li>No Bleach</li><li>No Dry Cleaning</li></ul><p><strong>Hand Dry</strong></p><ul><li>Hang Dry</li><li>Flat Air Dry</li><li>No Tumble Dry</li></ul>",
+            "liquid": "",
+            "page": ""
+          }
+        },
+        "accordion_aHrdnJ": {
+          "type": "accordion",
+          "settings": {
+            "show_below_gallery": false,
+            "icon": "none",
+            "title": "Shipping",
+            "content": "<p>All Orders are usually shipped with in 24 working hours.</p><p>COD orders will be shipped only if order confirmation is given via WhatsApp/Phone.</p><p>For more details</p>",
+            "liquid": "",
+            "page": ""
+          }
+        },
+        "offers_TBHPqa": {
+          "type": "offers",
+          "settings": {
+            "stack_offers": false,
+            "offer_1_title": "EXPRESS SHIPPING",
+            "offer_1_content": "<p>Crafting Utility, the William Ashford Way<br/>Precision tailoring, functional design, and uncompromising durability built into every cargo.</p>",
+            "offer_2_title": "",
+            "offer_2_content": "",
+            "offer_3_title": "",
+            "offer_3_content": "",
+            "background": "#000000",
+            "text_color": "#ffffff",
+            "border_color": ""
+          }
+        },
+        "complementary_products": {
+          "type": "complementary_products",
+          "settings": {
+            "title": "Pairs well with",
+            "products_count": 2,
+            "show_below_gallery": true,
+            "stack_products": false,
+            "show_quick_buy": true
+          }
+        }
+      },
+      "block_order": [
+        "title",
+        "text_jYjzAi",
+        "judge_me_reviews_preview_badge_f6EzA7",
+        "price",
+        "text_QVJzFp",
+        "payment_terms",
+        "separator",
+        "liquid_8REfbe",
+        "variant_picker",
+        "buy_buttons",
+        "text_RHnUCh",
+        "image_JD6NHK",
+        "accordion_e4RdFb",
+        "accordion_yY88Jk",
+        "accordion_aHrdnJ",
+        "offers_TBHPqa",
+        "complementary_products"
+      ],
+      "settings": {
+        "color_scheme": "",
+        "container_size": "lg",
+        "product_info_size": 51,
+        "show_sticky_add_to_cart": false,
+        "center_basic_info": false,
+        "desktop_media_layout": "carousel_thumbnails_left",
+        "desktop_media_grid_gap": 30,
+        "mobile_controls": "dots",
+        "enable_media_autoplay": false,
+        "enable_video_looping": true,
+        "enable_image_zoom": true,
+        "max_image_zoom_level": 3
+      }
+    },
+    "custom_liquid_WtU66z": {
+      "type": "custom-liquid",
+      "name": "t:sections.custom_liquid.presets.custom_liquid.name",
+      "settings": {
+        "color_scheme": "",
+        "separate_section_with_border": false,
+        "remove_vertical_spacing": false,
+        "remove_horizontal_spacing": false,
+        "liquid": "<div class=\"kyx-product-tabs\">\n\n  <div class=\"kyx-tabs-header\">\n    <button class=\"kyx-tab active\" data-tab=\"details\">Marketed by</button>\n    <button class=\"kyx-tab\" data-tab=\"washcare\">Return and Exchange Policy</button>\n    <button class=\"kyx-tab\" data-tab=\"shipping\">Place Return/Exchange</button>\n  </div>\n\n  <div class=\"kyx-tabs-content\">\n\n    <!-- MARKETED BY -->\n    <div class=\"kyx-tab-panel active\" id=\"details\">\n      <strong>William Ashford</strong><br>\n      Plot No. 79 Doctor Feroz Lane, SVCIE Phase 3 Rd, Balanagar, Hyderabad, Telangana 500037<br>\n      Phone: 8500093233<br>\n      Email: info.williamashford@gmail.com\n    </div>\n\n    <!-- RETURN POLICY -->\n    <div class=\"kyx-tab-panel\" id=\"washcare\">\n      <p><strong>We offer hassle-free 7 days returns and exchange.</strong></p>\n\n      <p>\n      We offer 7 days hassle-free returns & exchange from the date of delivery.\n      We also offer reverse pick-up services.\n      </p>\n\n      <p>\n      For prepaid orders, refunds are processed to the original payment method.\n      For COD orders, a refund link will be sent via WhatsApp, SMS, and Email from Razorpay.\n      </p>\n\n      <p>\n      Once the product is picked up, we initiate the refund within 24 hours.\n      The amount reflects in your bank account within 5–7 working days (usually earlier).\n      </p>\n\n      <p>\n      To place a Return & Exchange request, please click here.\n      For more details on our Returns/Exchange Policies, please contact support.\n      </p>\n    </div>\n\n    <!-- PLACE RETURN -->\n    <div class=\"kyx-tab-panel\" id=\"shipping\">\n      To place any return or exchange,\n      <a href=\"https://williamashford.in/apps/return_prime\" class=\"kyx-account-link\">Go to Return/exchange page</a>.\n    </div>\n\n  </div>\n</div>\n\n<style>\n.kyx-product-tabs {\n  background: #f4f4f4;\n  border: 1px solid #e0e0e0;\n  border-radius: 18px;\n  margin-top: 30px;\n  overflow: hidden;\n}\n\n.kyx-tabs-header {\n  display: flex;\n  border-bottom: 1px solid #e0e0e0;\n  padding: 0 20px;\n}\n\n.kyx-tab {\n  flex: 1;\n  background: transparent;\n  border: none;\n  padding: 18px 10px;\n  font-size: 15px;\n  font-weight: 500;\n  color: #777;\n  cursor: pointer;\n  position: relative;\n}\n\n.kyx-tab.active {\n  color: #000;\n  font-weight: 600;\n}\n\n.kyx-tab.active::after {\n  content: \"\";\n  position: absolute;\n  bottom: -1px;\n  left: 20%;\n  width: 60%;\n  height: 3px;\n  background: #999;\n  border-radius: 2px;\n}\n\n.kyx-tabs-content {\n  padding: 25px 30px;\n  font-size: 14px;\n  line-height: 1.7;\n}\n\n.kyx-tab-panel {\n  display: none;\n}\n\n.kyx-tab-panel.active {\n  display: block;\n}\n\n/* Account Link */\n.kyx-account-link{\n  font-weight: 600;\n  text-decoration: underline;\n  color: #000;\n}\n\n.kyx-account-link:hover{\n  opacity: 0.7;\n}\n</style>\n\n<script>\ndocument.addEventListener(\"DOMContentLoaded\", function() {\n  document.querySelectorAll(\".kyx-product-tabs\").forEach(function(container) {\n\n    const tabs = container.querySelectorAll(\".kyx-tab\");\n    const panels = container.querySelectorAll(\".kyx-tab-panel\");\n\n    tabs.forEach(function(tab) {\n      tab.addEventListener(\"click\", function() {\n\n        const target = tab.getAttribute(\"data-tab\");\n\n        tabs.forEach(t => t.classList.remove(\"active\"));\n        panels.forEach(p => p.classList.remove(\"active\"));\n\n        tab.classList.add(\"active\");\n        container.querySelector(\"#\" + target).classList.add(\"active\");\n\n      });\n    });\n\n  });\n});\n</script>",
+        "text_alignment": "center"
+      }
+    },
+    "image_with_text_overlay_49FAMK": {
+      "type": "image-with-text-overlay",
+      "blocks": {
+        "heading_3hXVkf": {
+          "type": "heading",
+          "disabled": true,
+          "settings": {
+            "text": "Image with text overlay",
+            "heading_tag": "h4"
+          }
+        },
+        "richtext_WGLFh6": {
+          "type": "richtext",
+          "disabled": true,
+          "settings": {
+            "content": "<p>Add your own custom content to give more information about your store, availability details...</p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_3hXVkf",
+        "richtext_WGLFh6"
+      ],
+      "disabled": true,
+      "name": "t:sections.image_with_text_overlay.presets.image_with_text_overlay.name",
+      "settings": {
+        "color_scheme": "",
+        "image_size": "auto",
+        "image": "shopify://shop_images/banner-variation-3.jpg",
+        "allow_transparent_header": false,
+        "reveal_on_scroll": true,
+        "remove_vertical_spacing": true,
+        "content_width": "md",
+        "mobile_text_position": "place-self-center text-center",
+        "desktop_text_position": "sm:place-self-center sm:text-center",
+        "overlay_color": "#000000",
+        "overlay_opacity": 0
+      }
+    },
+    "kyx_media_row_kGtLTk": {
+      "type": "kyx-media-row",
+      "blocks": {
+        "media_Enxgc6": {
+          "type": "media",
+          "settings": {
+            "image": "shopify://shop_images/banner-variation-3.jpg",
+            "video_url": ""
+          }
+        },
+        "media_Ch4JrQ": {
+          "type": "media",
+          "settings": {
+            "video_url": "https://cdn.shopify.com/videos/c/o/v/fc530bdc58f843eda7a9cd193549ff10.mp4"
+          }
+        }
+      },
+      "block_order": [
+        "media_Enxgc6",
+        "media_Ch4JrQ"
+      ],
+      "name": "KYX Media Row",
+      "settings": {}
+    },
+    "177106083605ea2c31": {
+      "type": "apps",
+      "blocks": {
+        "judge_me_reviews_review_widget_3BapJp": {
+          "type": "shopify://apps/judge-me-reviews/blocks/review_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {
+            "review_data": "sample_data",
+            "max_width": 1200,
+            "show_shop_reviews": false,
+            "empty_state": "empty_widget"
+          }
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_review_widget_3BapJp"
+      ],
+      "settings": {
+        "color_scheme": "",
+        "separate_section_with_border": true,
+        "remove_vertical_spacing": false,
+        "remove_horizontal_spacing": false
+      }
+    },
+    "related-products": {
+      "type": "related-products",
+      "settings": {
+        "color_scheme": "",
+        "separate_section_with_border": true,
+        "hide_product_information": false,
+        "stack_products": false,
+        "recommendations_count": 10,
+        "products_per_row_mobile": "2",
+        "products_per_row_desktop": 4,
+        "horizontal_spacing_factor": 1,
+        "vertical_spacing_factor": 1,
+        "subheading": "",
+        "title": "Related products",
+        "content": ""
+      }
+    }
+  },
+  "order": [
+    "main",
+    "custom_liquid_WtU66z",
+    "image_with_text_overlay_49FAMK",
+    "kyx_media_row_kGtLTk",
+    "177106083605ea2c31",
+    "related-products"
+  ]
+}

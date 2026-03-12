@@ -1,0 +1,55 @@
+{% comment %}
+  Custom robots.txt for William Ashford
+  Manages crawler access, blocks AI training bots, allows AI search bots
+{% endcomment %}
+
+{%- for group in robots.default_groups -%}
+User-agent: {{ group.user_agent }}
+{%- for rule in group.rules %}
+{{ rule.directive }}: {{ rule.value }}
+{%- endfor %}
+
+{% endfor -%}
+
+# Block AI training crawlers
+User-agent: GPTBot
+Disallow: /
+
+User-agent: ClaudeBot
+Disallow: /
+
+User-agent: Google-Extended
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+User-agent: Bytespider
+Disallow: /
+
+User-agent: Amazonbot
+Disallow: /
+
+# Allow AI search fetchers
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+# Block internal / non-SEO paths
+User-agent: *
+Disallow: /admin
+Disallow: /cart
+Disallow: /checkout
+Disallow: /orders
+Disallow: /account
+Disallow: /search
+Disallow: /*?*
+Allow: /*?sort_by=
+Allow: /*?page=
+
+Sitemap: {{ shop.url }}/sitemap.xml

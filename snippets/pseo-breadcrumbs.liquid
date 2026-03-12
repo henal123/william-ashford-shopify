@@ -1,0 +1,67 @@
+{%- comment -%}
+----------------------------------------------------------------------------------------------------------------------
+PSEO BREADCRUMBS
+----------------------------------------------------------------------------------------------------------------------
+
+Renders breadcrumb navigation with BreadcrumbList JSON-LD for PSEO pages.
+
+********************************************
+Supported parameters
+********************************************
+
+* hub_title: the title of the hub/category page (e.g., "Style Guides")
+* hub_url: the URL of the hub page (e.g., "/pages/style-guides")
+* page_title: the current page title
+{%- endcomment -%}
+
+<nav class="breadcrumb" aria-label="Breadcrumb">
+  <ol class="breadcrumb__list unstyled-list">
+    <li class="breadcrumb__list-item">
+      <a href="{{ shop.url }}">{{ 'general.home' | t }}</a>
+    </li>
+
+    {%- if hub_title != blank and hub_url != blank -%}
+      <li class="breadcrumb__list-item">
+        <a href="{{ hub_url }}">{{ hub_title }}</a>
+      </li>
+    {%- endif -%}
+
+    <li class="breadcrumb__list-item" aria-current="page">
+      <span>{{ page_title }}</span>
+    </li>
+  </ol>
+</nav>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": {{ 'general.home' | t | json }},
+      "item": "{{ shop.url }}"
+    }
+    {%- if hub_title != blank and hub_url != blank -%}
+      ,{
+        "@type": "ListItem",
+        "position": 2,
+        "name": {{ hub_title | json }},
+        "item": "{{ shop.url }}{{ hub_url }}"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": {{ page_title | json }}
+      }
+    {%- else -%}
+      ,{
+        "@type": "ListItem",
+        "position": 2,
+        "name": {{ page_title | json }}
+      }
+    {%- endif -%}
+  ]
+}
+</script>

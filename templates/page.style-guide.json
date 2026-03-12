@@ -1,0 +1,13 @@
+{
+  "sections": {
+    "main": {
+      "type": "pseo-style-guide",
+      "settings": {
+        "color_scheme": "scheme-1"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

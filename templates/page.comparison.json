@@ -1,0 +1,13 @@
+{
+  "sections": {
+    "main": {
+      "type": "pseo-comparison",
+      "settings": {
+        "color_scheme": "scheme-1"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

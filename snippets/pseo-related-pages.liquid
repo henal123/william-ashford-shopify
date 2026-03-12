@@ -1,0 +1,33 @@
+{%- comment -%}
+----------------------------------------------------------------------------------------------------------------------
+PSEO RELATED PAGES
+----------------------------------------------------------------------------------------------------------------------
+
+Renders a grid of related page links for PSEO cross-linking.
+
+********************************************
+Supported parameters
+********************************************
+
+* related_pages: a list of page references (from metaobject list.page_reference field)
+* related_heading: optional heading text (defaults to "Related Pages")
+{%- endcomment -%}
+
+{%- if related_pages != blank and related_pages.size > 0 -%}
+  <div class="pseo-related section-spacing">
+    <div class="section-header">
+      <h2 class="h4">{{ related_heading | default: 'Related Pages' }}</h2>
+    </div>
+
+    <div class="pseo-related__grid">
+      {%- for related_page in related_pages -%}
+        <a href="{{ related_page.url }}" class="pseo-related__card">
+          <h3 class="h6">{{ related_page.title }}</h3>
+          {%- if related_page.excerpt != blank -%}
+            <p class="text-subdued">{{ related_page.excerpt | strip_html | truncatewords: 20 }}</p>
+          {%- endif -%}
+        </a>
+      {%- endfor -%}
+    </div>
+  </div>
+{%- endif -%}

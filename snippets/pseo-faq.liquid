@@ -1,0 +1,60 @@
+{%- comment -%}
+----------------------------------------------------------------------------------------------------------------------
+PSEO FAQ COMPONENT
+----------------------------------------------------------------------------------------------------------------------
+
+Renders FAQ accordion UI and FAQPage JSON-LD schema from a JSON metafield.
+Reuses the theme's native accordion component for consistent styling.
+
+********************************************
+Supported parameters
+********************************************
+
+* faq_data: a JSON metafield value containing an array of objects with "question" and "answer" keys
+* faq_heading: optional heading text (defaults to "Frequently Asked Questions")
+{%- endcomment -%}
+
+{%- if faq_data != blank -%}
+  {%- assign faqs = faq_data -%}
+  {%- if faqs.size > 0 -%}
+    <div class="pseo-faq section-spacing">
+      <div class="section-header">
+        <h2 class="h4">{{ faq_heading | default: 'Frequently Asked Questions' }}</h2>
+      </div>
+
+      <div class="pseo-faq__list">
+        {%- for faq in faqs -%}
+          {%- capture faq_answer -%}
+            <div class="prose">{{ faq.answer }}</div>
+          {%- endcapture -%}
+
+          {%- render 'accordion',
+            title: faq.question,
+            content: faq_answer,
+            show_arrow: true,
+            size: 'lg'
+          -%}
+        {%- endfor -%}
+      </div>
+    </div>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {%- for faq in faqs -%}
+          {
+            "@type": "Question",
+            "name": {{ faq.question | json }},
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": {{ faq.answer | strip_html | json }}
+            }
+          }{%- unless forloop.last -%},{%- endunless -%}
+        {%- endfor -%}
+      ]
+    }
+    </script>
+  {%- endif -%}
+{%- endif -%}

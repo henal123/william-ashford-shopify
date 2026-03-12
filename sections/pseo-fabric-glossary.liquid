@@ -1,0 +1,352 @@
+{%- comment -%}
+----------------------------------------------------------------------------------------------------------------------
+PSEO FABRIC GLOSSARY SECTION
+----------------------------------------------------------------------------------------------------------------------
+Looks up fabric_glossary_term metaobject by deriving handle from page handle.
+Page handle "what-is-cotton-twill" → metaobject handle "cotton-twill"
+Renders a rich glossary page with property cards, care tips, product grid, and FAQ.
+{%- endcomment -%}
+
+{%- assign mo_handle = page.handle | remove_first: 'what-is-' -%}
+{%- assign entry = shop.metaobjects.fabric_glossary_term[mo_handle] -%}
+
+{%- if entry != blank -%}
+  <style>
+    #shopify-section-{{ section.id }} {
+      --product-list-items-per-row: 2;
+    }
+    @media screen and (min-width: 700px) {
+      #shopify-section-{{ section.id }} {
+        --product-list-items-per-row: {{ section.settings.products_per_row }};
+      }
+    }
+    .pseo-def-card {
+      background: rgb(var(--background-secondary, 245 245 245));
+      border-radius: 12px;
+      padding: 28px 32px;
+      border-left: 4px solid rgb(var(--text-color));
+    }
+    .pseo-props-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+    }
+    .pseo-prop-card {
+      border: 1px solid rgba(var(--text-color), 0.12);
+      border-radius: 8px;
+      padding: 18px 20px;
+      text-align: center;
+    }
+    .pseo-prop-card strong {
+      display: block;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: rgba(var(--text-color), 0.6);
+      margin-bottom: 6px;
+    }
+    .pseo-prop-card span {
+      font-size: 15px;
+      font-weight: 600;
+    }
+    .pseo-care-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+    .pseo-care-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 14px 18px;
+      border: 1px solid rgba(var(--text-color), 0.08);
+      border-radius: 8px;
+      background: rgb(var(--background-secondary, 245 245 245));
+    }
+    .pseo-care-icon {
+      flex-shrink: 0;
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .pseo-related-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+    }
+    .pseo-related-link {
+      display: block;
+      border: 1px solid rgba(var(--text-color), 0.12);
+      border-radius: 8px;
+      padding: 18px 20px;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color 0.2s, background 0.2s;
+      font-weight: 600;
+      font-size: 14px;
+    }
+    .pseo-related-link:hover {
+      border-color: rgba(var(--text-color), 0.3);
+      background: rgb(var(--background-secondary, 245 245 245));
+    }
+    .pseo-cta-bar { text-align: center; margin-top: 20px; }
+  </style>
+{%- endif -%}
+
+<div class="section-spacing color-scheme color-scheme--{{ section.settings.color_scheme.id }}">
+  <div class="container container--md">
+    <div class="section-stack">
+      {%- render 'pseo-breadcrumbs',
+        hub_title: 'Fabric Glossary',
+        hub_url: '/pages/fabric-glossary',
+        page_title: page.title
+      -%}
+
+      {%- if entry != blank -%}
+        <article itemscope itemtype="https://schema.org/DefinedTerm">
+          {%- comment -%}Header with definition badge{%- endcomment -%}
+          <header class="section-header">
+            <h1 class="h2" itemprop="name">{{ entry.term_name.value | default: page.title }}</h1>
+            {%- if entry.short_definition.value != blank -%}
+              <p class="text-lg text-subdued" itemprop="description" style="max-width:640px;">{{ entry.short_definition.value }}</p>
+            {%- endif -%}
+          </header>
+
+          {%- comment -%}Full Definition — highlighted card{%- endcomment -%}
+          {%- if entry.full_definition.value != blank -%}
+            <div class="pseo-def-card" itemprop="termCode">
+              <div class="prose" style="font-size:1.05rem;line-height:1.75;">
+                {%- assign def_lines = entry.full_definition.value | strip | newline_to_br | split: '<br />' -%}
+                {%- for line in def_lines -%}
+                  {%- assign clean = line | strip | strip_html -%}
+                  {%- if clean != blank -%}
+                    <p>{{ clean }}</p>
+                  {%- endif -%}
+                {%- endfor -%}
+              </div>
+            </div>
+          {%- endif -%}
+
+          {%- comment -%}Fabric Properties — card grid{%- endcomment -%}
+          {%- if entry.properties.value != blank -%}
+            <div class="section-spacing">
+              <div class="section-header">
+                <h2 class="h3">Fabric Properties</h2>
+              </div>
+              {%- assign props_lines = entry.properties.value | strip | newline_to_br | split: '<br />' -%}
+              <div class="pseo-props-grid">
+                {%- for line in props_lines -%}
+                  {%- assign clean = line | strip | strip_html -%}
+                  {%- if clean != blank -%}
+                    {%- if clean contains ':' -%}
+                      {%- assign prop_parts = clean | split: ':' -%}
+                      <div class="pseo-prop-card">
+                        <strong>{{ prop_parts[0] | strip }}</strong>
+                        <span>{{ prop_parts[1] | strip }}</span>
+                      </div>
+                    {%- else -%}
+                      <div class="pseo-prop-card">
+                        <span>{{ clean }}</span>
+                      </div>
+                    {%- endif -%}
+                  {%- endif -%}
+                {%- endfor -%}
+              </div>
+            </div>
+          {%- endif -%}
+
+          {%- comment -%}Care Tips — icon list{%- endcomment -%}
+          {%- if entry.care_tips.value != blank -%}
+            <div class="section-spacing">
+              <div class="section-header">
+                <h2 class="h3">Care Instructions</h2>
+              </div>
+              {%- assign care_lines = entry.care_tips.value | strip | newline_to_br | split: '<br />' -%}
+              <div class="pseo-care-grid">
+                {%- for line in care_lines -%}
+                  {%- assign clean = line | strip | strip_html -%}
+                  {%- if clean != blank -%}
+                    <div class="pseo-care-item">
+                      <span class="pseo-care-icon">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="10" cy="10" r="8"/><path d="M10 6v4l2.5 2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                      </span>
+                      <span style="flex:1;font-size:15px;line-height:1.6;">{{ clean }}</span>
+                    </div>
+                  {%- endif -%}
+                {%- endfor -%}
+              </div>
+            </div>
+          {%- endif -%}
+        </article>
+
+        {%- comment -%}Product Recommendations{%- endcomment -%}
+        {%- if section.settings.collection != blank and section.settings.collection.products_count > 0 -%}
+          <div class="section-spacing">
+            <div class="section-header">
+              <div class="v-stack gap-2">
+                <h2 class="h3">{{ section.settings.products_heading | default: 'Products in This Fabric' }}</h2>
+                {%- if section.settings.products_subheading != blank -%}
+                  <p class="text-subdued">{{ section.settings.products_subheading }}</p>
+                {%- endif -%}
+              </div>
+            </div>
+            <product-list class="product-list justify-center">
+              {%- for product in section.settings.collection.products limit: section.settings.products_count -%}
+                {%- render 'product-card', product: product, show_badges: true, show_rating: true, show_quick_buy: true -%}
+              {%- endfor -%}
+            </product-list>
+            <div class="pseo-cta-bar">
+              <a href="{{ section.settings.collection.url }}" class="button button--secondary">
+                View All {{ section.settings.collection.title }}
+              </a>
+            </div>
+          </div>
+        {%- endif -%}
+
+        {%- comment -%}FAQ Section{%- endcomment -%}
+        {%- render 'pseo-faq', faq_data: entry.faq_data.value -%}
+
+        {%- comment -%}Related Pages{%- endcomment -%}
+        {%- if section.settings.show_related_links -%}
+          <div class="section-spacing">
+            <div class="section-header">
+              <h2 class="h3">Related Fabrics</h2>
+            </div>
+            <div class="pseo-related-grid">
+              {%- if section.settings.related_page_1_url != blank -%}
+                <a href="{{ section.settings.related_page_1_url }}" class="pseo-related-link">{{ section.settings.related_page_1_title }}</a>
+              {%- endif -%}
+              {%- if section.settings.related_page_2_url != blank -%}
+                <a href="{{ section.settings.related_page_2_url }}" class="pseo-related-link">{{ section.settings.related_page_2_title }}</a>
+              {%- endif -%}
+              {%- if section.settings.related_page_3_url != blank -%}
+                <a href="{{ section.settings.related_page_3_url }}" class="pseo-related-link">{{ section.settings.related_page_3_title }}</a>
+              {%- endif -%}
+              <a href="/pages/fabric-glossary" class="pseo-related-link">Full Fabric Glossary →</a>
+            </div>
+          </div>
+        {%- endif -%}
+
+        {%- comment -%}DefinedTerm Schema{%- endcomment -%}
+        <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "DefinedTerm",
+          "name": {{ entry.term_name.value | json }},
+          "description": {{ entry.short_definition.value | strip_html | truncatewords: 50 | json }},
+          "url": "{{ shop.url }}{{ page.url }}",
+          "inDefinedTermSet": {
+            "@type": "DefinedTermSet",
+            "name": "William Ashford Fabric Glossary",
+            "url": "{{ shop.url }}/pages/fabric-glossary"
+          }
+        }
+        </script>
+
+      {%- else -%}
+        <header class="section-header">
+          <h1 class="h2">{{ page.title }}</h1>
+        </header>
+        {%- if page.content != empty -%}
+          <div class="prose">{{ page.content }}</div>
+        {%- endif -%}
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "PSEO Fabric Glossary",
+  "class": "shopify-section--pseo-fabric-glossary",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Product recommendations"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "range",
+      "id": "products_count",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "default": 4,
+      "label": "Products to show"
+    },
+    {
+      "type": "range",
+      "id": "products_per_row",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 4,
+      "label": "Products per row (desktop)"
+    },
+    {
+      "type": "text",
+      "id": "products_heading",
+      "label": "Products heading",
+      "default": "Products in This Fabric"
+    },
+    {
+      "type": "text",
+      "id": "products_subheading",
+      "label": "Products subheading"
+    },
+    {
+      "type": "header",
+      "content": "Related pages"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_related_links",
+      "label": "Show related pages",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "related_page_1_title",
+      "label": "Related page 1 title"
+    },
+    {
+      "type": "url",
+      "id": "related_page_1_url",
+      "label": "Related page 1 URL"
+    },
+    {
+      "type": "text",
+      "id": "related_page_2_title",
+      "label": "Related page 2 title"
+    },
+    {
+      "type": "url",
+      "id": "related_page_2_url",
+      "label": "Related page 2 URL"
+    },
+    {
+      "type": "text",
+      "id": "related_page_3_title",
+      "label": "Related page 3 title"
+    },
+    {
+      "type": "url",
+      "id": "related_page_3_url",
+      "label": "Related page 3 URL"
+    }
+  ]
+}
+{% endschema %}

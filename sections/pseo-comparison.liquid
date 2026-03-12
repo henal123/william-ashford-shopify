@@ -1,0 +1,421 @@
+{%- comment -%}
+----------------------------------------------------------------------------------------------------------------------
+PSEO COMPARISON SECTION
+----------------------------------------------------------------------------------------------------------------------
+Looks up style_comparison metaobject by page handle directly.
+Renders a rich comparison page with visual cards, product grid, and FAQ.
+{%- endcomment -%}
+
+{%- assign entry = shop.metaobjects.style_comparison[page.handle] -%}
+
+{%- if entry != blank -%}
+  <style>
+    #shopify-section-{{ section.id }} {
+      --product-list-items-per-row: 2;
+    }
+    @media screen and (min-width: 700px) {
+      #shopify-section-{{ section.id }} {
+        --product-list-items-per-row: {{ section.settings.products_per_row }};
+      }
+    }
+    .pseo-vs-grid {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 0;
+      align-items: stretch;
+    }
+    @media screen and (max-width: 699px) {
+      .pseo-vs-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+      .pseo-vs-divider { display: none; }
+    }
+    .pseo-vs-card {
+      border: 1px solid rgba(var(--text-color), 0.12);
+      border-radius: 12px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .pseo-vs-card h3 {
+      font-size: 20px;
+      font-weight: 700;
+      padding-bottom: 16px;
+      border-bottom: 2px solid rgba(var(--text-color), 0.08);
+    }
+    .pseo-vs-divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 16px;
+    }
+    .pseo-vs-badge {
+      background: rgb(var(--text-color));
+      color: rgb(var(--background));
+      font-weight: 800;
+      font-size: 13px;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      letter-spacing: 0.5px;
+    }
+    .pseo-pros-label {
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #16a34a;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .pseo-cons-label {
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #dc2626;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .pseo-verdict-card {
+      background: rgb(var(--background-secondary, 245 245 245));
+      border-radius: 12px;
+      padding: 28px 32px;
+      border-left: 4px solid rgb(var(--text-color));
+    }
+    .pseo-verdict-card h2 {
+      font-size: 18px;
+      margin-bottom: 12px;
+    }
+    .pseo-intro-card {
+      background: rgb(var(--background-secondary, 245 245 245));
+      border-radius: 8px;
+      padding: 24px 28px;
+    }
+    .pseo-related-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+    }
+    .pseo-related-link {
+      display: block;
+      border: 1px solid rgba(var(--text-color), 0.12);
+      border-radius: 8px;
+      padding: 18px 20px;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color 0.2s, background 0.2s;
+      font-weight: 600;
+      font-size: 14px;
+    }
+    .pseo-related-link:hover {
+      border-color: rgba(var(--text-color), 0.3);
+      background: rgb(var(--background-secondary, 245 245 245));
+    }
+    .pseo-cta-bar { text-align: center; margin-top: 20px; }
+  </style>
+{%- endif -%}
+
+<div class="section-spacing color-scheme color-scheme--{{ section.settings.color_scheme.id }}">
+  <div class="container container--md">
+    <div class="section-stack">
+      {%- render 'pseo-breadcrumbs',
+        hub_title: 'Style Comparisons',
+        hub_url: '/pages/style-comparisons',
+        page_title: page.title
+      -%}
+
+      {%- if entry != blank -%}
+        <header class="section-header">
+          <h1 class="h2">{{ entry.heading.value | default: page.title }}</h1>
+        </header>
+
+        {%- comment -%}Introduction{%- endcomment -%}
+        {%- if entry.intro_text.value != blank -%}
+          <div class="pseo-intro-card">
+            <div class="prose" style="font-size:1.05rem;line-height:1.75;">
+              <p>{{ entry.intro_text.value }}</p>
+            </div>
+          </div>
+        {%- endif -%}
+
+        {%- comment -%}Pros & Cons Comparison — side-by-side cards with VS badge{%- endcomment -%}
+        {%- if entry.item_a_name.value != blank -%}
+          <div class="section-spacing">
+            <div class="section-header">
+              <h2 class="h3">{{ entry.item_a_name.value }} vs {{ entry.item_b_name.value }}</h2>
+            </div>
+            <div class="pseo-vs-grid">
+              <div class="pseo-vs-card">
+                <h3>{{ entry.item_a_name.value }}</h3>
+                {%- if entry.item_a_pros.value != blank -%}
+                  <div>
+                    <div class="pseo-pros-label">
+                      <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="#16a34a" stroke-width="2"><path d="M16.7 5L7.5 14.2 3.3 10" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                      Pros
+                    </div>
+                    {%- assign a_pros = entry.item_a_pros.value | strip | newline_to_br | split: '<br />' -%}
+                    <ul style="list-style:none;padding:0;margin:0;display:grid;gap:6px;">
+                      {%- for line in a_pros -%}
+                        {%- assign clean = line | strip | strip_html -%}
+                        {%- if clean != blank -%}
+                          <li style="font-size:14px;line-height:1.6;padding-left:0;">{{ clean }}</li>
+                        {%- endif -%}
+                      {%- endfor -%}
+                    </ul>
+                  </div>
+                {%- endif -%}
+                {%- if entry.item_a_cons.value != blank -%}
+                  <div>
+                    <div class="pseo-cons-label">
+                      <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="#dc2626" stroke-width="2"><line x1="15" y1="5" x2="5" y2="15"/><line x1="5" y1="5" x2="15" y2="15"/></svg>
+                      Cons
+                    </div>
+                    {%- assign a_cons = entry.item_a_cons.value | strip | newline_to_br | split: '<br />' -%}
+                    <ul style="list-style:none;padding:0;margin:0;display:grid;gap:6px;">
+                      {%- for line in a_cons -%}
+                        {%- assign clean = line | strip | strip_html -%}
+                        {%- if clean != blank -%}
+                          <li style="font-size:14px;line-height:1.6;">{{ clean }}</li>
+                        {%- endif -%}
+                      {%- endfor -%}
+                    </ul>
+                  </div>
+                {%- endif -%}
+              </div>
+
+              <div class="pseo-vs-divider">
+                <span class="pseo-vs-badge">VS</span>
+              </div>
+
+              <div class="pseo-vs-card">
+                <h3>{{ entry.item_b_name.value }}</h3>
+                {%- if entry.item_b_pros.value != blank -%}
+                  <div>
+                    <div class="pseo-pros-label">
+                      <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="#16a34a" stroke-width="2"><path d="M16.7 5L7.5 14.2 3.3 10" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                      Pros
+                    </div>
+                    {%- assign b_pros = entry.item_b_pros.value | strip | newline_to_br | split: '<br />' -%}
+                    <ul style="list-style:none;padding:0;margin:0;display:grid;gap:6px;">
+                      {%- for line in b_pros -%}
+                        {%- assign clean = line | strip | strip_html -%}
+                        {%- if clean != blank -%}
+                          <li style="font-size:14px;line-height:1.6;">{{ clean }}</li>
+                        {%- endif -%}
+                      {%- endfor -%}
+                    </ul>
+                  </div>
+                {%- endif -%}
+                {%- if entry.item_b_cons.value != blank -%}
+                  <div>
+                    <div class="pseo-cons-label">
+                      <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="#dc2626" stroke-width="2"><line x1="15" y1="5" x2="5" y2="15"/><line x1="5" y1="5" x2="15" y2="15"/></svg>
+                      Cons
+                    </div>
+                    {%- assign b_cons = entry.item_b_cons.value | strip | newline_to_br | split: '<br />' -%}
+                    <ul style="list-style:none;padding:0;margin:0;display:grid;gap:6px;">
+                      {%- for line in b_cons -%}
+                        {%- assign clean = line | strip | strip_html -%}
+                        {%- if clean != blank -%}
+                          <li style="font-size:14px;line-height:1.6;">{{ clean }}</li>
+                        {%- endif -%}
+                      {%- endfor -%}
+                    </ul>
+                  </div>
+                {%- endif -%}
+              </div>
+            </div>
+          </div>
+        {%- endif -%}
+
+        {%- comment -%}Verdict — highlighted card{%- endcomment -%}
+        {%- if entry.verdict.value != blank -%}
+          <div class="section-spacing">
+            <div class="pseo-verdict-card">
+              <h2 class="h4">Our Verdict</h2>
+              <div class="prose" style="font-size:1.05rem;line-height:1.75;">
+                <p>{{ entry.verdict.value }}</p>
+              </div>
+            </div>
+          </div>
+        {%- endif -%}
+
+        {%- comment -%}Product Recommendations{%- endcomment -%}
+        {%- if section.settings.collection != blank and section.settings.collection.products_count > 0 -%}
+          <div class="section-spacing">
+            <div class="section-header">
+              <div class="v-stack gap-2">
+                <h2 class="h3">{{ section.settings.products_heading | default: 'Recommended Products' }}</h2>
+                {%- if section.settings.products_subheading != blank -%}
+                  <p class="text-subdued">{{ section.settings.products_subheading }}</p>
+                {%- endif -%}
+              </div>
+            </div>
+            <product-list class="product-list justify-center">
+              {%- for product in section.settings.collection.products limit: section.settings.products_count -%}
+                {%- render 'product-card', product: product, show_badges: true, show_rating: true, show_quick_buy: true -%}
+              {%- endfor -%}
+            </product-list>
+            <div class="pseo-cta-bar">
+              <a href="{{ section.settings.collection.url }}" class="button button--secondary">
+                View All {{ section.settings.collection.title }}
+              </a>
+            </div>
+          </div>
+        {%- endif -%}
+
+        {%- comment -%}FAQ Section{%- endcomment -%}
+        {%- render 'pseo-faq', faq_data: entry.faq_data.value -%}
+
+        {%- comment -%}Related Pages{%- endcomment -%}
+        {%- if section.settings.show_related_links -%}
+          <div class="section-spacing">
+            <div class="section-header">
+              <h2 class="h3">Related Comparisons</h2>
+            </div>
+            <div class="pseo-related-grid">
+              {%- if section.settings.related_page_1_url != blank -%}
+                <a href="{{ section.settings.related_page_1_url }}" class="pseo-related-link">{{ section.settings.related_page_1_title }}</a>
+              {%- endif -%}
+              {%- if section.settings.related_page_2_url != blank -%}
+                <a href="{{ section.settings.related_page_2_url }}" class="pseo-related-link">{{ section.settings.related_page_2_title }}</a>
+              {%- endif -%}
+              {%- if section.settings.related_page_3_url != blank -%}
+                <a href="{{ section.settings.related_page_3_url }}" class="pseo-related-link">{{ section.settings.related_page_3_title }}</a>
+              {%- endif -%}
+              <a href="/pages/style-comparisons" class="pseo-related-link">All Comparisons →</a>
+            </div>
+          </div>
+        {%- endif -%}
+
+        {%- comment -%}Article Schema{%- endcomment -%}
+        <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "Article",
+          "headline": {{ entry.heading.value | default: page.title | json }},
+          "description": {{ entry.intro_text.value | default: page.title | strip_html | truncatewords: 30 | json }},
+          "url": "{{ shop.url }}{{ page.url }}",
+          "publisher": {
+            "@type": "Organization",
+            "name": {{ shop.name | json }},
+            "url": "{{ shop.url }}"
+          }
+        }
+        </script>
+
+      {%- else -%}
+        <header class="section-header">
+          <h1 class="h2">{{ page.title }}</h1>
+        </header>
+        {%- if page.content != empty -%}
+          <div class="prose">{{ page.content }}</div>
+        {%- endif -%}
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "PSEO Comparison",
+  "class": "shopify-section--pseo-comparison",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Product recommendations"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "range",
+      "id": "products_count",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "default": 4,
+      "label": "Products to show"
+    },
+    {
+      "type": "range",
+      "id": "products_per_row",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 4,
+      "label": "Products per row (desktop)"
+    },
+    {
+      "type": "text",
+      "id": "products_heading",
+      "label": "Products heading",
+      "default": "Recommended Products"
+    },
+    {
+      "type": "text",
+      "id": "products_subheading",
+      "label": "Products subheading"
+    },
+    {
+      "type": "header",
+      "content": "Related pages"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_related_links",
+      "label": "Show related pages",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "related_page_1_title",
+      "label": "Related page 1 title"
+    },
+    {
+      "type": "url",
+      "id": "related_page_1_url",
+      "label": "Related page 1 URL"
+    },
+    {
+      "type": "text",
+      "id": "related_page_2_title",
+      "label": "Related page 2 title"
+    },
+    {
+      "type": "url",
+      "id": "related_page_2_url",
+      "label": "Related page 2 URL"
+    },
+    {
+      "type": "text",
+      "id": "related_page_3_title",
+      "label": "Related page 3 title"
+    },
+    {
+      "type": "url",
+      "id": "related_page_3_url",
+      "label": "Related page 3 URL"
+    }
+  ]
+}
+{% endschema %}

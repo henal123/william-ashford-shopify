@@ -1,0 +1,95 @@
+{% schema %}
+{
+  "name": "KYX Image Row",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "image",
+      "name": "Image",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Select image" }
+      ]
+    }
+  ],
+  "max_blocks": 3,
+  "presets": [
+    {
+      "name": "KYX Image Row",
+      "blocks": [
+        { "type": "image" },
+        { "type": "image" },
+        { "type": "image" }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
+<div class="kyx-image-row">
+  <div class="kyx-image-slider">
+    {% for block in section.blocks %}
+      {% if block.settings.image %}
+        <div class="kyx-img-card">
+          <img
+            src="{{ block.settings.image | image_url: width: 900 }}"
+            alt=""
+            loading="lazy"
+          >
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+</div>
+
+<style>
+/* OUTER SPACING */
+.kyx-image-row{
+  padding: 30px 20px;
+}
+
+/* DESKTOP GRID */
+.kyx-image-slider{
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap:24px;
+}
+
+/* IMAGE CARD */
+.kyx-img-card{
+  border-radius:14px;
+  overflow:hidden;
+}
+
+.kyx-img-card img{
+  width:100%;
+  height:100%;
+  display:block;
+  object-fit:cover;
+}
+
+/* MOBILE SLIDER */
+@media (max-width: 768px){
+
+  .kyx-image-slider{
+    display:flex;
+    overflow-x:auto;
+    scroll-snap-type:x mandatory;
+    gap:16px;
+    padding-bottom:6px;
+  }
+
+  .kyx-img-card{
+    min-width:85%;
+    scroll-snap-align:start;
+  }
+
+  /* scrollbar style */
+  .kyx-image-slider::-webkit-scrollbar{
+    height:5px;
+  }
+  .kyx-image-slider::-webkit-scrollbar-thumb{
+    background:#ccc;
+    border-radius:10px;
+  }
+}
+</style>

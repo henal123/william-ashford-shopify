@@ -1,0 +1,185 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "color_scheme": "",
+        "show_title": true,
+        "page_width": "xs"
+      }
+    },
+    "image_with_text_3Af8cW": {
+      "type": "image-with-text",
+      "blocks": {
+        "subheading_hbtqFV": {
+          "type": "subheading",
+          "settings": {
+            "text": ""
+          }
+        },
+        "heading_QRX9AK": {
+          "type": "heading",
+          "settings": {
+            "text": "Designed With You, Not For You",
+            "heading_tag": "h1"
+          }
+        },
+        "richtext_9cMFEG": {
+          "type": "richtext",
+          "settings": {
+            "content": "<p>Algorithms can predict trends.<br/>But they can’t understand frustration.<br/><br/>They don’t know how it feels when a shirt pulls at the shoulders.<br/>Or when trousers lose structure after three wears.<br/>Or when something almost fits but not quite.<br/><br/>We listen.<br/>Every fit issue gets documented.<br/>When enough people say the same thing, we redesign.<br/>Because the best products aren’t designed in boardrooms.<br/>They’re refined through real wear.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "subheading_hbtqFV",
+        "heading_QRX9AK",
+        "richtext_9cMFEG"
+      ],
+      "name": "t:sections.image_with_text.presets.image_with_text.name",
+      "settings": {
+        "color_scheme": "scheme-1",
+        "separate_section_with_border": true,
+        "image": "shopify://shop_images/Generated_Image_February_16_2026_-_3_55PM.jpg",
+        "reveal_on_scroll": true,
+        "image_position": "start",
+        "content_width": "sm",
+        "remove_vertical_spacing": true
+      }
+    },
+    "image_with_text_tNKgqM": {
+      "type": "image-with-text",
+      "blocks": {
+        "subheading_tUgQVw": {
+          "type": "subheading",
+          "settings": {
+            "text": ""
+          }
+        },
+        "heading_w7HNtB": {
+          "type": "heading",
+          "settings": {
+            "text": "The Science of Comfort",
+            "heading_tag": "h1"
+          }
+        },
+        "richtext_eC6LfQ": {
+          "type": "richtext",
+          "settings": {
+            "content": "<p>Most brands choose fabrics based on cost.<br/>We choose them based on performance.<br/><br/>Every material we use is tested not just  for how it feels on day one <br/>but for how it feels after 50 washes.<br/>We measure breathability. Durability. Recovery. Movement.<br/><br/>We partner with mills that prioritize innovation over tradition.<br/>Because fabric shouldn’t just look good.<br/>It should evolve with you.<br/><br/>Comfort isn’t a luxury.<br/>It’s the baseline.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "subheading_tUgQVw",
+        "heading_w7HNtB",
+        "richtext_eC6LfQ"
+      ],
+      "name": "t:sections.image_with_text.presets.image_with_text.name",
+      "settings": {
+        "color_scheme": "",
+        "separate_section_with_border": true,
+        "image": "shopify://shop_images/Generated_Image_February_16_2026_-_3_56PM.jpg",
+        "reveal_on_scroll": true,
+        "image_position": "end",
+        "content_width": "md",
+        "remove_vertical_spacing": true
+      }
+    },
+    "image_with_text_cmmMjj": {
+      "type": "image-with-text",
+      "blocks": {
+        "subheading_QrBM3A": {
+          "type": "subheading",
+          "settings": {
+            "text": ""
+          }
+        },
+        "heading_tLQwKa": {
+          "type": "heading",
+          "settings": {
+            "text": "Engineering Takes Discipline",
+            "heading_tag": "h1"
+          }
+        },
+        "richtext_aHPxjE": {
+          "type": "richtext",
+          "settings": {
+            "content": "<p>We prioritize proof.</p><p>Our cargo pants aren't simply cut and stitched. They're tested worn through prototyping phases, stress-tested at reinforcement points, washed repeatedly to ensure the fabric behaves as promised. Our 260 GSM cotton goes through heat treatment at 180°C before it ever touches a pattern table.</p><p>This level of development cannot be rushed.<br/>Speed delivers product.<br/>Discipline delivers performance.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "subheading_QrBM3A",
+        "heading_tLQwKa",
+        "richtext_aHPxjE"
+      ],
+      "name": "t:sections.image_with_text.presets.image_with_text.name",
+      "settings": {
+        "color_scheme": "",
+        "separate_section_with_border": true,
+        "image": "shopify://shop_images/Generated_Image_February_16_2026_-_3_57PM.jpg",
+        "reveal_on_scroll": true,
+        "image_position": "start",
+        "content_width": "sm",
+        "remove_vertical_spacing": true
+      }
+    },
+    "image_with_text_R8M6tT": {
+      "type": "image-with-text",
+      "blocks": {
+        "subheading_4RkDDg": {
+          "type": "subheading",
+          "settings": {
+            "text": ""
+          }
+        },
+        "heading_JGymFB": {
+          "type": "heading",
+          "settings": {
+            "text": "What You're Really Buying",
+            "heading_tag": "h1"
+          }
+        },
+        "richtext_QR8kfW": {
+          "type": "richtext",
+          "settings": {
+            "content": "<p>You’re wearing fabrics that work as hard as you do.<br/>Designs that transition seamlessly across your day.<br/>A wardrobe that simplifies decisions instead of complicating them.<br/><br/>So you can focus on your day not what you’re wearing.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "subheading_4RkDDg",
+        "heading_JGymFB",
+        "richtext_QR8kfW"
+      ],
+      "name": "t:sections.image_with_text.presets.image_with_text.name",
+      "settings": {
+        "color_scheme": "",
+        "separate_section_with_border": true,
+        "image": "shopify://shop_images/Generated_Image_February_16_2026_-_3_54PM.jpg",
+        "reveal_on_scroll": true,
+        "image_position": "end",
+        "content_width": "sm",
+        "remove_vertical_spacing": true
+      }
+    }
+  },
+  "order": [
+    "main",
+    "image_with_text_3Af8cW",
+    "image_with_text_tNKgqM",
+    "image_with_text_cmmMjj",
+    "image_with_text_R8M6tT"
+  ]
+}

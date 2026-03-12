@@ -1,0 +1,120 @@
+{% schema %}
+{
+  "name": "KYX Media Row",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "media",
+      "name": "Media Item",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "url", "id": "video_url", "label": "Video URL (MP4 or Embed)" }
+      ]
+    }
+  ],
+  "max_blocks": 6,
+  "presets": [
+    {
+      "name": "KYX Media Row",
+      "blocks": [
+        { "type": "media" },
+        { "type": "media" },
+        { "type": "media" },
+        { "type": "media" }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
+<div class="kyx-media-row">
+  <div class="kyx-media-track">
+    {% for block in section.blocks %}
+      <div class="kyx-media-card">
+
+        {% if block.settings.video_url != blank %}
+
+          {% if block.settings.video_url contains '.mp4' %}
+            <video autoplay muted loop playsinline>
+              <source src="{{ block.settings.video_url }}" type="video/mp4">
+            </video>
+          {% else %}
+            <div class="kyx-video-wrap">
+              <iframe
+                src="{{ block.settings.video_url }}"
+                frameborder="0"
+                allow="autoplay; encrypted-media"
+                allowfullscreen>
+              </iframe>
+            </div>
+          {% endif %}
+
+        {% elsif block.settings.image %}
+          <img
+            src="{{ block.settings.image | image_url: width: 900 }}"
+            alt=""
+            loading="lazy">
+        {% endif %}
+
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+<style>
+/* OUTER SPACING */
+.kyx-media-row{
+  padding: 30px 20px;
+}
+
+/* DESKTOP INLINE ROW */
+.kyx-media-track{
+  display:flex;
+  gap:24px;
+}
+
+.kyx-media-card{
+  flex:1;
+  border-radius:14px;
+  overflow:hidden;
+  background:#f5f5f5;
+  aspect-ratio: 1 / 1;
+}
+
+/* MEDIA */
+.kyx-media-card img,
+.kyx-media-card video{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+
+/* EMBED VIDEO */
+.kyx-video-wrap{
+  position:relative;
+  width:100%;
+  height:100%;
+}
+
+.kyx-video-wrap iframe{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+}
+
+/* MOBILE 2x2 GRID */
+@media (max-width: 768px){
+
+  .kyx-media-track{
+    display:grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap:12px;
+  }
+
+  .kyx-media-card{
+    width:100%;
+  }
+}
+</style>
