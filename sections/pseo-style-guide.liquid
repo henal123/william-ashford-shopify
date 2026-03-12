@@ -121,8 +121,8 @@ Same data source as use-case but styled for style guide pages.
   <div class="container container--md">
     <div class="section-stack">
       {%- render 'pseo-breadcrumbs',
-        hub_title: 'Style Guides',
-        hub_url: '/pages/style-guides',
+        hub_title: section.settings.hub_title,
+        hub_url: section.settings.hub_url,
         page_title: page.title
       -%}
 
@@ -284,7 +284,7 @@ Same data source as use-case but styled for style guide pages.
               {%- if section.settings.related_page_3_url != blank -%}
                 <a href="{{ section.settings.related_page_3_url }}" class="pseo-related-link">{{ section.settings.related_page_3_title }}</a>
               {%- endif -%}
-              <a href="/pages/style-guides" class="pseo-related-link">All Style Guides →</a>
+              <a href="{{ section.settings.hub_url | default: '/pages/style-guides' }}" class="pseo-related-link">All {{ section.settings.hub_title | default: 'Style Guides' }} →</a>
             </div>
           </div>
         {%- endif -%}
@@ -328,6 +328,23 @@ Same data source as use-case but styled for style guide pages.
       "id": "color_scheme",
       "label": "Color scheme",
       "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Breadcrumb & hub settings"
+    },
+    {
+      "type": "text",
+      "id": "hub_title",
+      "label": "Hub page title",
+      "default": "Style Guides",
+      "info": "Shown in breadcrumb and 'All [Hub] →' link."
+    },
+    {
+      "type": "url",
+      "id": "hub_url",
+      "label": "Hub page URL",
+      "info": "e.g. /pages/style-guides"
     },
     {
       "type": "header",

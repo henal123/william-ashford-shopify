@@ -65,68 +65,58 @@ function sleep(ms) {
 }
 
 // --- Step 1: Create Metaobject Definitions ---
+// Type identifiers MUST match what pseo-*.liquid sections look up:
+//   pseo-use-case.liquid + pseo-style-guide.liquid → shop.metaobjects.use_case_guide
+//   pseo-comparison.liquid                         → shop.metaobjects.style_comparison
+//   pseo-fabric-glossary.liquid                    → shop.metaobjects.fabric_glossary_term
 async function createMetaobjectDefinitions() {
   console.log('\n=== STEP 1: Creating Metaobject Definitions ===\n');
 
   const definitions = [
     {
-      name: 'Style Guide Entry',
-      type: 'style_guide_entry',
+      name: 'Use Case Guide',
+      type: 'use_case_guide',
       fieldDefinitions: [
         { key: 'heading', name: 'H1 Heading', type: 'single_line_text_field' },
-        { key: 'seo_title', name: 'SEO Title (max 60)', type: 'single_line_text_field' },
-        { key: 'seo_description', name: 'SEO Description (max 160)', type: 'multi_line_text_field' },
-        { key: 'body_content', name: 'Main Body Content', type: 'rich_text_field' },
-        { key: 'category', name: 'Category Tag', type: 'single_line_text_field' },
-        { key: 'faq_data', name: 'FAQ Data (JSON)', type: 'json' },
-        { key: 'last_updated', name: 'Last Updated', type: 'date' },
+        { key: 'intro_text', name: 'Introduction Text', type: 'single_line_text_field' },
+        { key: 'style_tips', name: 'Style Tips (one per line)', type: 'multi_line_text_field' },
+        { key: 'recommended_pieces', name: 'Recommended Pieces (one per line)', type: 'multi_line_text_field' },
+        { key: 'dos_and_donts', name: "Do's and Don'ts (one per line — prefix don'ts with 'Don't', 'Avoid', or 'Never')", type: 'multi_line_text_field' },
+        { key: 'faq_data', name: 'FAQ Data (JSON array of {question, answer})', type: 'json' },
       ],
     },
     {
-      name: 'Fabric Glossary Entry',
-      type: 'fabric_glossary_entry',
+      name: 'Fabric Glossary Term',
+      type: 'fabric_glossary_term',
       fieldDefinitions: [
-        { key: 'term_name', name: 'Fabric Name', type: 'single_line_text_field' },
-        { key: 'seo_title', name: 'SEO Title', type: 'single_line_text_field' },
-        { key: 'seo_description', name: 'SEO Description', type: 'multi_line_text_field' },
-        { key: 'short_definition', name: 'Short Definition', type: 'single_line_text_field' },
-        { key: 'full_definition', name: 'Full Definition', type: 'rich_text_field' },
-        { key: 'properties', name: 'Properties (JSON)', type: 'json' },
-        { key: 'care_instructions', name: 'Care Instructions', type: 'rich_text_field' },
-        { key: 'faq_data', name: 'FAQ Data (JSON)', type: 'json' },
+        { key: 'term_name', name: 'Term Name', type: 'single_line_text_field' },
+        { key: 'short_definition', name: 'Short Definition (one sentence)', type: 'single_line_text_field' },
+        { key: 'full_definition', name: 'Full Definition', type: 'multi_line_text_field' },
+        { key: 'properties', name: 'Properties (one per line, format: Label: Value)', type: 'multi_line_text_field' },
+        { key: 'care_tips', name: 'Care Tips (one per line)', type: 'multi_line_text_field' },
+        { key: 'faq_data', name: 'FAQ Data (JSON array of {question, answer})', type: 'json' },
       ],
     },
     {
-      name: 'Comparison Page',
-      type: 'comparison_page',
+      name: 'Style Comparison',
+      type: 'style_comparison',
       fieldDefinitions: [
         { key: 'heading', name: 'H1 Heading', type: 'single_line_text_field' },
-        { key: 'seo_title', name: 'SEO Title', type: 'single_line_text_field' },
-        { key: 'seo_description', name: 'SEO Description', type: 'multi_line_text_field' },
+        { key: 'intro_text', name: 'Introduction Text', type: 'single_line_text_field' },
         { key: 'item_a_name', name: 'Item A Name', type: 'single_line_text_field' },
+        { key: 'item_a_pros', name: 'Item A Pros (one per line)', type: 'multi_line_text_field' },
+        { key: 'item_a_cons', name: 'Item A Cons (one per line)', type: 'multi_line_text_field' },
         { key: 'item_b_name', name: 'Item B Name', type: 'single_line_text_field' },
-        { key: 'intro', name: 'Introduction', type: 'rich_text_field' },
-        { key: 'comparison_data', name: 'Comparison Table (JSON)', type: 'json' },
-        { key: 'verdict', name: 'Verdict', type: 'rich_text_field' },
-        { key: 'faq_data', name: 'FAQ Data (JSON)', type: 'json' },
-      ],
-    },
-    {
-      name: 'Use Case Page',
-      type: 'use_case_page',
-      fieldDefinitions: [
-        { key: 'use_case', name: 'Use Case Title', type: 'single_line_text_field' },
-        { key: 'seo_title', name: 'SEO Title', type: 'single_line_text_field' },
-        { key: 'seo_description', name: 'SEO Description', type: 'multi_line_text_field' },
-        { key: 'body_content', name: 'Body Content', type: 'rich_text_field' },
-        { key: 'tips', name: 'Tips & Recommendations', type: 'rich_text_field' },
-        { key: 'faq_data', name: 'FAQ Data (JSON)', type: 'json' },
+        { key: 'item_b_pros', name: 'Item B Pros (one per line)', type: 'multi_line_text_field' },
+        { key: 'item_b_cons', name: 'Item B Cons (one per line)', type: 'multi_line_text_field' },
+        { key: 'verdict', name: 'Verdict (one sentence recommendation)', type: 'single_line_text_field' },
+        { key: 'faq_data', name: 'FAQ Data (JSON array of {question, answer})', type: 'json' },
       ],
     },
   ];
 
   for (const def of definitions) {
-    console.log(`  Creating metaobject: ${def.name}...`);
+    console.log(`  Creating metaobject: ${def.name} (type: ${def.type})...`);
     try {
       const result = await graphql(`
         mutation CreateMetaobjectDefinition($definition: MetaobjectDefinitionCreateInput!) {
@@ -168,15 +158,14 @@ async function createMetaobjectDefinitions() {
   }
 }
 
-// --- Step 2: Create Metafield Definitions for Products ---
+// --- Step 2: Create Metafield Definitions ---
 async function createMetafieldDefinitions() {
-  console.log('\n=== STEP 2: Creating Product Metafield Definitions ===\n');
+  console.log('\n=== STEP 2: Creating Metafield Definitions ===\n');
 
   const metafields = [
-    { namespace: 'custom', key: 'seo_title', name: 'SEO Title Override', type: 'single_line_text_field', ownerType: 'PRODUCT', description: 'Custom title tag for SEO (max 60 chars)' },
-    { namespace: 'custom', key: 'material', name: 'Material', type: 'single_line_text_field', ownerType: 'PRODUCT', description: 'Product material for Product schema markup' },
+    { namespace: 'custom', key: 'material', name: 'Material', type: 'single_line_text_field', ownerType: 'PRODUCT', description: 'Product material for Product schema markup (e.g. "Super 110s Merino Wool")' },
     { namespace: 'custom', key: 'features', name: 'Features', type: 'json', ownerType: 'PRODUCT', description: 'Structured feature list [{name, value}] for schema additionalProperty' },
-    { namespace: 'seo', key: 'noindex', name: 'Noindex', type: 'boolean', ownerType: 'PAGE', description: 'Set to true to noindex this page' },
+    { namespace: 'seo', key: 'noindex', name: 'Noindex', type: 'boolean', ownerType: 'PAGE', description: 'Set to true to noindex this page (use on shell pages before metaobject content is added)' },
   ];
 
   for (const mf of metafields) {
@@ -228,35 +217,102 @@ async function createHubPages() {
   const hubPages = [
     {
       handle: 'style-guides',
-      title: 'Style Guides - How to Wear William Ashford',
-      body_html: '<h1>Style Guides</h1><p>Discover how to style your William Ashford cargo pants and chinos for every occasion. From office wear to weekend adventures, our comprehensive style guides help you look and feel your best.</p><p>Browse our guides below to find styling tips, outfit ideas, and expert recommendations tailored to your lifestyle.</p>',
-      template_suffix: '',
-      seo_title: 'Cargo Pants & Chinos Style Guides | William Ashford',
-      seo_description: 'Expert style guides for men\'s cargo pants and chinos. Learn how to wear William Ashford for every occasion, season, and body type.',
+      title: 'Style Guides | William Ashford',
+      body_html: `<h1>Style Guides</h1>
+<p>How to wear William Ashford — from choosing the right suit colour for an interview to pairing dress trousers with the right shoe. Our style guides give you the specific answers, not the generic advice.</p>
+<h2>Suit Styling</h2>
+<ul>
+  <li><a href="/pages/how-to-style-a-navy-suit">How to Style a Navy Suit</a></li>
+  <li><a href="/pages/how-to-style-a-grey-suit">How to Style a Grey Suit</a></li>
+  <li><a href="/pages/how-to-style-a-charcoal-suit">How to Style a Charcoal Suit</a></li>
+  <li><a href="/pages/suit-with-brown-shoes">Suit with Brown Shoes</a></li>
+  <li><a href="/pages/how-to-wear-a-suit-without-a-tie">How to Wear a Suit Without a Tie</a></li>
+  <li><a href="/pages/how-to-style-a-morning-suit">How to Style a Morning Suit</a></li>
+</ul>
+<h2>Smart Casual & Separates</h2>
+<ul>
+  <li><a href="/pages/how-to-style-a-blazer-with-trousers">How to Style a Blazer with Trousers</a></li>
+  <li><a href="/pages/smart-casual-men">Smart Casual for Men</a></li>
+  <li><a href="/pages/business-casual-dress-code-men">Business Casual Dress Code</a></li>
+  <li><a href="/pages/how-to-style-dress-trousers">How to Style Dress Trousers</a></li>
+  <li><a href="/pages/how-to-style-tweed">How to Style Tweed</a></li>
+</ul>
+<h2>Seasonal Dressing</h2>
+<ul>
+  <li><a href="/pages/linen-suits-for-summer">Linen Suits for Summer</a></li>
+</ul>`,
+      seo_title: 'Style Guides for Men | William Ashford',
+      seo_description: 'How to style suits, blazers, and trousers from William Ashford. Specific, practical guides for every occasion and season.',
+    },
+    {
+      handle: 'occasions',
+      title: 'Occasion Dressing Guides | William Ashford',
+      body_html: `<h1>Occasion Dressing Guides</h1>
+<p>What to wear — and what to avoid — for every occasion that calls for considered menswear. From black tie to business interviews, get the dress code right the first time.</p>
+<h2>Professional Occasions</h2>
+<ul>
+  <li><a href="/pages/what-to-wear-to-a-job-interview">What to Wear to a Job Interview</a></li>
+  <li><a href="/pages/menswear-for-court-hearings">Menswear for Court Hearings</a></li>
+  <li><a href="/pages/graduation-outfit-men">Graduation Outfit Guide</a></li>
+</ul>
+<h2>Social & Formal Occasions</h2>
+<ul>
+  <li><a href="/pages/black-tie-dress-code-guide">Black Tie Dress Code Guide</a></li>
+  <li><a href="/pages/what-to-wear-to-a-wedding-as-a-guest">What to Wear to a Wedding as a Guest</a></li>
+  <li><a href="/pages/garden-party-outfit-men">Garden Party Outfit Guide</a></li>
+  <li><a href="/pages/horse-racing-dress-code-men">Horse Racing Dress Code</a></li>
+  <li><a href="/pages/christmas-party-outfit-men">Christmas Party Outfit Guide</a></li>
+  <li><a href="/pages/funeral-attire-men">Funeral Attire for Men</a></li>
+  <li><a href="/pages/first-date-outfit-men">First Date Outfit Guide</a></li>
+</ul>`,
+      seo_title: 'Occasion Dressing Guides for Men | William Ashford',
+      seo_description: 'Dress code guides for every occasion — weddings, interviews, black tie, and more. Get it right with William Ashford.',
+    },
+    {
+      handle: 'style-comparisons',
+      title: 'Style Comparisons | William Ashford',
+      body_html: `<h1>Style Comparisons</h1>
+<p>Not sure which to choose? Our detailed comparisons break down the differences between suit styles, trouser cuts, fabric types, and construction methods — so you can make a confident decision.</p>
+<h2>Suit Comparisons</h2>
+<ul>
+  <li><a href="/pages/single-breasted-vs-double-breasted-suit">Single-Breasted vs Double-Breasted Suit</a></li>
+  <li><a href="/pages/slim-fit-vs-regular-fit-suit">Slim Fit vs Regular Fit Suit</a></li>
+  <li><a href="/pages/suit-vs-blazer-and-trousers">Suit vs Blazer and Trousers</a></li>
+  <li><a href="/pages/morning-dress-vs-lounge-suit">Morning Dress vs Lounge Suit</a></li>
+  <li><a href="/pages/two-piece-vs-three-piece-suit">Two-Piece vs Three-Piece Suit</a></li>
+  <li><a href="/pages/italian-vs-british-tailoring">Italian vs British Tailoring</a></li>
+  <li><a href="/pages/bespoke-vs-made-to-measure">Bespoke vs Made-to-Measure</a></li>
+</ul>
+<h2>Trouser & Fabric Comparisons</h2>
+<ul>
+  <li><a href="/pages/flat-front-vs-pleated-trousers">Flat-Front vs Pleated Trousers</a></li>
+  <li><a href="/pages/wool-vs-linen-suit">Wool vs Linen Suit</a></li>
+  <li><a href="/pages/canvas-vs-fused-construction">Canvas vs Fused Construction</a></li>
+</ul>`,
+      seo_title: 'Suit & Style Comparisons | William Ashford',
+      seo_description: 'Compare suit styles, trouser cuts, and fabrics side by side. Make the right choice with William Ashford comparison guides.',
     },
     {
       handle: 'fabric-glossary',
-      title: 'Fabric Glossary - Understanding Premium Materials',
-      body_html: '<h1>Fabric Glossary</h1><p>Understanding the materials that make William Ashford cargo pants and chinos exceptional. Our fabric glossary explains fabric weight (GSM), weave types, cotton blends, and care instructions so you can make informed choices.</p>',
-      template_suffix: '',
-      seo_title: 'Fabric Glossary: Cotton, Twill, GSM Guide | William Ashford',
-      seo_description: 'Learn about premium fabrics used in William Ashford cargo pants. Understand GSM, cotton twill, stretch blends, and fabric care.',
-    },
-    {
-      handle: 'compare',
-      title: 'Comparisons - Find the Right Pants for You',
-      body_html: '<h1>Comparisons</h1><p>Not sure which pants are right for you? Our detailed comparison guides break down the differences between cargo pants, chinos, joggers, jeans, and more. Compare fit, fabric, functionality, and style to find your perfect match.</p>',
-      template_suffix: '',
-      seo_title: 'Cargo Pants vs Chinos vs Joggers: Comparisons | William Ashford',
-      seo_description: 'Detailed comparisons of cargo pants vs chinos, joggers, jeans and more. Find the right premium pants for your lifestyle.',
-    },
-    {
-      handle: 'use-cases',
-      title: 'Use Cases - Best Cargo Pants for Every Activity',
-      body_html: '<h1>Best Cargo Pants for Every Activity</h1><p>Whether you\'re heading to the office, going on a hike, traveling internationally, or working on a job site, William Ashford has the perfect cargo pants. Explore our use case guides to find the best pants for your specific needs.</p>',
-      template_suffix: '',
-      seo_title: 'Best Cargo Pants for Work, Travel, Hiking & More | William Ashford',
-      seo_description: 'Find the best cargo pants for your activity. Expert guides for office wear, travel, hiking, construction, and everyday use.',
+      title: 'Fabric Glossary | William Ashford',
+      body_html: `<h1>Fabric Glossary</h1>
+<p>The materials behind William Ashford garments, explained clearly. Understanding what your clothes are made of — and why it matters — is the first step to buying better and wearing longer.</p>
+<h2>Wool & Natural Fibres</h2>
+<ul>
+  <li><a href="/pages/what-is-super-100s-wool">What is Super 100s Wool?</a></li>
+  <li><a href="/pages/what-is-super-120s-wool">What is Super 120s Wool?</a></li>
+  <li><a href="/pages/what-is-merino-wool">What is Merino Wool?</a></li>
+  <li><a href="/pages/what-is-linen">What is Linen?</a></li>
+</ul>
+<h2>Construction & Weave</h2>
+<ul>
+  <li><a href="/pages/what-is-half-canvas-construction">What is Half-Canvas Construction?</a></li>
+  <li><a href="/pages/what-is-full-canvas-construction">What is Full-Canvas Construction?</a></li>
+  <li><a href="/pages/what-is-herringbone-weave">What is Herringbone Weave?</a></li>
+  <li><a href="/pages/what-is-twill-weave">What is Twill Weave?</a></li>
+</ul>`,
+      seo_title: 'Fabric Glossary: Wool, Linen & Tailoring Terms | William Ashford',
+      seo_description: 'Understand the fabrics and construction methods behind premium menswear. William Ashford fabric glossary.',
     },
   ];
 
@@ -304,72 +360,77 @@ async function createHubPages() {
 }
 
 // --- Step 4: Create PSEO Content Pages ---
+// Pages are created as noindex shells — populate metaobject entries in Shopify Admin,
+// then remove the seo.noindex metafield to make each page live.
 async function createPSEOPages() {
   console.log('\n=== STEP 4: Creating PSEO Content Pages ===\n');
 
-  // Style Guide Pages
+  // Style Guide Pages — template suffix: style-guide
+  // Metaobject type: use_case_guide, handle = page handle
   const styleGuides = [
-    { handle: 'how-to-style-black-cargo-pants', title: 'How to Style Black Cargo Pants', seo_title: 'How to Style Black Cargo Pants for Men | William Ashford', seo_desc: 'Complete guide to styling black cargo pants for men. Outfit ideas for work, casual, and night out. Tips from William Ashford.', template: 'style-guide' },
-    { handle: 'how-to-style-olive-cargo-pants', title: 'How to Style Olive Cargo Pants', seo_title: 'How to Style Olive Cargo Pants for Men | William Ashford', seo_desc: 'Style olive green cargo pants like a pro. Outfit ideas, color pairings, and seasonal looks from William Ashford.', template: 'style-guide' },
-    { handle: 'how-to-style-khaki-cargo-pants', title: 'How to Style Khaki Cargo Pants', seo_title: 'How to Style Khaki Cargo Pants for Men | William Ashford', seo_desc: 'Master khaki cargo pants styling. Versatile outfit combinations for office, weekend, and travel from William Ashford.', template: 'style-guide' },
-    { handle: 'how-to-style-navy-cargo-pants', title: 'How to Style Navy Cargo Pants', seo_title: 'How to Style Navy Cargo Pants for Men | William Ashford', seo_desc: 'Navy cargo pants outfit ideas for men. Polished and casual looks with William Ashford premium cargo pants.', template: 'style-guide' },
-    { handle: 'how-to-style-grey-cargo-pants', title: 'How to Style Grey Cargo Pants', seo_title: 'How to Style Grey Cargo Pants for Men | William Ashford', seo_desc: 'Grey cargo pants styling guide. Modern outfits, layering tips, and color combinations from William Ashford.', template: 'style-guide' },
-    { handle: 'how-to-style-brown-cargo-pants', title: 'How to Style Brown Cargo Pants', seo_title: 'How to Style Brown Cargo Pants for Men | William Ashford', seo_desc: 'Earth-tone styling guide for brown cargo pants. Pair with boots, jackets, and more. William Ashford tips.', template: 'style-guide' },
-    { handle: 'cargo-pants-for-summer', title: 'Cargo Pants for Summer: Stay Cool & Stylish', seo_title: 'Best Cargo Pants for Summer 2026 | William Ashford', seo_desc: 'Lightweight cargo pants for summer. Breathable fabrics, styling tips, and outfit ideas to stay cool and look great.', template: 'style-guide' },
-    { handle: 'cargo-pants-for-winter', title: 'Cargo Pants for Winter: Warm & Functional', seo_title: 'Best Cargo Pants for Winter | William Ashford', seo_desc: 'How to wear cargo pants in winter. Layering guide, boot pairings, and warmth tips from William Ashford.', template: 'style-guide' },
-    { handle: 'cargo-pants-for-monsoon', title: 'Cargo Pants for Monsoon Season', seo_title: 'Best Cargo Pants for Monsoon & Rainy Season | William Ashford', seo_desc: 'Monsoon-proof cargo pants guide. Quick-dry fabrics, styling for rain, and care tips from William Ashford.', template: 'style-guide' },
-    { handle: 'cargo-pants-for-spring', title: 'Cargo Pants for Spring: Transition Outfits', seo_title: 'Spring Cargo Pants Outfits for Men | William Ashford', seo_desc: 'Spring cargo pants styling. Light layers, fresh colors, and transitional outfit ideas from William Ashford.', template: 'style-guide' },
-    { handle: 'cargo-pants-for-slim-build', title: 'Best Cargo Pants for Slim Build Men', seo_title: 'Best Cargo Pants for Slim Build Men | William Ashford', seo_desc: 'Cargo pants fit guide for slim builds. Which cuts, sizes, and styles work best. William Ashford recommendations.', template: 'style-guide' },
-    { handle: 'cargo-pants-for-athletic-build', title: 'Best Cargo Pants for Athletic Build', seo_title: 'Best Cargo Pants for Athletic Build Men | William Ashford', seo_desc: 'Cargo pants for muscular and athletic body types. Fit advice, stretch options, and sizing from William Ashford.', template: 'style-guide' },
-    { handle: 'cargo-pants-for-larger-frame', title: 'Best Cargo Pants for Larger Frame', seo_title: 'Best Cargo Pants for Big & Tall Men | William Ashford', seo_desc: 'Cargo pants guide for larger builds. Comfortable fits, flattering cuts, and sizing tips from William Ashford.', template: 'style-guide' },
-    { handle: 'cargo-pants-for-office', title: '5 Ways to Wear Cargo Pants to Work', seo_title: '5 Ways to Wear Cargo Pants to the Office | William Ashford', seo_desc: 'Can you wear cargo pants to work? Yes! 5 office-appropriate cargo pants outfits from William Ashford.', template: 'style-guide' },
-    { handle: 'cargo-pants-street-style', title: 'Cargo Pants Street Style Guide', seo_title: 'Cargo Pants Street Style: Urban Outfit Guide | William Ashford', seo_desc: 'Street style cargo pants outfits for men. Sneaker pairings, oversized layers, and urban looks from William Ashford.', template: 'style-guide' },
-    { handle: 'how-to-cuff-cargo-pants', title: 'How to Cuff Cargo Pants: 4 Methods', seo_title: 'How to Cuff & Roll Cargo Pants | William Ashford', seo_desc: 'Learn 4 ways to cuff cargo pants. Pin roll, single fold, stacked, and military cuff techniques.', template: 'style-guide' },
-    { handle: 'cargo-pants-with-boots', title: 'Cargo Pants with Boots: Complete Guide', seo_title: 'Cargo Pants with Boots: Best Combinations | William Ashford', seo_desc: 'How to pair cargo pants with boots. Chelsea, combat, hiking, and desert boot outfit ideas from William Ashford.', template: 'style-guide' },
-    { handle: 'best-cargo-pants-for-travel', title: 'Best Cargo Pants for Travel', seo_title: 'Best Travel Cargo Pants for Men | William Ashford', seo_desc: 'Why cargo pants are perfect for travel. Pocket security, comfort, versatility, and packing tips.', template: 'style-guide' },
-    { handle: 'cargo-pants-for-college', title: 'Cargo Pants for College Students', seo_title: 'Cargo Pants Outfits for College Students | William Ashford', seo_desc: 'Affordable style guide for college men. Cargo pants outfits for class, campus, and weekend from William Ashford.', template: 'style-guide' },
-    { handle: 'cargo-pants-wedding-guest', title: 'Cargo Pants as a Wedding Guest: Can You Pull It Off?', seo_title: 'Can You Wear Cargo Pants to a Wedding? | William Ashford', seo_desc: 'When and how to wear cargo pants as a wedding guest. Smart-casual options from William Ashford premium collection.', template: 'style-guide' },
+    { handle: 'how-to-style-a-navy-suit', title: 'How to Style a Navy Suit', seo_title: 'How to Style a Navy Suit | William Ashford', seo_desc: 'Complete guide to styling a navy suit for work, weddings, and smart occasions. Shirt, tie, and shoe pairings from William Ashford.', template: 'style-guide' },
+    { handle: 'how-to-style-a-grey-suit', title: 'How to Style a Grey Suit', seo_title: 'How to Style a Grey Suit | William Ashford', seo_desc: 'Grey suit styling guide for men. Colour combinations, shirt choices, and occasion tips from William Ashford.', template: 'style-guide' },
+    { handle: 'how-to-style-a-charcoal-suit', title: 'How to Style a Charcoal Suit', seo_title: 'How to Style a Charcoal Suit | William Ashford', seo_desc: 'Charcoal suit outfit ideas for men. The most versatile suit colour — worn right, from William Ashford.', template: 'style-guide' },
+    { handle: 'suit-with-brown-shoes', title: 'Suit with Brown Shoes', seo_title: 'How to Wear a Suit with Brown Shoes | William Ashford', seo_desc: 'Which suit colours work with brown shoes? Shade matching, belt rules, and styling tips from William Ashford.', template: 'style-guide' },
+    { handle: 'how-to-wear-a-suit-without-a-tie', title: 'How to Wear a Suit Without a Tie', seo_title: 'How to Wear a Suit Without a Tie | William Ashford', seo_desc: 'Pull off a tieless suit with confidence. Collar choices, shirt options, and occasions where it works. William Ashford.', template: 'style-guide' },
+    { handle: 'how-to-style-a-blazer-with-trousers', title: 'How to Style a Blazer with Trousers', seo_title: 'How to Style a Blazer with Trousers | William Ashford', seo_desc: 'Mix blazer and trouser combinations that look considered, not mismatched. William Ashford styling guide.', template: 'style-guide' },
+    { handle: 'linen-suits-for-summer', title: 'Linen Suits for Summer', seo_title: 'Linen Suits for Summer | William Ashford', seo_desc: 'How to wear a linen suit in summer. Fabric guide, styling tips, and why the creasing is the point.', template: 'style-guide' },
+    { handle: 'smart-casual-men', title: 'Smart Casual for Men: The Definitive Guide', seo_title: 'Smart Casual Dress Code for Men | William Ashford', seo_desc: 'What smart casual actually means for men. Real outfit examples and what to avoid. William Ashford guide.', template: 'style-guide' },
+    { handle: 'how-to-style-dress-trousers', title: 'How to Style Dress Trousers', seo_title: 'How to Style Dress Trousers | William Ashford', seo_desc: 'Dress trouser outfit ideas for men. Waistband, break, and pairing guide from William Ashford.', template: 'style-guide' },
+    { handle: 'how-to-style-a-morning-suit', title: 'How to Style a Morning Suit', seo_title: 'How to Style a Morning Suit | William Ashford', seo_desc: 'Morning suit guide for weddings and formal occasions. What to wear and how to wear it from William Ashford.', template: 'style-guide' },
+    { handle: 'business-casual-dress-code-men', title: 'Business Casual Dress Code for Men', seo_title: 'Business Casual Dress Code for Men | William Ashford', seo_desc: 'What business casual means in 2025. Specific outfit examples for every workplace. William Ashford guide.', template: 'style-guide' },
+    { handle: 'how-to-style-tweed', title: 'How to Style Tweed', seo_title: 'How to Style Tweed for Men | William Ashford', seo_desc: 'Tweed styling beyond the countryside. Modern outfit ideas for tweed jackets and suits from William Ashford.', template: 'style-guide' },
   ];
 
-  // Fabric Glossary Pages
+  // Fabric Glossary Pages — template suffix: fabric-glossary
+  // Metaobject type: fabric_glossary_term, handle = page handle MINUS 'what-is-' prefix
+  // e.g. page handle 'what-is-merino-wool' → metaobject handle 'merino-wool'
   const fabricPages = [
-    { handle: '260-gsm-cotton-twill', title: '260 GSM Cotton Twill: What Makes It Premium', seo_title: '260 GSM Cotton Twill Fabric Guide | William Ashford', seo_desc: 'Everything about 260 GSM cotton twill fabric. Weight, durability, feel, and why it makes premium cargo pants.', template: 'fabric-glossary' },
-    { handle: 'understanding-fabric-gsm', title: 'Understanding Fabric Weight (GSM) in Pants', seo_title: 'What is GSM in Fabric? Weight Guide for Pants | William Ashford', seo_desc: 'Learn what GSM means in clothing. How fabric weight affects comfort, durability, and style in cargo pants and chinos.', template: 'fabric-glossary' },
-    { handle: 'cotton-vs-polyester-blend', title: 'Cotton vs Polyester Blend: Which is Better for Pants?', seo_title: 'Cotton vs Polyester Blend Pants: Pros & Cons | William Ashford', seo_desc: 'Cotton vs polyester blend for pants. Compare breathability, durability, comfort, and care for cargo pants.', template: 'fabric-glossary' },
-    { handle: 'what-is-twill-weave', title: 'What is Twill Weave? Properties & Benefits', seo_title: 'Twill Weave Fabric: Properties & Benefits | William Ashford', seo_desc: 'Learn about twill weave fabric. How diagonal ribbing creates durable, wrinkle-resistant pants. William Ashford guide.', template: 'fabric-glossary' },
-    { handle: 'stretch-cotton-explained', title: 'Stretch Cotton Explained: Comfort Meets Durability', seo_title: 'Stretch Cotton Fabric: Benefits for Pants | William Ashford', seo_desc: 'What is stretch cotton? How elastane blends improve comfort and mobility in cargo pants without losing durability.', template: 'fabric-glossary' },
-    { handle: 'pre-washed-vs-raw-fabric', title: 'Pre-Washed vs Raw Fabric: What\'s the Difference?', seo_title: 'Pre-Washed vs Raw Fabric in Pants | William Ashford', seo_desc: 'Pre-washed vs raw denim and cotton. Understand shrinkage, break-in periods, and vintage finishes in cargo pants.', template: 'fabric-glossary' },
+    { handle: 'what-is-super-100s-wool', title: 'What is Super 100s Wool?', seo_title: 'What is Super 100s Wool? | William Ashford', seo_desc: 'Super 100s wool explained. Yarn fineness, what the Super number means, and why it matters for suits.', template: 'fabric-glossary' },
+    { handle: 'what-is-super-120s-wool', title: 'What is Super 120s Wool?', seo_title: 'What is Super 120s Wool? | William Ashford', seo_desc: 'Super 120s wool guide. How it differs from Super 100s, where it excels, and what to expect from it.', template: 'fabric-glossary' },
+    { handle: 'what-is-merino-wool', title: 'What is Merino Wool?', seo_title: 'What is Merino Wool? | William Ashford', seo_desc: 'Merino wool explained for menswear. Why it is used in premium suits and knitwear. William Ashford guide.', template: 'fabric-glossary' },
+    { handle: 'what-is-half-canvas-construction', title: 'What is Half-Canvas Construction?', seo_title: 'What is Half-Canvas Suit Construction? | William Ashford', seo_desc: 'Half-canvas explained. How it differs from fused and full-canvas, and why it matters for the life of your suit.', template: 'fabric-glossary' },
+    { handle: 'what-is-full-canvas-construction', title: 'What is Full-Canvas Construction?', seo_title: 'What is Full-Canvas Suit Construction? | William Ashford', seo_desc: 'Full-canvas construction guide. The benchmark of premium tailoring — what it is and what it delivers.', template: 'fabric-glossary' },
+    { handle: 'what-is-herringbone-weave', title: 'What is Herringbone Weave?', seo_title: 'What is Herringbone Weave? | William Ashford', seo_desc: 'Herringbone weave explained. The V-pattern, its properties, and how it looks in suits and trousers.', template: 'fabric-glossary' },
+    { handle: 'what-is-twill-weave', title: 'What is Twill Weave?', seo_title: 'What is Twill Weave? | William Ashford', seo_desc: 'Twill weave fabric guide. The diagonal structure that makes suiting fabrics drape and wear so well.', template: 'fabric-glossary' },
+    { handle: 'what-is-linen', title: 'What is Linen?', seo_title: 'What is Linen Fabric? | William Ashford', seo_desc: 'Linen for menswear explained. Why it creases, why that is correct, and how to wear it well in summer.', template: 'fabric-glossary' },
   ];
 
-  // Comparison Pages
+  // Comparison Pages — template suffix: comparison
+  // Metaobject type: style_comparison, handle = page handle
   const comparisonPages = [
-    { handle: 'cargo-pants-vs-chinos', title: 'Cargo Pants vs Chinos: Complete Comparison', seo_title: 'Cargo Pants vs Chinos: Which is Better? | William Ashford', seo_desc: 'Detailed comparison of cargo pants vs chinos. Style, comfort, functionality, and when to wear each. William Ashford guide.', template: 'comparison' },
-    { handle: 'cargo-pants-vs-joggers', title: 'Cargo Pants vs Joggers: Which Should You Choose?', seo_title: 'Cargo Pants vs Joggers: Full Comparison | William Ashford', seo_desc: 'Cargo pants vs joggers compared. Comfort, style, versatility, and best use cases for each pant type.', template: 'comparison' },
-    { handle: 'slim-fit-vs-regular-fit-cargo', title: 'Slim Fit vs Regular Fit Cargo Pants', seo_title: 'Slim Fit vs Regular Fit Cargo Pants | William Ashford', seo_desc: 'Choose between slim and regular fit cargo pants. Body type guide, comfort comparison, and styling differences.', template: 'comparison' },
-    { handle: 'cargo-pants-vs-jeans', title: 'Cargo Pants vs Jeans: Comfort, Style & Durability', seo_title: 'Cargo Pants vs Jeans: Complete Comparison | William Ashford', seo_desc: 'Cargo pants vs jeans compared across comfort, functionality, style, and durability. Which is right for you?', template: 'comparison' },
-    { handle: 'cotton-vs-cotton-blend-cargos', title: 'Cotton vs Cotton-Blend Cargo Pants', seo_title: '100% Cotton vs Cotton Blend Cargo Pants | William Ashford', seo_desc: 'Pure cotton vs cotton-blend cargo pants. Breathability, stretch, durability, and care compared.', template: 'comparison' },
-    { handle: 'cargo-pants-vs-track-pants', title: 'Cargo Pants vs Track Pants for Everyday Wear', seo_title: 'Cargo Pants vs Track Pants: Daily Wear Guide | William Ashford', seo_desc: 'Cargo pants or track pants for everyday use? Compare comfort, style versatility, and functionality.', template: 'comparison' },
-    { handle: 'premium-vs-fast-fashion-cargos', title: 'Premium vs Fast Fashion Cargo Pants: Worth the Price?', seo_title: 'Premium vs Cheap Cargo Pants: Are They Worth It? | William Ashford', seo_desc: 'Is investing in premium cargo pants worth it? Compare fabric quality, durability, fit, and cost per wear.', template: 'comparison' },
-    { handle: '6-pocket-vs-4-pocket-cargos', title: '6-Pocket vs 4-Pocket Cargo Pants', seo_title: '6-Pocket vs 4-Pocket Cargo Pants: Which is Better? | William Ashford', seo_desc: 'Compare 6-pocket and 4-pocket cargo pants. Functionality, aesthetics, and when each design works best.', template: 'comparison' },
+    { handle: 'single-breasted-vs-double-breasted-suit', title: 'Single-Breasted vs Double-Breasted Suit', seo_title: 'Single vs Double-Breasted Suit | William Ashford', seo_desc: 'Single-breasted vs double-breasted suit compared. Body types, occasions, and the right choice for you.', template: 'comparison' },
+    { handle: 'flat-front-vs-pleated-trousers', title: 'Flat-Front vs Pleated Trousers', seo_title: 'Flat-Front vs Pleated Trousers | William Ashford', seo_desc: 'Flat-front vs pleated trousers guide. Comfort, silhouette, occasion, and which suits which body type.', template: 'comparison' },
+    { handle: 'wool-vs-linen-suit', title: 'Wool vs Linen Suit', seo_title: 'Wool vs Linen Suit: Which is Right for You? | William Ashford', seo_desc: 'Wool or linen suit? Breathability, structure, occasion suitability, and seasonal guidance from William Ashford.', template: 'comparison' },
+    { handle: 'slim-fit-vs-regular-fit-suit', title: 'Slim Fit vs Regular Fit Suit', seo_title: 'Slim Fit vs Regular Fit Suit | William Ashford', seo_desc: 'Slim fit vs regular fit suit — which is right for your body type and occasion? William Ashford guide.', template: 'comparison' },
+    { handle: 'suit-vs-blazer-and-trousers', title: 'Suit vs Blazer and Trousers', seo_title: 'Suit vs Blazer and Trousers | William Ashford', seo_desc: 'When to wear a suit versus a blazer with separate trousers. Formality, versatility, and value compared.', template: 'comparison' },
+    { handle: 'morning-dress-vs-lounge-suit', title: 'Morning Dress vs Lounge Suit', seo_title: 'Morning Dress vs Lounge Suit | William Ashford', seo_desc: 'Morning dress or lounge suit for weddings and formal events? The dress code decision made clear.', template: 'comparison' },
+    { handle: 'canvas-vs-fused-construction', title: 'Canvas vs Fused Suit Construction', seo_title: 'Canvas vs Fused Suit Construction | William Ashford', seo_desc: 'Canvas versus fused suit construction compared. Longevity, drape, and what the difference costs.', template: 'comparison' },
+    { handle: 'bespoke-vs-made-to-measure', title: 'Bespoke vs Made-to-Measure', seo_title: 'Bespoke vs Made-to-Measure Suits | William Ashford', seo_desc: 'Bespoke vs made-to-measure — what the terms actually mean and which is worth the investment.', template: 'comparison' },
+    { handle: 'italian-vs-british-tailoring', title: 'Italian vs British Tailoring', seo_title: 'Italian vs British Tailoring | William Ashford', seo_desc: 'The real differences between Italian and British tailoring traditions — cut, shoulder, and silhouette.', template: 'comparison' },
+    { handle: 'two-piece-vs-three-piece-suit', title: 'Two-Piece vs Three-Piece Suit', seo_title: 'Two-Piece vs Three-Piece Suit | William Ashford', seo_desc: 'Two-piece or three-piece suit? When the waistcoat adds value and when it is too formal for the occasion.', template: 'comparison' },
   ];
 
-  // Use Case Pages
-  const useCasePages = [
-    { handle: 'cargo-pants-for-office-wear', title: 'Best Cargo Pants for Office Wear', seo_title: 'Best Cargo Pants for Office & Work | William Ashford', seo_desc: 'Can you wear cargo pants to the office? Professional cargo pants styling, dress codes, and recommendations.', template: 'use-case' },
-    { handle: 'cargo-pants-for-hiking', title: 'Cargo Pants for Hiking & Outdoor Adventures', seo_title: 'Best Cargo Pants for Hiking & Outdoors | William Ashford', seo_desc: 'Why cargo pants are ideal for hiking. Durability, pocket utility, and comfort on the trail. William Ashford picks.', template: 'use-case' },
-    { handle: 'cargo-pants-for-travel-guide', title: 'Cargo Pants for Travel: Why They\'re Perfect', seo_title: 'Best Cargo Pants for Travel & Flights | William Ashford', seo_desc: 'Travel cargo pants guide. Security pockets, comfort on flights, versatile styling, and packing tips.', template: 'use-case' },
-    { handle: 'cargo-pants-for-construction', title: 'Best Cargo Pants for Construction & Trades', seo_title: 'Best Work Cargo Pants for Construction | William Ashford', seo_desc: 'Heavy-duty cargo pants for construction and trade workers. Tool pockets, durability, and comfort all day.', template: 'use-case' },
-    { handle: 'cargo-pants-for-gym', title: 'Cargo Pants for Gym & Active Lifestyle', seo_title: 'Cargo Pants for Gym & Workouts | William Ashford', seo_desc: 'Stretch cargo pants for the gym and active lifestyle. Flexibility, breathability, and style from William Ashford.', template: 'use-case' },
-    { handle: 'cargo-pants-for-motorcycle', title: 'Cargo Pants for Motorcycle Riding', seo_title: 'Best Cargo Pants for Motorcycle Riders | William Ashford', seo_desc: 'Cargo pants for bikers and motorcycle riders. Protection, storage, and style on two wheels.', template: 'use-case' },
-    { handle: 'cargo-pants-for-photography', title: 'Best Cargo Pants for Photography', seo_title: 'Best Cargo Pants for Photographers | William Ashford', seo_desc: 'Why photographers love cargo pants. Gear storage, comfort on shoots, and professional looks from William Ashford.', template: 'use-case' },
-    { handle: 'cargo-pants-for-camping', title: 'Cargo Pants for Camping & Festivals', seo_title: 'Best Cargo Pants for Camping & Music Festivals | William Ashford', seo_desc: 'Cargo pants for camping, festivals, and outdoor events. Durability, storage, and comfort from William Ashford.', template: 'use-case' },
-    { handle: 'everyday-cargo-pants', title: 'Everyday Cargo Pants: From Morning to Night', seo_title: 'Everyday Cargo Pants: Versatile Daily Wear | William Ashford', seo_desc: 'One pair, all day. How to wear cargo pants from morning coffee to dinner. William Ashford everyday guide.', template: 'use-case' },
-    { handle: 'cargo-pants-for-dads', title: 'Cargo Pants for Dads: Functional & Stylish', seo_title: 'Best Cargo Pants for Dads | William Ashford', seo_desc: 'Dad-approved cargo pants that are functional AND stylish. Pocket utility meets modern design from William Ashford.', template: 'use-case' },
+  // Occasion Pages — template suffix: use-case
+  // Metaobject type: use_case_guide, handle = page handle
+  const occasionPages = [
+    { handle: 'what-to-wear-to-a-job-interview', title: 'What to Wear to a Job Interview', seo_title: 'What to Wear to a Job Interview (Men) | William Ashford', seo_desc: 'Job interview outfit guide for men. What to wear for different industries, and what to avoid. William Ashford.', template: 'use-case' },
+    { handle: 'black-tie-dress-code-guide', title: 'Black Tie Dress Code Guide for Men', seo_title: 'Black Tie Dress Code Guide for Men | William Ashford', seo_desc: 'What black tie means in practice. Dinner suit, shirt, shoes, and what is and is not acceptable.', template: 'use-case' },
+    { handle: 'what-to-wear-to-a-wedding-as-a-guest', title: 'What to Wear to a Wedding as a Guest', seo_title: 'Wedding Guest Outfit Guide for Men | William Ashford', seo_desc: 'Wedding guest attire for men. Dress codes explained, outfit ideas, and what not to wear.', template: 'use-case' },
+    { handle: 'menswear-for-court-hearings', title: 'Menswear for Court Hearings', seo_title: 'What to Wear to Court (Men) | William Ashford', seo_desc: 'Court appearance dress guide for men. What is expected, what helps, and what to avoid in a courtroom.', template: 'use-case' },
+    { handle: 'garden-party-outfit-men', title: 'Garden Party Outfit Guide for Men', seo_title: 'Garden Party Outfit Guide for Men | William Ashford', seo_desc: 'What to wear to a garden party as a man. Dress codes, fabric choices, and occasion-appropriate looks.', template: 'use-case' },
+    { handle: 'graduation-outfit-men', title: 'Graduation Outfit Guide for Men', seo_title: 'Graduation Outfit Guide for Men | William Ashford', seo_desc: 'What to wear to a graduation ceremony. Smart outfit options that work under a gown and at dinner after.', template: 'use-case' },
+    { handle: 'christmas-party-outfit-men', title: 'Christmas Party Outfit Guide for Men', seo_title: 'Christmas Party Outfit for Men | William Ashford', seo_desc: 'Office Christmas party outfit ideas for men. Festive without being ridiculous. William Ashford guide.', template: 'use-case' },
+    { handle: 'horse-racing-dress-code-men', title: 'Horse Racing Dress Code for Men', seo_title: 'Horse Racing Dress Code for Men | William Ashford', seo_desc: 'What to wear to Ascot, Goodwood, and other race meetings. Enclosure rules and outfit tips from William Ashford.', template: 'use-case' },
+    { handle: 'funeral-attire-men', title: 'Funeral Attire for Men', seo_title: 'Funeral Attire Guide for Men | William Ashford', seo_desc: 'What to wear to a funeral as a man. What is appropriate, what to avoid, and how to show respect through dress.', template: 'use-case' },
+    { handle: 'first-date-outfit-men', title: 'First Date Outfit Guide for Men', seo_title: 'First Date Outfit Ideas for Men | William Ashford', seo_desc: 'What to wear on a first date. Outfit ideas across different settings — dinner, casual, and smart-casual.', template: 'use-case' },
   ];
 
-  const allPages = [...styleGuides, ...fabricPages, ...comparisonPages, ...useCasePages];
+  const allPages = [...styleGuides, ...fabricPages, ...comparisonPages, ...occasionPages];
 
   console.log(`  Creating ${allPages.length} PSEO pages...\n`);
+  console.log('  NOTE: All pages are created with seo.noindex=true (shell pages).');
+  console.log('  Remove the noindex metafield in Shopify Admin once metaobject content is added.\n');
 
   let created = 0;
   let errors = 0;
@@ -394,8 +455,8 @@ async function createPSEOPages() {
         page: {
           handle: page.handle,
           title: page.title,
-          body: `<p>Content coming soon. This page is being set up with structured data for: ${page.title}</p>`,
-          isPublished: true,
+          body: `<p>This page is being prepared. Check back soon.</p>`,
+          isPublished: false,
           templateSuffix: page.template,
           seo: {
             title: page.seo_title,
@@ -441,7 +502,7 @@ async function main() {
     process.exit(1);
   }
 
-  // Run all steps
+  // Run all steps (or a specific step with --step N)
   const steps = process.argv.includes('--step');
   const stepNum = steps ? parseInt(process.argv[process.argv.indexOf('--step') + 1]) : 0;
 
@@ -454,12 +515,15 @@ async function main() {
   console.log('  SETUP COMPLETE');
   console.log('══════════════════════════════════════════════════════════');
   console.log('\nNext steps:');
-  console.log('  1. Go to Shopify Admin > Pages and verify all pages are created');
-  console.log('  2. Add rich content to each PSEO page via metaobject data');
-  console.log('  3. Update footer navigation to link to hub pages');
-  console.log('  4. Push theme with: shopify theme push');
-  console.log('  5. Verify schema at https://search.google.com/test/rich-results');
-  console.log('  6. Submit sitemap in Google Search Console\n');
+  console.log('  1. Verify metaobject definitions in Shopify Admin > Content > Metaobjects');
+  console.log('     Types must be: use_case_guide, style_comparison, fabric_glossary_term');
+  console.log('  2. Add content to each pSEO page via its metaobject entry in Shopify Admin');
+  console.log('  3. Once content is added, publish the page and remove seo.noindex metafield');
+  console.log('  4. Update hub page body HTML to link to each new page as it goes live');
+  console.log('  5. Add hub pages to footer nav under "Style & Knowledge" column');
+  console.log('  6. Push theme with: shopify theme push');
+  console.log('  7. Submit sitemap in Google Search Console: /sitemap.xml');
+  console.log('  8. Test schema at: https://search.google.com/test/rich-results\n');
 }
 
 main().catch(err => {
