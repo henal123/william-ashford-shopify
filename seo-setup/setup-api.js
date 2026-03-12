@@ -64,6 +64,30 @@ function sleep(ms) {
   return new Promise(r => setTimeout(r, ms));
 }
 
+// Fetch a page's GID by handle so we can update it if it already exists
+async function getPageIdByHandle(handle) {
+  const result = await graphql(`
+    query GetPageByHandle($query: String!) {
+      pages(first: 1, query: $query) {
+        edges { node { id handle } }
+      }
+    }
+  `, { query: `handle:${handle}` });
+  return result.pages?.edges?.[0]?.node?.id || null;
+}
+
+async function updatePage(id, fields) {
+  const result = await graphql(`
+    mutation UpdatePage($id: ID!, $page: PageUpdateInput!) {
+      pageUpdate(id: $id, page: $page) {
+        page { id handle }
+        userErrors { field message }
+      }
+    }
+  `, { id, page: fields });
+  return result.pageUpdate;
+}
+
 // --- Step 1: Create Metaobject Definitions ---
 // Type identifiers MUST match what pseo-*.liquid sections look up:
 //   pseo-use-case.liquid + pseo-style-guide.liquid → shop.metaobjects.use_case_guide
@@ -317,40 +341,44 @@ async function createHubPages() {
   ];
 
   for (const page of hubPages) {
-    console.log(`  Creating hub page: /pages/${page.handle}...`);
+    console.log(`  Upserting hub page: /pages/${page.handle}...`);
     try {
-      const result = await graphql(`
+      const fields = {
+        title: page.title,
+        body: page.body_html,
+        isPublished: true,
+        metafields: [
+          { namespace: 'global', key: 'title_tag', type: 'single_line_text_field', value: page.seo_title },
+          { namespace: 'global', key: 'description_tag', type: 'multi_line_text_field', value: page.seo_description },
+        ],
+      };
+
+      // Try create first; if handle taken, fetch ID and update
+      const createResult = await graphql(`
         mutation CreatePage($page: PageCreateInput!) {
           pageCreate(page: $page) {
-            page {
-              id
-              handle
-              title
-            }
-            userErrors {
-              field
-              message
-            }
+            page { id handle }
+            userErrors { field message }
           }
         }
-      `, {
-        page: {
-          handle: page.handle,
-          title: page.title,
-          body: page.body_html,
-          isPublished: true,
-          metafields: [
-            { namespace: 'global', key: 'title_tag', type: 'single_line_text_field', value: page.seo_title },
-            { namespace: 'global', key: 'description_tag', type: 'multi_line_text_field', value: page.seo_description },
-          ],
-        },
-      });
+      `, { page: { handle: page.handle, ...fields } });
 
-      const res = result.pageCreate;
-      if (res.userErrors?.length > 0) {
-        console.log(`    WARNING: ${res.userErrors.map(e => e.message).join(', ')}`);
+      const createRes = createResult.pageCreate;
+      const handleTaken = createRes.userErrors?.some(e => e.message.toLowerCase().includes('handle'));
+
+      if (handleTaken) {
+        const existingId = await getPageIdByHandle(page.handle);
+        if (!existingId) throw new Error('Could not find existing page to update');
+        const updateRes = await updatePage(existingId, fields);
+        if (updateRes.userErrors?.length > 0) {
+          console.log(`    WARNING (update): ${updateRes.userErrors.map(e => e.message).join(', ')}`);
+        } else {
+          console.log(`    UPDATED: /pages/${updateRes.page.handle}`);
+        }
+      } else if (createRes.userErrors?.length > 0) {
+        console.log(`    WARNING: ${createRes.userErrors.map(e => e.message).join(', ')}`);
       } else {
-        console.log(`    OK: /pages/${res.page.handle} (${res.page.id})`);
+        console.log(`    CREATED: /pages/${createRes.page.handle} (${createRes.page.id})`);
       }
     } catch (err) {
       console.log(`    ERROR: ${err.message.substring(0, 200)}`);
@@ -433,41 +461,48 @@ async function createPSEOPages() {
   console.log('  Remove the noindex metafield in Shopify Admin once metaobject content is added.\n');
 
   let created = 0;
+  let updated = 0;
   let errors = 0;
 
   for (const page of allPages) {
-    process.stdout.write(`  [${created + errors + 1}/${allPages.length}] /pages/${page.handle}...`);
+    process.stdout.write(`  [${created + updated + errors + 1}/${allPages.length}] /pages/${page.handle}...`);
     try {
-      const result = await graphql(`
+      const fields = {
+        title: page.title,
+        body: `<p>This page is being prepared. Check back soon.</p>`,
+        isPublished: false,
+        templateSuffix: page.template,
+        metafields: [
+          { namespace: 'global', key: 'title_tag', type: 'single_line_text_field', value: page.seo_title },
+          { namespace: 'global', key: 'description_tag', type: 'multi_line_text_field', value: page.seo_desc },
+        ],
+      };
+
+      const createResult = await graphql(`
         mutation CreatePage($page: PageCreateInput!) {
           pageCreate(page: $page) {
-            page {
-              id
-              handle
-            }
-            userErrors {
-              field
-              message
-            }
+            page { id handle }
+            userErrors { field message }
           }
         }
-      `, {
-        page: {
-          handle: page.handle,
-          title: page.title,
-          body: `<p>This page is being prepared. Check back soon.</p>`,
-          isPublished: false,
-          templateSuffix: page.template,
-          metafields: [
-            { namespace: 'global', key: 'title_tag', type: 'single_line_text_field', value: page.seo_title },
-            { namespace: 'global', key: 'description_tag', type: 'multi_line_text_field', value: page.seo_desc },
-          ],
-        },
-      });
+      `, { page: { handle: page.handle, ...fields } });
 
-      const res = result.pageCreate;
-      if (res.userErrors?.length > 0) {
-        console.log(` WARNING: ${res.userErrors.map(e => e.message).join(', ')}`);
+      const createRes = createResult.pageCreate;
+      const handleTaken = createRes.userErrors?.some(e => e.message.toLowerCase().includes('handle'));
+
+      if (handleTaken) {
+        const existingId = await getPageIdByHandle(page.handle);
+        if (!existingId) throw new Error('Could not find existing page to update');
+        const updateRes = await updatePage(existingId, fields);
+        if (updateRes.userErrors?.length > 0) {
+          console.log(` WARNING (update): ${updateRes.userErrors.map(e => e.message).join(', ')}`);
+          errors++;
+        } else {
+          console.log(` UPDATED`);
+          updated++;
+        }
+      } else if (createRes.userErrors?.length > 0) {
+        console.log(` WARNING: ${createRes.userErrors.map(e => e.message).join(', ')}`);
         errors++;
       } else {
         console.log(` OK`);
@@ -480,7 +515,7 @@ async function createPSEOPages() {
     await sleep(300); // Rate limiting
   }
 
-  console.log(`\n  Done: ${created} created, ${errors} errors`);
+  console.log(`\n  Done: ${created} created, ${updated} updated, ${errors} errors`);
 }
 
 // --- Main ---
