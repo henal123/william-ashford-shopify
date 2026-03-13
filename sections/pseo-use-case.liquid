@@ -247,6 +247,8 @@ Renders a rich, visually structured page with product cards and FAQ.
           </div>
         {%- endif -%}
 
+        {%- render 'author-bio' -%}
+
         {%- comment -%}Shop Collection CTA from metaobject{%- endcomment -%}
         {%- if entry.collection_link.value != blank -%}
           <div class="pseo-cta-bar section-spacing">

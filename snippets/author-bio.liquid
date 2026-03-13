@@ -1,0 +1,28 @@
+{%- comment -%}Author bio snippet for E-E-A-T signals{%- endcomment -%}
+<div class="author-bio" style="margin-top: 2rem; padding: 1.25rem; border: 1px solid rgba(0,0,0,0.08); border-radius: 8px; display: flex; gap: 1rem; align-items: flex-start;">
+  <div class="author-bio__avatar" style="width: 48px; height: 48px; border-radius: 50%; background: #1C1C1C; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.1rem; flex-shrink: 0;">WA</div>
+  <div class="author-bio__content">
+    <p style="font-weight: 600; margin: 0 0 0.25rem;">William Ashford Editorial Team</p>
+    <p style="font-size: 0.85rem; color: #666; margin: 0; line-height: 1.5;">
+      Our team combines years of menswear expertise with hands-on experience in fabric sourcing, garment construction, and street-style trends across India. Every guide is reviewed for accuracy and updated regularly.
+    </p>
+    <p style="font-size: 0.75rem; margin: 0.5rem 0 0; color: #999;">
+      <a href="/pages/about-us" style="color: inherit; text-decoration: underline;">About William Ashford</a>
+    </p>
+  </div>
+</div>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "William Ashford Editorial Team",
+  "url": "{{ shop.url }}/pages/about-us",
+  "worksFor": {
+    "@type": "Organization",
+    "name": {{ shop.name | json }},
+    "url": {{ shop.url | json }}
+  },
+  "knowsAbout": ["menswear", "cargo pants", "fabric technology", "men's fashion India"]
+}
+</script>

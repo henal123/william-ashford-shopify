@@ -268,6 +268,8 @@ Renders a rich comparison page with visual cards, product grid, and FAQ.
           </div>
         {%- endif -%}
 
+        {%- render 'author-bio' -%}
+
         {%- comment -%}Product Recommendations{%- endcomment -%}
         {%- if section.settings.collection != blank and section.settings.collection.products_count > 0 -%}
           <div class="section-spacing">

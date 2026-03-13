@@ -183,6 +183,8 @@ Renders a rich glossary page with property cards, care tips, product grid, and F
           {%- endif -%}
         </article>
 
+        {%- render 'author-bio' -%}
+
         {%- comment -%}Shop Fabric Products CTA from metaobject{%- endcomment -%}
         {%- if entry.collection_link.value != blank -%}
           <div style="text-align:center;" class="section-spacing">

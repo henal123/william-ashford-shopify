@@ -243,6 +243,8 @@ Same data source as use-case but styled for style guide pages.
           </div>
         {%- endif -%}
 
+        {%- render 'author-bio' -%}
+
         {%- comment -%}Shop Collection CTA from metaobject{%- endcomment -%}
         {%- if entry.collection_link.value != blank -%}
           <div class="pseo-cta-bar section-spacing">
