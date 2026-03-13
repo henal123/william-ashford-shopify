@@ -130,6 +130,8 @@ Renders a rich, visually structured page with product cards and FAQ.
       -%}
 
       {%- if entry != blank -%}
+        {%- render 'pseo-seo-meta', seo_title: entry.seo_title.value, seo_description: entry.seo_description.value -%}
+
         {%- comment -%}Hero Header{%- endcomment -%}
         <header class="section-header">
           <h1 class="h2">{{ entry.heading.value | default: page.title }}</h1>
@@ -242,6 +244,15 @@ Renders a rich, visually structured page with product cards and FAQ.
                 </ul>
               </div>
             </div>
+          </div>
+        {%- endif -%}
+
+        {%- comment -%}Shop Collection CTA from metaobject{%- endcomment -%}
+        {%- if entry.collection_link.value != blank -%}
+          <div class="pseo-cta-bar section-spacing">
+            <a href="{{ entry.collection_link.value }}" class="button button--primary">
+              Shop the Collection
+            </a>
           </div>
         {%- endif -%}
 

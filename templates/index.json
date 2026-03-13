@@ -335,6 +335,54 @@
         "remove_horizontal_spacing": false
       }
     },
+    "pseo_hub_links": {
+      "type": "cross-links",
+      "blocks": {
+        "hub_style_guides": {
+          "type": "link",
+          "settings": {
+            "link_title": "Style Guides",
+            "link_description": "How to wear suits, blazers, and trousers for every occasion.",
+            "link_url": "/pages/style-guides"
+          }
+        },
+        "hub_occasions": {
+          "type": "link",
+          "settings": {
+            "link_title": "Occasion Dressing",
+            "link_description": "What to wear for weddings, interviews, black tie, and more.",
+            "link_url": "/pages/occasions"
+          }
+        },
+        "hub_comparisons": {
+          "type": "link",
+          "settings": {
+            "link_title": "Style Comparisons",
+            "link_description": "Side-by-side guides to help you choose the right style.",
+            "link_url": "/pages/style-comparisons"
+          }
+        },
+        "hub_fabric": {
+          "type": "link",
+          "settings": {
+            "link_title": "Fabric Glossary",
+            "link_description": "Understand the materials behind premium menswear.",
+            "link_url": "/pages/fabric-glossary"
+          }
+        }
+      },
+      "block_order": [
+        "hub_style_guides",
+        "hub_occasions",
+        "hub_comparisons",
+        "hub_fabric"
+      ],
+      "settings": {
+        "heading": "Style & Knowledge",
+        "subheading": "Guides, comparisons, and fabric expertise to help you dress with confidence.",
+        "content_width": "lg"
+      }
+    },
     "image_with_text_overlay_LzRCw4": {
       "type": "image-with-text-overlay",
       "blocks": {
@@ -376,6 +424,7 @@
     "collection_list_KEGEWN",
     "featured_collections_ETC48c",
     "1771060000d48cee99",
+    "pseo_hub_links",
     "image_with_text_overlay_LzRCw4"
   ]
 }

@@ -52,4 +52,15 @@ Disallow: /*?*
 Allow: /*?sort_by=
 Allow: /*?page=
 
+# Prevent sitemap pages from being crawled as HTML
+Disallow: /pages/sitemap-style-guides
+Disallow: /pages/sitemap-occasions
+Disallow: /pages/sitemap-fabric-glossary
+Disallow: /pages/sitemap-comparisons
+
+# Sitemaps
 Sitemap: {{ shop.url }}/sitemap.xml
+Sitemap: {{ shop.url }}/pages/sitemap-style-guides
+Sitemap: {{ shop.url }}/pages/sitemap-occasions
+Sitemap: {{ shop.url }}/pages/sitemap-fabric-glossary
+Sitemap: {{ shop.url }}/pages/sitemap-comparisons

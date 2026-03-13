@@ -1,0 +1,246 @@
+{%- comment -%}
+----------------------------------------------------------------------------------------------------------------------
+PSEO HUB SECTION
+----------------------------------------------------------------------------------------------------------------------
+Hub/index page section for pSEO categories (Style Guides, Occasions, Comparisons, Fabric Glossary).
+Renders intro content, categorized child page grid, featured products, and cross-hub links.
+{%- endcomment -%}
+
+<div class="section-spacing color-scheme color-scheme--{{ section.settings.color_scheme.id }}">
+  <div class="container container--md">
+    <div class="section-stack">
+
+      {%- comment -%}Breadcrumb{%- endcomment -%}
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <ol class="breadcrumb__list unstyled-list">
+          <li class="breadcrumb__list-item">
+            <a href="{{ shop.url }}">{{ 'general.home' | t }}</a>
+          </li>
+          <li class="breadcrumb__list-item" aria-current="page">
+            <span>{{ page.title }}</span>
+          </li>
+        </ol>
+      </nav>
+
+      <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": {{ 'general.home' | t | json }},
+            "item": "{{ shop.url }}"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": {{ page.title | json }}
+          }
+        ]
+      }
+      </script>
+
+      {%- comment -%}Hero Header{%- endcomment -%}
+      <header class="section-header">
+        <h1 class="h2">{{ page.title }}</h1>
+      </header>
+
+      {%- comment -%}Intro Content — rendered from page body HTML{%- endcomment -%}
+      {%- if page.content != blank -%}
+        <div class="prose" style="max-width: 720px;">
+          {{ page.content }}
+        </div>
+      {%- endif -%}
+
+      {%- comment -%}Featured Products{%- endcomment -%}
+      {%- if section.settings.collection != blank and section.settings.collection.products_count > 0 -%}
+        <div class="section-spacing">
+          <div class="section-header">
+            <h2 class="h3">{{ section.settings.products_heading | default: 'Popular Picks' }}</h2>
+          </div>
+          <product-list class="product-list justify-center" style="--product-list-items-per-row: {{ section.settings.products_per_row }};">
+            {%- for product in section.settings.collection.products limit: section.settings.products_count -%}
+              {%- render 'product-card', product: product, show_badges: true, show_rating: true, show_quick_buy: true -%}
+            {%- endfor -%}
+          </product-list>
+          <div style="text-align: center; margin-top: 20px;">
+            <a href="{{ section.settings.collection.url }}" class="button button--secondary">
+              View All {{ section.settings.collection.title }}
+            </a>
+          </div>
+        </div>
+      {%- endif -%}
+
+      {%- comment -%}Cross-Hub Links{%- endcomment -%}
+      {%- if section.settings.show_cross_hub_links -%}
+        <div class="section-spacing">
+          <div class="section-header">
+            <h2 class="h3">Explore More</h2>
+          </div>
+          <div class="pseo-hub__cross-links">
+            {%- if section.settings.cross_hub_1_url != blank -%}
+              <a href="{{ section.settings.cross_hub_1_url }}" class="pseo-hub__cross-link">
+                <span class="h6">{{ section.settings.cross_hub_1_title }}</span>
+                {%- if section.settings.cross_hub_1_desc != blank -%}
+                  <p class="text-subdued text-sm">{{ section.settings.cross_hub_1_desc }}</p>
+                {%- endif -%}
+              </a>
+            {%- endif -%}
+            {%- if section.settings.cross_hub_2_url != blank -%}
+              <a href="{{ section.settings.cross_hub_2_url }}" class="pseo-hub__cross-link">
+                <span class="h6">{{ section.settings.cross_hub_2_title }}</span>
+                {%- if section.settings.cross_hub_2_desc != blank -%}
+                  <p class="text-subdued text-sm">{{ section.settings.cross_hub_2_desc }}</p>
+                {%- endif -%}
+              </a>
+            {%- endif -%}
+            {%- if section.settings.cross_hub_3_url != blank -%}
+              <a href="{{ section.settings.cross_hub_3_url }}" class="pseo-hub__cross-link">
+                <span class="h6">{{ section.settings.cross_hub_3_title }}</span>
+                {%- if section.settings.cross_hub_3_desc != blank -%}
+                  <p class="text-subdued text-sm">{{ section.settings.cross_hub_3_desc }}</p>
+                {%- endif -%}
+              </a>
+            {%- endif -%}
+          </div>
+        </div>
+      {%- endif -%}
+
+    </div>
+  </div>
+</div>
+
+<style>
+  .pseo-hub__cross-links {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 16px;
+  }
+  .pseo-hub__cross-link {
+    display: block;
+    padding: 24px;
+    border: 1px solid rgba(var(--text-color), 0.12);
+    border-radius: 8px;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .pseo-hub__cross-link:hover {
+    border-color: rgba(var(--text-color), 0.3);
+    background: rgb(var(--background-secondary, 245 245 245));
+  }
+  .pseo-hub__cross-link .h6 {
+    margin-bottom: 6px;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "PSEO Hub Page",
+  "class": "shopify-section--pseo-hub",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Featured products"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Featured collection"
+    },
+    {
+      "type": "range",
+      "id": "products_count",
+      "min": 2,
+      "max": 8,
+      "step": 1,
+      "default": 4,
+      "label": "Products to show"
+    },
+    {
+      "type": "range",
+      "id": "products_per_row",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 4,
+      "label": "Products per row (desktop)"
+    },
+    {
+      "type": "text",
+      "id": "products_heading",
+      "label": "Products heading",
+      "default": "Popular Picks"
+    },
+    {
+      "type": "header",
+      "content": "Cross-hub links"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_cross_hub_links",
+      "label": "Show cross-hub links",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "cross_hub_1_title",
+      "label": "Hub 1 title"
+    },
+    {
+      "type": "text",
+      "id": "cross_hub_1_desc",
+      "label": "Hub 1 description"
+    },
+    {
+      "type": "url",
+      "id": "cross_hub_1_url",
+      "label": "Hub 1 URL"
+    },
+    {
+      "type": "text",
+      "id": "cross_hub_2_title",
+      "label": "Hub 2 title"
+    },
+    {
+      "type": "text",
+      "id": "cross_hub_2_desc",
+      "label": "Hub 2 description"
+    },
+    {
+      "type": "url",
+      "id": "cross_hub_2_url",
+      "label": "Hub 2 URL"
+    },
+    {
+      "type": "text",
+      "id": "cross_hub_3_title",
+      "label": "Hub 3 title"
+    },
+    {
+      "type": "text",
+      "id": "cross_hub_3_desc",
+      "label": "Hub 3 description"
+    },
+    {
+      "type": "url",
+      "id": "cross_hub_3_url",
+      "label": "Hub 3 URL"
+    }
+  ],
+  "presets": [
+    {
+      "name": "PSEO Hub Page"
+    }
+  ]
+}
+{% endschema %}

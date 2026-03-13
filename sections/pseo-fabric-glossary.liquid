@@ -105,6 +105,8 @@ Renders a rich glossary page with property cards, care tips, product grid, and F
       -%}
 
       {%- if entry != blank -%}
+        {%- render 'pseo-seo-meta', seo_title: entry.seo_title.value, seo_description: entry.seo_description.value -%}
+
         <article itemscope itemtype="https://schema.org/DefinedTerm">
           {%- comment -%}Header with definition badge{%- endcomment -%}
           <header class="section-header">
@@ -180,6 +182,15 @@ Renders a rich glossary page with property cards, care tips, product grid, and F
             </div>
           {%- endif -%}
         </article>
+
+        {%- comment -%}Shop Fabric Products CTA from metaobject{%- endcomment -%}
+        {%- if entry.collection_link.value != blank -%}
+          <div style="text-align:center;" class="section-spacing">
+            <a href="{{ entry.collection_link.value }}" class="button button--primary">
+              Shop {{ entry.term_name.value }} Products
+            </a>
+          </div>
+        {%- endif -%}
 
         {%- comment -%}Product Recommendations{%- endcomment -%}
         {%- if section.settings.collection != blank and section.settings.collection.products_count > 0 -%}

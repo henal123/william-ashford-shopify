@@ -102,10 +102,13 @@ async function createMetaobjectDefinitions() {
       type: 'use_case_guide',
       fieldDefinitions: [
         { key: 'heading', name: 'H1 Heading', type: 'single_line_text_field' },
+        { key: 'seo_title', name: 'SEO Title (override)', type: 'single_line_text_field' },
+        { key: 'seo_description', name: 'SEO Description (override)', type: 'single_line_text_field' },
         { key: 'intro_text', name: 'Introduction Text', type: 'single_line_text_field' },
         { key: 'style_tips', name: 'Style Tips (one per line)', type: 'multi_line_text_field' },
         { key: 'recommended_pieces', name: 'Recommended Pieces (one per line)', type: 'multi_line_text_field' },
         { key: 'dos_and_donts', name: "Do's and Don'ts (one per line — prefix don'ts with 'Don't', 'Avoid', or 'Never')", type: 'multi_line_text_field' },
+        { key: 'collection_link', name: 'Collection URL (e.g. /collections/suits)', type: 'single_line_text_field' },
         { key: 'faq_data', name: 'FAQ Data (JSON array of {question, answer})', type: 'json' },
       ],
     },
@@ -114,10 +117,13 @@ async function createMetaobjectDefinitions() {
       type: 'fabric_glossary_term',
       fieldDefinitions: [
         { key: 'term_name', name: 'Term Name', type: 'single_line_text_field' },
+        { key: 'seo_title', name: 'SEO Title (override)', type: 'single_line_text_field' },
+        { key: 'seo_description', name: 'SEO Description (override)', type: 'single_line_text_field' },
         { key: 'short_definition', name: 'Short Definition (one sentence)', type: 'single_line_text_field' },
         { key: 'full_definition', name: 'Full Definition', type: 'multi_line_text_field' },
         { key: 'properties', name: 'Properties (one per line, format: Label: Value)', type: 'multi_line_text_field' },
         { key: 'care_tips', name: 'Care Tips (one per line)', type: 'multi_line_text_field' },
+        { key: 'collection_link', name: 'Collection URL (e.g. /collections/wool-suits)', type: 'single_line_text_field' },
         { key: 'faq_data', name: 'FAQ Data (JSON array of {question, answer})', type: 'json' },
       ],
     },
@@ -126,6 +132,8 @@ async function createMetaobjectDefinitions() {
       type: 'style_comparison',
       fieldDefinitions: [
         { key: 'heading', name: 'H1 Heading', type: 'single_line_text_field' },
+        { key: 'seo_title', name: 'SEO Title (override)', type: 'single_line_text_field' },
+        { key: 'seo_description', name: 'SEO Description (override)', type: 'single_line_text_field' },
         { key: 'intro_text', name: 'Introduction Text', type: 'single_line_text_field' },
         { key: 'item_a_name', name: 'Item A Name', type: 'single_line_text_field' },
         { key: 'item_a_pros', name: 'Item A Pros (one per line)', type: 'multi_line_text_field' },
@@ -134,6 +142,24 @@ async function createMetaobjectDefinitions() {
         { key: 'item_b_pros', name: 'Item B Pros (one per line)', type: 'multi_line_text_field' },
         { key: 'item_b_cons', name: 'Item B Cons (one per line)', type: 'multi_line_text_field' },
         { key: 'verdict', name: 'Verdict (one sentence recommendation)', type: 'single_line_text_field' },
+        { key: 'item_a_collection', name: 'Item A Collection URL', type: 'single_line_text_field' },
+        { key: 'item_b_collection', name: 'Item B Collection URL', type: 'single_line_text_field' },
+        { key: 'faq_data', name: 'FAQ Data (JSON array of {question, answer})', type: 'json' },
+      ],
+    },
+    {
+      name: 'Occasion Guide',
+      type: 'occasion_guide',
+      fieldDefinitions: [
+        { key: 'heading', name: 'H1 Heading', type: 'single_line_text_field' },
+        { key: 'seo_title', name: 'SEO Title (override)', type: 'single_line_text_field' },
+        { key: 'seo_description', name: 'SEO Description (override)', type: 'single_line_text_field' },
+        { key: 'intro_text', name: 'Introduction Text', type: 'single_line_text_field' },
+        { key: 'dress_code', name: 'Dress Code Level (e.g. Black Tie, Smart Casual)', type: 'single_line_text_field' },
+        { key: 'style_tips', name: 'Style Tips (one per line)', type: 'multi_line_text_field' },
+        { key: 'recommended_pieces', name: 'Recommended Pieces (one per line)', type: 'multi_line_text_field' },
+        { key: 'dos_and_donts', name: "Do's and Don'ts (one per line)", type: 'multi_line_text_field' },
+        { key: 'collection_link', name: 'Collection URL', type: 'single_line_text_field' },
         { key: 'faq_data', name: 'FAQ Data (JSON array of {question, answer})', type: 'json' },
       ],
     },
@@ -518,6 +544,71 @@ async function createPSEOPages() {
   console.log(`\n  Done: ${created} created, ${updated} updated, ${errors} errors`);
 }
 
+// --- Step 5: Create Footer Navigation Menu for Hub Pages ---
+async function createHubNavMenu() {
+  console.log('\n=== STEP 5: Creating Hub Pages Navigation Menu ===\n');
+
+  const menuTitle = 'pseo-hubs';
+  const hubHandles = [
+    { title: 'Style Guides', handle: 'style-guides' },
+    { title: 'Occasion Dressing', handle: 'occasions' },
+    { title: 'Style Comparisons', handle: 'style-comparisons' },
+    { title: 'Fabric Glossary', handle: 'fabric-glossary' },
+  ];
+
+  // Look up page GIDs for menu items
+  const menuItems = [];
+  for (const hub of hubHandles) {
+    const pageId = await getPageIdByHandle(hub.handle);
+    if (pageId) {
+      menuItems.push({ title: hub.title, type: 'PAGE', resourceId: pageId });
+    } else {
+      console.log(`    WARNING: Page "${hub.handle}" not found — using HTTP link`);
+      menuItems.push({ title: hub.title, type: 'HTTP', url: `https://${STORE}/pages/${hub.handle}` });
+    }
+  }
+
+  console.log(`  Creating menu: "${menuTitle}"...`);
+  try {
+    const result = await graphql(`
+      mutation MenuCreate($title: String!, $handle: String!, $items: [MenuItemCreateInput!]!) {
+        menuCreate(title: $title, handle: $handle, items: $items) {
+          menu {
+            id
+            title
+            handle
+          }
+          userErrors {
+            field
+            message
+          }
+        }
+      }
+    `, {
+      title: menuTitle,
+      handle: menuTitle,
+      items: menuItems,
+    });
+
+    const res = result.menuCreate;
+    if (res.userErrors?.length > 0) {
+      const handleTaken = res.userErrors.some(e => e.message.toLowerCase().includes('already') || e.message.toLowerCase().includes('taken'));
+      if (handleTaken) {
+        console.log(`    Menu "${menuTitle}" already exists — skipping.`);
+        console.log('    To update it, edit in Admin > Online Store > Navigation.');
+      } else {
+        console.log(`    WARNING: ${res.userErrors.map(e => e.message).join(', ')}`);
+      }
+    } else {
+      console.log(`    OK: Menu "${res.menu.title}" created (handle: ${res.menu.handle})`);
+    }
+  } catch (err) {
+    console.log(`    ERROR: ${err.message.substring(0, 200)}`);
+    console.log('    Fallback: Create the menu manually in Admin > Online Store > Navigation.');
+    console.log('    Menu name: "pseo-hubs" with links to all 4 hub pages.');
+  }
+}
+
 // --- Main ---
 async function main() {
   console.log('╔══════════════════════════════════════════════════════════╗');
@@ -545,20 +636,23 @@ async function main() {
   if (!steps || stepNum === 2) await createMetafieldDefinitions();
   if (!steps || stepNum === 3) await createHubPages();
   if (!steps || stepNum === 4) await createPSEOPages();
+  if (!steps || stepNum === 5) await createHubNavMenu();
 
   console.log('\n══════════════════════════════════════════════════════════');
   console.log('  SETUP COMPLETE');
   console.log('══════════════════════════════════════════════════════════');
   console.log('\nNext steps:');
   console.log('  1. Verify metaobject definitions in Shopify Admin > Content > Metaobjects');
-  console.log('     Types must be: use_case_guide, style_comparison, fabric_glossary_term');
+  console.log('     Types: use_case_guide, style_comparison, fabric_glossary_term, occasion_guide');
   console.log('  2. Add content to each pSEO page via its metaobject entry in Shopify Admin');
-  console.log('  3. Once content is added, publish the page and remove seo.noindex metafield');
-  console.log('  4. Update hub page body HTML to link to each new page as it goes live');
-  console.log('  5. Add hub pages to footer nav under "Style & Knowledge" column');
-  console.log('  6. Push theme with: shopify theme push');
-  console.log('  7. Submit sitemap in Google Search Console: /sitemap.xml');
-  console.log('  8. Test schema at: https://search.google.com/test/rich-results\n');
+  console.log('  3. Fill seo_title, seo_description, collection_link fields on each metaobject');
+  console.log('  4. Once content is added, publish the page and remove seo.noindex metafield');
+  console.log('  5. Verify "pseo-hubs" menu created in Admin > Online Store > Navigation');
+  console.log('  6. Configure product-cross-links section per product (style guide + fabric links)');
+  console.log('  7. Configure collection-seo-content + collection-related sections per collection');
+  console.log('  8. Push theme with: shopify theme push');
+  console.log('  9. Submit sitemap in Google Search Console: /sitemap.xml');
+  console.log('  10. Test schema at: https://search.google.com/test/rich-results\n');
 }
 
 main().catch(err => {

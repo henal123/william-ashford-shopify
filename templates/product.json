@@ -142,8 +142,8 @@
         "complementary_products": {
           "type": "complementary_products",
           "settings": {
-            "title": "Pairs well with",
-            "products_count": 2,
+            "title": "Complete the Look",
+            "products_count": 4,
             "show_below_gallery": true,
             "stack_products": false,
             "show_quick_buy": true
@@ -282,6 +282,12 @@
         "remove_horizontal_spacing": false
       }
     },
+    "product-cross-links": {
+      "type": "product-cross-links",
+      "settings": {
+        "color_scheme": "scheme-1"
+      }
+    },
     "related-products": {
       "type": "related-products",
       "settings": {
@@ -305,6 +311,7 @@
     "custom_liquid_WtU66z",
     "image_with_text_overlay_49FAMK",
     "kyx_media_row_kGtLTk",
+    "product-cross-links",
     "177106083605ea2c31",
     "related-products"
   ]

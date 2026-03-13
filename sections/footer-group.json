@@ -97,6 +97,14 @@
             "menu_title": "Quick Links"
           }
         },
+        "links_pseo_hubs": {
+          "type": "links",
+          "settings": {
+            "menu": "pseo-hubs",
+            "show_menu_title": true,
+            "menu_title": "Style & Knowledge"
+          }
+        },
         "newsletter": {
           "type": "newsletter",
           "settings": {
@@ -111,6 +119,7 @@
         "text",
         "links",
         "links_pWJtrQ",
+        "links_pseo_hubs",
         "newsletter"
       ],
       "settings": {

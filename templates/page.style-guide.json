@@ -3,7 +3,14 @@
     "main": {
       "type": "pseo-style-guide",
       "settings": {
-        "color_scheme": "scheme-1"
+        "color_scheme": "scheme-1",
+        "hub_title": "Style Guides",
+        "hub_url": "/pages/style-guides",
+        "collection": "frontpage",
+        "products_count": 4,
+        "products_per_row": 4,
+        "products_heading": "Shop the Look",
+        "show_related_links": true
       }
     }
   },

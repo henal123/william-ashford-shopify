@@ -135,6 +135,8 @@ Renders a rich comparison page with visual cards, product grid, and FAQ.
       -%}
 
       {%- if entry != blank -%}
+        {%- render 'pseo-seo-meta', seo_title: entry.seo_title.value, seo_description: entry.seo_description.value -%}
+
         <header class="section-header">
           <h1 class="h2">{{ entry.heading.value | default: page.title }}</h1>
         </header>
@@ -247,6 +249,22 @@ Renders a rich comparison page with visual cards, product grid, and FAQ.
                 <p>{{ entry.verdict.value }}</p>
               </div>
             </div>
+
+            {%- comment -%}Dual Collection CTAs{%- endcomment -%}
+            {%- if entry.item_a_collection.value != blank or entry.item_b_collection.value != blank -%}
+              <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:20px;justify-content:center;">
+                {%- if entry.item_a_collection.value != blank -%}
+                  <a href="{{ entry.item_a_collection.value }}" class="button button--secondary">
+                    Shop {{ entry.item_a_name.value }}
+                  </a>
+                {%- endif -%}
+                {%- if entry.item_b_collection.value != blank -%}
+                  <a href="{{ entry.item_b_collection.value }}" class="button button--secondary">
+                    Shop {{ entry.item_b_name.value }}
+                  </a>
+                {%- endif -%}
+              </div>
+            {%- endif -%}
           </div>
         {%- endif -%}
 

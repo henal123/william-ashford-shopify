@@ -1,0 +1,28 @@
+{%- comment -%}
+----------------------------------------------------------------------------------------------------------------------
+PSEO SEO META OVERRIDES
+----------------------------------------------------------------------------------------------------------------------
+Outputs SEO title and description overrides from metaobject fields.
+Include this snippet in pSEO sections to allow metaobject-level SEO control.
+
+Parameters:
+* seo_title: the seo_title field value from the metaobject
+* seo_description: the seo_description field value from the metaobject
+{%- endcomment -%}
+
+{%- if seo_title != blank -%}
+  {%- capture pseo_title_script -%}
+  <script>document.title={{ seo_title | json }};</script>
+  {%- endcapture -%}
+  {{ pseo_title_script }}
+{%- endif -%}
+
+{%- if seo_description != blank -%}
+  <script>
+    (function(){
+      var m=document.querySelector('meta[name="description"]');
+      if(m){m.setAttribute("content",{{ seo_description | json }});}
+      else{m=document.createElement("meta");m.name="description";m.content={{ seo_description | json }};document.head.appendChild(m);}
+    })();
+  </script>
+{%- endif -%}

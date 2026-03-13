@@ -1,0 +1,62 @@
+{% comment %}
+  Custom pSEO Sitemap page — outputs clean XML sitemap.
+  Uses layout none for raw XML output.
+  Google accepts sitemaps served as text/html if content is valid XML.
+  Assigned to pages: sitemap-style-guides, sitemap-occasions, sitemap-fabric-glossary, sitemap-comparisons
+{% endcomment %}{% layout none %}<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+{%- assign hub = page.handle -%}
+{%- if hub == 'sitemap-style-guides' -%}
+  <url>
+    <loc>{{ shop.url }}/pages/style-guides</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  {%- for entry in shop.metaobjects.use_case_guide.values -%}
+  <url>
+    <loc>{{ shop.url }}/pages/{{ entry.system.handle }}</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  {%- endfor -%}
+{%- elsif hub == 'sitemap-occasions' -%}
+  <url>
+    <loc>{{ shop.url }}/pages/occasions</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  {%- for entry in shop.metaobjects.occasion_guide.values -%}
+  <url>
+    <loc>{{ shop.url }}/pages/{{ entry.system.handle }}</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  {%- endfor -%}
+{%- elsif hub == 'sitemap-fabric-glossary' -%}
+  <url>
+    <loc>{{ shop.url }}/pages/fabric-glossary</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  {%- for entry in shop.metaobjects.fabric_glossary_term.values -%}
+  <url>
+    <loc>{{ shop.url }}/pages/what-is-{{ entry.system.handle }}</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  {%- endfor -%}
+{%- elsif hub == 'sitemap-comparisons' -%}
+  <url>
+    <loc>{{ shop.url }}/pages/style-comparisons</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  {%- for entry in shop.metaobjects.style_comparison.values -%}
+  <url>
+    <loc>{{ shop.url }}/pages/{{ entry.system.handle }}</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  {%- endfor -%}
+{%- endif -%}
+</urlset>

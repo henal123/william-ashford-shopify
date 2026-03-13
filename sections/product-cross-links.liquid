@@ -1,0 +1,164 @@
+{%- comment -%}
+----------------------------------------------------------------------------------------------------------------------
+PRODUCT CROSS-LINKS
+----------------------------------------------------------------------------------------------------------------------
+Adds "How to Style" and "About This Fabric" cross-links from product pages
+to relevant pSEO style guide and fabric glossary pages.
+{%- endcomment -%}
+
+{%- assign has_style_guide = false -%}
+{%- assign has_fabric_link = false -%}
+
+{%- if section.settings.style_guide_url != blank -%}
+  {%- assign has_style_guide = true -%}
+{%- endif -%}
+
+{%- if section.settings.fabric_guide_url != blank -%}
+  {%- assign has_fabric_link = true -%}
+{%- endif -%}
+
+{%- if has_style_guide or has_fabric_link -%}
+  <div class="section-spacing color-scheme color-scheme--{{ section.settings.color_scheme.id }}">
+    <div class="container container--lg">
+      <div class="product-cross-links__grid">
+        {%- if has_style_guide -%}
+          <a href="{{ section.settings.style_guide_url }}" class="product-cross-links__card">
+            <div class="product-cross-links__icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+            </div>
+            <div>
+              <h3 class="h6">{{ section.settings.style_guide_title | default: 'How to Style This' }}</h3>
+              <p class="text-subdued text-sm">{{ section.settings.style_guide_desc | default: 'Read our styling guide for outfit ideas and pairing tips.' }}</p>
+            </div>
+            <svg class="product-cross-links__arrow" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 4l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        {%- endif -%}
+
+        {%- if has_fabric_link -%}
+          <a href="{{ section.settings.fabric_guide_url }}" class="product-cross-links__card">
+            <div class="product-cross-links__icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+            </div>
+            <div>
+              <h3 class="h6">{{ section.settings.fabric_guide_title | default: 'About This Fabric' }}</h3>
+              <p class="text-subdued text-sm">{{ section.settings.fabric_guide_desc | default: 'Learn about the material, properties, and care instructions.' }}</p>
+            </div>
+            <svg class="product-cross-links__arrow" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 4l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+
+  <style>
+    .product-cross-links__grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+    }
+    .product-cross-links__card {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 20px 24px;
+      border: 1px solid rgba(var(--text-color), 0.12);
+      border-radius: 8px;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .product-cross-links__card:hover {
+      border-color: rgba(var(--text-color), 0.3);
+      background: rgb(var(--background-secondary, 245 245 245));
+    }
+    .product-cross-links__icon {
+      flex-shrink: 0;
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgb(var(--background-secondary, 245 245 245));
+      border-radius: 50%;
+    }
+    .product-cross-links__card div:nth-child(2) {
+      flex: 1;
+    }
+    .product-cross-links__card h3 {
+      margin-bottom: 2px;
+    }
+    .product-cross-links__arrow {
+      flex-shrink: 0;
+      opacity: 0.4;
+      transition: opacity 0.2s;
+    }
+    .product-cross-links__card:hover .product-cross-links__arrow {
+      opacity: 0.8;
+    }
+  </style>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Product Cross-Links",
+  "class": "shopify-section--product-cross-links",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Style guide link"
+    },
+    {
+      "type": "url",
+      "id": "style_guide_url",
+      "label": "Style guide page URL",
+      "info": "Link to the relevant pSEO style guide page"
+    },
+    {
+      "type": "text",
+      "id": "style_guide_title",
+      "label": "Title",
+      "default": "How to Style This"
+    },
+    {
+      "type": "text",
+      "id": "style_guide_desc",
+      "label": "Description",
+      "default": "Read our styling guide for outfit ideas and pairing tips."
+    },
+    {
+      "type": "header",
+      "content": "Fabric guide link"
+    },
+    {
+      "type": "url",
+      "id": "fabric_guide_url",
+      "label": "Fabric guide page URL",
+      "info": "Link to the relevant pSEO fabric glossary page"
+    },
+    {
+      "type": "text",
+      "id": "fabric_guide_title",
+      "label": "Title",
+      "default": "About This Fabric"
+    },
+    {
+      "type": "text",
+      "id": "fabric_guide_desc",
+      "label": "Description",
+      "default": "Learn about the material, properties, and care instructions."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Cross-Links"
+    }
+  ]
+}
+{% endschema %}

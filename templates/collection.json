@@ -47,10 +47,26 @@
         "show_filter_values_count": true,
         "open_filters_by_default": false
       }
+    },
+    "collection-seo-content": {
+      "type": "collection-seo-content",
+      "settings": {
+        "heading": "Buying Guide",
+        "content_width": "md"
+      }
+    },
+    "collection-related": {
+      "type": "collection-related",
+      "settings": {
+        "heading": "Explore More",
+        "content_width": "md"
+      }
     }
   },
   "order": [
     "collection-banner",
-    "main"
+    "main",
+    "collection-seo-content",
+    "collection-related"
   ]
 }
