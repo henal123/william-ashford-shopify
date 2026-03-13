@@ -248,7 +248,12 @@ or change the format of some info
   </script>
 {% endif %}
 
-{% if breadcrumb_entity_microdata != blank %}
+{%- assign is_pseo_page = false -%}
+{%- if template.suffix == 'style-guide' or template.suffix == 'use-case' or template.suffix == 'comparison' or template.suffix == 'fabric-glossary' -%}
+  {%- assign is_pseo_page = true -%}
+{%- endif -%}
+
+{% if breadcrumb_entity_microdata != blank and is_pseo_page == false %}
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -323,6 +328,11 @@ or change the format of some info
           {%- endfor -%}
         ],
       {%- endif -%}
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer service",
+        "url": "{{ shop.url }}/pages/contact-us"
+      },
       "url": {{ shop.url | append: page.url | json }}
     }
   ]

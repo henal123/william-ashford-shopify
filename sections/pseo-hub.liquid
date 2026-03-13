@@ -50,7 +50,8 @@ Renders intro content, categorized child page grid, featured products, and cross
       {%- comment -%}Intro Content — rendered from page body HTML{%- endcomment -%}
       {%- if page.content != blank -%}
         <div class="prose" style="max-width: 720px;">
-          {{ page.content }}
+          {%- assign clean_content = page.content | replace: '<h1', '<h2' | replace: '</h1>', '</h2>' -%}
+          {{ clean_content }}
         </div>
       {%- endif -%}
 

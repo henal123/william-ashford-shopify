@@ -256,6 +256,28 @@ Renders a rich glossary page with property cards, care tips, product grid, and F
         }
         </script>
 
+        {%- comment -%}Article Schema{%- endcomment -%}
+        <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "Article",
+          "headline": {{ entry.term_name.value | json }},
+          "description": {{ entry.short_definition.value | strip_html | truncatewords: 50 | json }},
+          "url": "{{ shop.url }}{{ page.url }}",
+          "author": {
+            "@type": "Organization",
+            "name": {{ shop.name | json }}
+          },
+          "publisher": {
+            "@type": "Organization",
+            "name": {{ shop.name | json }}
+          },
+          "datePublished": "{{ page.published_at | date: '%Y-%m-%dT%T' }}",
+          "dateModified": "{{ page.updated_at | default: page.published_at | date: '%Y-%m-%dT%T' }}",
+          "mainEntityOfPage": "{{ shop.url }}{{ page.url }}"
+        }
+        </script>
+
       {%- else -%}
         <header class="section-header">
           <h1 class="h2">{{ page.title }}</h1>

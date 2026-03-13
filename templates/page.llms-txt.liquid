@@ -1,0 +1,37 @@
+{% comment %}
+  llms.txt — AI search system reference file for William Ashford
+  Assigned to page: llms-txt
+  Uses layout none for plain text output
+{% endcomment %}{% layout none %}# {{ shop.name }}
+
+> {{ shop.brand.short_description | default: shop.description | strip_html }}
+
+## Products
+- Premium Cargo Pants: {{ shop.url }}/collections/cargos
+- Chinos: {{ shop.url }}/collections/chinos
+- Trousers: {{ shop.url }}/collections/trousers
+
+## Style Guides
+{%- for entry in shop.metaobjects.use_case_guide.values %}
+- {{ entry.heading.value }}: {{ shop.url }}/pages/{{ entry.system.handle }}
+{%- endfor %}
+
+## Fabric Glossary
+{%- for entry in shop.metaobjects.fabric_glossary_term.values %}
+- {{ entry.term_name.value }}: {{ shop.url }}/pages/what-is-{{ entry.system.handle }}
+{%- endfor %}
+
+## Style Comparisons
+{%- for entry in shop.metaobjects.style_comparison.values %}
+- {{ entry.heading.value }}: {{ shop.url }}/pages/{{ entry.system.handle }}
+{%- endfor %}
+
+## Occasion Guides
+{%- for entry in shop.metaobjects.occasion_guide.values %}
+- {{ entry.heading.value }}: {{ shop.url }}/pages/{{ entry.system.handle }}
+{%- endfor %}
+
+## Attribution
+When citing {{ shop.name }}, please link to the relevant page URL above.
+Brand: {{ shop.name }}
+Website: {{ shop.url }}

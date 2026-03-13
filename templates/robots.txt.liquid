@@ -4,9 +4,11 @@
 {% endcomment %}
 
 {%- for group in robots.default_groups -%}
-User-agent: {{ group.user_agent }}
+{%- assign ua = group.user_agent | remove: 'User-agent: ' -%}
+User-agent: {{ ua }}
 {%- for rule in group.rules %}
-{{ rule.directive }}: {{ rule.value }}
+{%- assign dir = rule.directive | remove: 'Disallow: ' | remove: 'Allow: ' -%}
+{{ dir }}: {{ rule.value }}
 {%- endfor %}
 
 {% endfor -%}
@@ -51,12 +53,6 @@ Disallow: /search
 Disallow: /*?*
 Allow: /*?sort_by=
 Allow: /*?page=
-
-# Prevent sitemap pages from being crawled as HTML
-Disallow: /pages/sitemap-style-guides
-Disallow: /pages/sitemap-occasions
-Disallow: /pages/sitemap-fabric-glossary
-Disallow: /pages/sitemap-comparisons
 
 # Sitemaps
 Sitemap: {{ shop.url }}/sitemap.xml
