@@ -150,6 +150,10 @@ Renders a rich, visually structured page with product cards and FAQ.
           {%- endif -%}
         </div>
 
+        {%- comment -%}Extract occasion context for unique per-page H2s (Phase 2A SEO fix){%- endcomment -%}
+        {%- assign h2_ctx = page.title | remove: 'Cargo Pants for ' | remove: 'What to Wear for ' | remove: 'What to Wear to a ' | remove: 'What to Wear to ' | strip -%}
+        {%- if h2_ctx == page.title -%}{%- assign h2_ctx = '' -%}{%- endif -%}
+
         {%- comment -%}Introduction Card{%- endcomment -%}
         {%- if entry.intro_text.value != blank -%}
           <div class="pseo-intro-card">
@@ -163,7 +167,7 @@ Renders a rich, visually structured page with product cards and FAQ.
         {%- if entry.style_tips.value != blank -%}
           <div class="section-spacing">
             <div class="section-header">
-              <h2 class="h3">Style Tips</h2>
+              <h2 class="h3">{%- if h2_ctx != blank -%}How to Style for {{ h2_ctx }}{%- else -%}Styling Tips{%- endif -%}</h2>
             </div>
             {%- assign tips_lines = entry.style_tips.value | strip | newline_to_br | split: '<br />' -%}
             <div class="v-stack gap-4">
@@ -188,7 +192,7 @@ Renders a rich, visually structured page with product cards and FAQ.
         {%- if entry.recommended_pieces.value != blank -%}
           <div class="section-spacing">
             <div class="section-header">
-              <h2 class="h3">Recommended Pieces</h2>
+              <h2 class="h3">{%- if h2_ctx != blank -%}What to Wear for {{ h2_ctx }}{%- else -%}What to Wear{%- endif -%}</h2>
             </div>
             {%- assign pieces_lines = entry.recommended_pieces.value | strip | newline_to_br | split: '<br />' -%}
             <div class="v-stack gap-3">
@@ -209,7 +213,7 @@ Renders a rich, visually structured page with product cards and FAQ.
         {%- if entry.dos_and_donts.value != blank -%}
           <div class="section-spacing">
             <div class="section-header">
-              <h2 class="h3">Do's and Don'ts</h2>
+              <h2 class="h3">{%- if h2_ctx != blank -%}{{ h2_ctx }}: Do's & Don'ts{%- else -%}Do's & Don'ts{%- endif -%}</h2>
             </div>
             {%- assign dd_lines = entry.dos_and_donts.value | strip | newline_to_br | split: '<br />' -%}
             {%- assign do_items = '' -%}
@@ -302,7 +306,7 @@ Renders a rich, visually structured page with product cards and FAQ.
         {%- if section.settings.show_related_links -%}
           <div class="section-spacing">
             <div class="section-header">
-              <h2 class="h3">Explore More</h2>
+              <h2 class="h3">More {{ section.settings.hub_title | default: 'Guides' }}</h2>
             </div>
             <div class="pseo-related-grid">
               {%- if section.settings.related_page_1_url != blank -%}
@@ -351,7 +355,8 @@ Renders a rich, visually structured page with product cards and FAQ.
               },
             {%- endif -%}
             "sameAs": [
-              "https://www.instagram.com/williamashford.in"
+              "https://www.instagram.com/williamashford.in",
+              "https://www.facebook.com/williamashford.in"
             ]
           },
           "mainEntityOfPage": "{{ shop.url }}{{ page.url }}"

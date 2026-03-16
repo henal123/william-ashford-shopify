@@ -146,6 +146,10 @@ Same data source as use-case but styled for style guide pages.
           {%- endif -%}
         </div>
 
+        {%- comment -%}Extract style subject for unique per-page H2s (Phase 2A SEO fix){%- endcomment -%}
+        {%- assign h2_ctx = page.title | remove: 'How to Style ' | remove: 'How to Wear ' | remove: 'Guide to ' | strip -%}
+        {%- if h2_ctx == page.title -%}{%- assign h2_ctx = '' -%}{%- endif -%}
+
         {%- comment -%}Introduction Card{%- endcomment -%}
         {%- if entry.intro_text.value != blank -%}
           <div class="pseo-intro-card">
@@ -159,7 +163,7 @@ Same data source as use-case but styled for style guide pages.
         {%- if entry.style_tips.value != blank -%}
           <div class="section-spacing">
             <div class="section-header">
-              <h2 class="h3">Style Tips</h2>
+              <h2 class="h3">{%- if h2_ctx != blank -%}Tips for Styling {{ h2_ctx }}{%- else -%}Styling Tips{%- endif -%}</h2>
             </div>
             {%- assign tips_lines = entry.style_tips.value | strip | newline_to_br | split: '<br />' -%}
             <div class="v-stack gap-4">
@@ -184,7 +188,7 @@ Same data source as use-case but styled for style guide pages.
         {%- if entry.recommended_pieces.value != blank -%}
           <div class="section-spacing">
             <div class="section-header">
-              <h2 class="h3">Recommended Pieces</h2>
+              <h2 class="h3">{%- if h2_ctx != blank -%}Key Pieces for {{ h2_ctx }}{%- else -%}Key Pieces for This Look{%- endif -%}</h2>
             </div>
             {%- assign pieces_lines = entry.recommended_pieces.value | strip | newline_to_br | split: '<br />' -%}
             <div class="v-stack gap-3">
@@ -205,7 +209,7 @@ Same data source as use-case but styled for style guide pages.
         {%- if entry.dos_and_donts.value != blank -%}
           <div class="section-spacing">
             <div class="section-header">
-              <h2 class="h3">Do's and Don'ts</h2>
+              <h2 class="h3">Styling Do's & Don'ts</h2>
             </div>
             {%- assign dd_lines = entry.dos_and_donts.value | strip | newline_to_br | split: '<br />' -%}
             {%- assign do_items = '' -%}
@@ -298,7 +302,7 @@ Same data source as use-case but styled for style guide pages.
         {%- if section.settings.show_related_links -%}
           <div class="section-spacing">
             <div class="section-header">
-              <h2 class="h3">Explore More</h2>
+              <h2 class="h3">Related {{ section.settings.hub_title | default: 'Style Guides' }}</h2>
             </div>
             <div class="pseo-related-grid">
               {%- if section.settings.related_page_1_url != blank -%}
@@ -347,7 +351,8 @@ Same data source as use-case but styled for style guide pages.
               },
             {%- endif -%}
             "sameAs": [
-              "https://www.instagram.com/williamashford.in"
+              "https://www.instagram.com/williamashford.in",
+              "https://www.facebook.com/williamashford.in"
             ]
           },
           "mainEntityOfPage": "{{ shop.url }}{{ page.url }}"
