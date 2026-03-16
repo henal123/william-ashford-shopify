@@ -1,0 +1,17 @@
+# Node / project files — not Shopify theme files
+node_modules/
+package.json
+package-lock.json
+*.md
+.env
+.git/
+.claude/
+scripts/
+seo-setup/
+seo-output/
+alt_text_updates.json
+media_data.json
+
+# Temp files created by Shopify CLI on failed pushes
+*.tmp.*
+*.tmp
