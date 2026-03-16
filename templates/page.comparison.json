@@ -4,11 +4,21 @@
       "type": "pseo-comparison",
       "settings": {
         "color_scheme": "scheme-1",
+        "hub_title": "Style Comparisons",
+        "hub_url": "/pages/style-comparisons",
         "collection": "frontpage",
         "products_count": 4,
         "products_per_row": 4,
         "products_heading": "Recommended Products",
-        "show_related_links": true
+        "show_related_links": true,
+        "related_page_1_title": "Style Guides",
+        "related_page_1_url": "/pages/style-guides",
+        "related_page_2_title": "Occasion Guides",
+        "related_page_2_url": "/pages/occasions",
+        "related_page_3_title": "Fabric Glossary",
+        "related_page_3_url": "/pages/fabric-glossary",
+        "related_page_4_title": "Buying Guides",
+        "related_page_4_url": "/pages/buying-guides"
       }
     }
   },
