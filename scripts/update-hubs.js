@@ -1,7 +1,8 @@
 'use strict';
 const https = require('https');
-const TOKEN = process.argv.find(a => a.startsWith('--token='))?.split('=')[1] || process.env.SHOPIFY_ADMIN_TOKEN;
-if (!TOKEN) { console.error('Provide --token=shpat_xxxxx'); process.exit(1); }
+const TOKEN = process.argv.find(a => a.startsWith('--token='))?.split('=')[1]
+  || process.env.SHOPIFY_ADMIN_TOKEN
+  || '<SHOPIFY_ACCESS_TOKEN>';
 
 function gql(query, variables = {}) {
   return new Promise((resolve, reject) => {
