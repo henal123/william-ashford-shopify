@@ -48,6 +48,12 @@
           "type": "separator",
           "settings": {}
         },
+        "liquid_PAjaJJ": {
+          "type": "liquid",
+          "settings": {
+            "liquid": "{% comment %}\n  Launch Offer Countdown Timer\n  Usage: {% render 'launch-offer-timer' %}\n  Edit HOURS / MINUTES / SECONDS below.\n{% endcomment %}\n\n<style>\n  .lot-wrap {\n    background: #000;\n    width: 100%;\n    box-sizing: border-box;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    gap: 40px;\n    padding: 14px 24px;\n  }\n\n  .lot-label {\n    font-family: 'Courier New', Courier, monospace;\n    font-size: 11px;\n    font-weight: 700;\n    letter-spacing: 0.25em;\n    text-transform: uppercase;\n    color: #fff;\n    white-space: nowrap;\n  }\n\n  .lot-timer {\n    display: flex;\n    align-items: center;\n    gap: 10px;\n  }\n\n  .lot-unit {\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n    gap: 2px;\n  }\n\n  .lot-num {\n    font-family: 'Courier New', Courier, monospace;\n    font-size: 28px;\n    font-weight: 700;\n    color: #fff;\n    line-height: 1;\n    min-width: 52px;\n    text-align: center;\n    letter-spacing: 0.05em;\n  }\n\n  .lot-unit-label {\n    font-family: 'Courier New', Courier, monospace;\n    font-size: 9px;\n    font-weight: 700;\n    letter-spacing: 0.2em;\n    text-transform: uppercase;\n    color: #fff;\n  }\n\n  .lot-sep {\n    font-family: 'Courier New', Courier, monospace;\n    font-size: 26px;\n    font-weight: 700;\n    color: #fff;\n    margin-bottom: 18px;\n    animation: lot-blink 1s step-end infinite;\n  }\n\n  @keyframes lot-blink {\n    0%, 100% { opacity: 1; }\n    50%       { opacity: 0.3; }\n  }\n\n  .lot-cta {\n    font-family: 'Courier New', Courier, monospace;\n    font-size: 11px;\n    font-weight: 700;\n    letter-spacing: 0.2em;\n    text-transform: uppercase;\n    color: #000;\n    background: #fff;\n    text-decoration: none;\n    padding: 7px 16px;\n    white-space: nowrap;\n    transition: opacity 0.2s;\n  }\n\n  .lot-cta:hover {\n    opacity: 0.85;\n  }\n\n  @media (max-width: 600px) {\n    .lot-wrap {\n      flex-direction: column;\n      gap: 8px;\n      padding: 12px 16px;\n    }\n    .lot-num {\n      font-size: 26px;\n      min-width: 46px;\n    }\n    .lot-sep {\n      font-size: 24px;\n      margin-bottom: 16px;\n    }\n    .lot-cta {\n      font-size: 10px;\n      padding: 6px 20px;\n    }\n  }\n</style>\n\n<div class=\"lot-wrap\" id=\"lot-wrap\">\n  <span class=\"lot-label\">Launch Offer Ends In</span>\n\n  <div class=\"lot-timer\">\n    <div class=\"lot-unit\">\n      <span class=\"lot-num\" id=\"lot-h\">03</span>\n      <span class=\"lot-unit-label\">Hrs</span>\n    </div>\n    <span class=\"lot-sep\">:</span>\n    <div class=\"lot-unit\">\n      <span class=\"lot-num\" id=\"lot-m\">14</span>\n      <span class=\"lot-unit-label\">Min</span>\n    </div>\n    <span class=\"lot-sep\">:</span>\n    <div class=\"lot-unit\">\n      <span class=\"lot-num\" id=\"lot-s\">22</span>\n      <span class=\"lot-unit-label\">Sec</span>\n    </div>\n  </div>\n\n  <a href=\"#\" class=\"lot-cta\">Shop Now</a>\n</div>\n\n<script>\n(function () {\n  // ── CONFIG ──────────────────────────\n  var HOURS   = 3;\n  var MINUTES = 14;\n  var SECONDS = 22;\n  // ────────────────────────────────────\n\n  var TOTAL = HOURS * 3600 + MINUTES * 60 + SECONDS;\n\n  var elH = document.getElementById('lot-h');\n  var elM = document.getElementById('lot-m');\n  var elS = document.getElementById('lot-s');\n\n  function pad(n) { return n < 10 ? '0' + n : String(n); }\n\n  function startTimer() {\n    var endTime = Date.now() + TOTAL * 1000;\n\n    function render() {\n      var rem = Math.max(0, Math.round((endTime - Date.now()) / 1000));\n      elH.textContent = pad(Math.floor(rem / 3600));\n      elM.textContent = pad(Math.floor((rem % 3600) / 60));\n      elS.textContent = pad(rem % 60);\n      if (rem <= 0) {\n        // Auto-restart\n        startTimer();\n      }\n    }\n\n    render();\n    setInterval(render, 1000);\n  }\n\n  startTimer();\n})();\n</script>"
+          }
+        },
         "liquid_8REfbe": {
           "type": "liquid",
           "settings": {
@@ -59,9 +65,18 @@
           "settings": {
             "hide_sold_out_variants": false,
             "selector_style": "block",
-            "swatch_selector_style": "swatch",
-            "variant_image_options": "Color",
+            "swatch_selector_style": "block_swatch",
+            "variant_image_options": "",
             "size_chart_page": "size-chart"
+          }
+        },
+        "inventory_Wykb8t": {
+          "type": "inventory",
+          "settings": {
+            "show_in_stock_quantity": true,
+            "low_inventory_threshold": 20,
+            "show_progress_bar": true,
+            "progress_bar_max_value": 50
           }
         },
         "buy_buttons": {
@@ -158,8 +173,10 @@
         "text_QVJzFp",
         "payment_terms",
         "separator",
+        "liquid_PAjaJJ",
         "liquid_8REfbe",
         "variant_picker",
+        "inventory_Wykb8t",
         "buy_buttons",
         "text_RHnUCh",
         "image_JD6NHK",
@@ -259,6 +276,18 @@
       "name": "KYX Media Row",
       "settings": {}
     },
+    "product-cross-links": {
+      "type": "product-cross-links",
+      "settings": {
+        "color_scheme": "scheme-1",
+        "style_guide_url": "",
+        "style_guide_title": "How to Style This",
+        "style_guide_desc": "Read our styling guide for outfit ideas and pairing tips.",
+        "fabric_guide_url": "",
+        "fabric_guide_title": "About This Fabric",
+        "fabric_guide_desc": "Learn about the material, properties, and care instructions."
+      }
+    },
     "177106083605ea2c31": {
       "type": "apps",
       "blocks": {
@@ -280,12 +309,6 @@
         "separate_section_with_border": true,
         "remove_vertical_spacing": false,
         "remove_horizontal_spacing": false
-      }
-    },
-    "product-cross-links": {
-      "type": "product-cross-links",
-      "settings": {
-        "color_scheme": "scheme-1"
       }
     },
     "related-products": {

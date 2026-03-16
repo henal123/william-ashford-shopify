@@ -19,15 +19,11 @@
     },
     "related-products": {
       "type": "featured-collections",
-      "settings": {
-        "heading": "Shop Related Products"
-      }
+      "settings": {}
     },
     "blog-posts": {
       "type": "blog-posts",
-      "settings": {
-        "heading": "Related Articles"
-      }
+      "settings": {}
     },
     "cross-links": {
       "type": "cross-links",

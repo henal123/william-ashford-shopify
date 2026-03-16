@@ -1,0 +1,455 @@
+{% comment %}
+  ============================================================
+  FAKE ORDER POPUP — Shopify Section
+  
+  INSTALL:
+  1. Online Store → Themes → Edit Code
+  2. Sections → Add new section → name it: fake-order-popup
+  3. Paste this entire file & Save
+  4. Go to Online Store → Themes → Customize
+  5. Click "Add section" anywhere (footer/header area) → pick "Fake Order Popup"
+  6. Configure all settings in the sidebar — done!
+  ============================================================
+{% endcomment %}
+
+{%- liquid
+  assign s             = section.settings
+  assign show          = s.enable
+  assign hide_mobile   = s.hide_on_mobile
+  assign delay_ms      = s.delay_time | times: 1000
+  assign display_ms    = s.display_time | times: 1000
+  assign collection_h  = s.collection_handle
+  assign verify_text   = s.verify_text
+  assign purchased_txt = s.purchased_text
+  assign users_raw     = s.fake_users | replace: ' | ', '|' | replace: ' |', '|' | replace: '| ', '|' | split: '|'
+  assign bar_color     = s.bar_color
+  assign position      = s.position
+-%}
+
+{% if show %}
+<style>
+  #fop-{{ section.id }} {
+    position: fixed;
+    {% if position == 'bottom-left' %}
+      bottom: 24px; left: 24px;
+    {% elsif position == 'bottom-right' %}
+      bottom: 24px; right: 24px;
+    {% elsif position == 'top-left' %}
+      top: 24px; left: 24px;
+    {% else %}
+      top: 24px; right: 24px;
+    {% endif %}
+    z-index: 99999;
+    width: 300px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.14);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 36px 12px 12px;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    opacity: 0;
+    {% if position == 'bottom-left' or position == 'bottom-right' %}
+      transform: translateY(120%);
+    {% else %}
+      transform: translateY(-120%);
+    {% endif %}
+    transition: transform 0.42s cubic-bezier(0.34,1.26,0.64,1), opacity 0.3s ease;
+    {% if hide_mobile %}
+      display: none;
+    {% endif %}
+  }
+
+  @media (min-width: 1px) {
+    {% unless hide_mobile %}
+      #fop-{{ section.id }} { display: flex; }
+    {% endunless %}
+  }
+
+  @media (max-width: 749px) {
+    {% if hide_mobile %}
+      #fop-{{ section.id }} { display: none !important; }
+    {% else %}
+      #fop-{{ section.id }} {
+        left: 12px !important;
+        right: 12px !important;
+        width: auto;
+        bottom: 14px;
+        top: auto;
+      }
+    {% endif %}
+  }
+
+  #fop-{{ section.id }}.fop-show {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  #fop-{{ section.id }}.fop-hide {
+    {% if position == 'bottom-left' or position == 'bottom-right' %}
+      transform: translateY(120%);
+    {% else %}
+      transform: translateY(-120%);
+    {% endif %}
+    opacity: 0;
+  }
+
+  #fop-{{ section.id }} .fop-close {
+    position: absolute;
+    top: 9px;
+    right: 11px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 2px;
+    color: #aaa;
+    font-size: 13px;
+    line-height: 1;
+  }
+  #fop-{{ section.id }} .fop-close:hover { color: #333; }
+
+  #fop-{{ section.id }} .fop-img {
+    width: 58px;
+    height: 72px;
+    border-radius: 6px;
+    object-fit: cover;
+    flex-shrink: 0;
+    background: #f0f0f0;
+    display: block;
+  }
+
+  #fop-{{ section.id }} .fop-body { flex: 1; min-width: 0; }
+
+  #fop-{{ section.id }} .fop-top {
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 3px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 3px;
+  }
+
+  #fop-{{ section.id }} .fop-user {
+    font-weight: 700;
+    color: #111;
+  }
+
+  #fop-{{ section.id }} .fop-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: #111;
+    margin-bottom: 6px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+    text-decoration: none;
+  }
+  #fop-{{ section.id }} .fop-title:hover { text-decoration: underline; }
+
+  #fop-{{ section.id }} .fop-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 11px;
+    color: #999;
+  }
+
+  #fop-{{ section.id }} .fop-verify {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: #555;
+    font-weight: 600;
+  }
+
+  #fop-{{ section.id }} .fop-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    width: 100%;
+    border-radius: 0 0 10px 10px;
+    background: {{ bar_color }};
+    transform-origin: left;
+    transform: scaleX(0);
+  }
+  #fop-{{ section.id }} .fop-bar.fop-bar-run {
+    animation: fop-prog-{{ section.id }} linear forwards;
+  }
+  @keyframes fop-prog-{{ section.id }} {
+    from { transform: scaleX(1); }
+    to   { transform: scaleX(0); }
+  }
+</style>
+
+<div id="fop-{{ section.id }}" role="status" aria-live="polite" aria-atomic="true">
+  <button class="fop-close" aria-label="Close notification">&#x2715;</button>
+
+  <a class="fop-img-link" href="#">
+    <img class="fop-img" src="" alt="" width="58" height="72" loading="lazy">
+  </a>
+
+  <div class="fop-body">
+    <div class="fop-top">
+      <span class="fop-user"></span>
+      <span>{{ purchased_txt }}</span>
+    </div>
+    <a class="fop-title" href="#"></a>
+    <div class="fop-meta">
+      <span class="fop-time"></span>
+      <span class="fop-verify">
+        <svg width="12" height="11" fill="none" viewBox="0 0 12 11" aria-hidden="true">
+          <path fill="currentColor" d="M10.5 5.04a.496.496 0 0 1 .504-.504c.133 0 .246.05.34.151.101.094.152.211.152.352v.457c0 .383-.035.754-.105 1.113-.079.36-.188.704-.329 1.032-.14.328-.308.64-.503.937-.196.29-.418.559-.668.809-.25.25-.524.472-.82.668-.29.203-.602.37-.938.504-.328.14-.672.25-1.031.328-.36.07-.727.105-1.102.105-.383 0-.754-.035-1.113-.105a5.667 5.667 0 0 1-1.032-.328c-.328-.133-.64-.301-.937-.504a5.483 5.483 0 0 1-.809-.668 5.194 5.194 0 0 1-.668-.82 5.099 5.099 0 0 1-.515-.926 6.707 6.707 0 0 1-.317-1.043 5.724 5.724 0 0 1-.105-1.102c0-.383.035-.754.105-1.113.079-.36.188-.703.329-1.031.14-.329.308-.641.503-.938.196-.289.418-.559.668-.809.25-.25.524-.472.82-.667a4.62 4.62 0 0 1 .926-.504A5.99 5.99 0 0 1 4.898.105C5.258.035 5.625 0 6 0c.406 0 .797.043 1.172.129.383.078.738.195 1.066.351a.46.46 0 0 1 .258.282c.055.125.05.25-.012.375a.502.502 0 0 1-.28.27.451.451 0 0 1-.376-.024 4.7 4.7 0 0 0-.867-.281A4.262 4.262 0 0 0 6 .996c-.617 0-1.2.117-1.746.352A4.515 4.515 0 0 0 1.852 3.75 4.331 4.331 0 0 0 1.5 5.496c0 .617.117 1.2.352 1.746.234.547.554 1.024.96 1.43A4.42 4.42 0 0 0 6 9.996c.617 0 1.2-.117 1.746-.351a4.515 4.515 0 0 0 1.43-.961A4.42 4.42 0 0 0 10.5 5.496V5.04Zm.152-3.892a.446.446 0 0 1 .34-.152c.14 0 .262.05.363.152.094.094.141.211.141.352 0 .14-.047.258-.14.352L6.351 6.855A.459.459 0 0 1 6 7.008a.459.459 0 0 1-.352-.153l-1.5-1.5a.459.459 0 0 1-.152-.351c0-.14.05-.258.152-.352A.459.459 0 0 1 4.5 4.5c.14 0 .258.05.352.152L6 5.801l4.652-4.653Z"/>
+        </svg>
+        {{ verify_text }}
+      </span>
+    </div>
+  </div>
+
+  <div class="fop-bar"></div>
+</div>
+
+<!-- Liquid-rendered data passed safely to JS -->
+<script id="fop-data-{{ section.id }}" type="application/json">
+  {
+    "users":      {{ users_raw | json }},
+    "collection": {{ collection_h | json }},
+    "delayMs":    {{ delay_ms }},
+    "displayMs":  {{ display_ms }},
+    "position":   {{ position | json }}
+  }
+</script>
+
+<script>
+(function () {
+  var sid     = {{ section.id | json }};
+  var root    = document.getElementById('fop-' + sid);
+  var rawData = JSON.parse(document.getElementById('fop-data-' + sid).textContent);
+
+  if (!root) return;
+
+  var bar     = root.querySelector('.fop-bar');
+  var closer  = root.querySelector('.fop-close');
+  var elUser  = root.querySelector('.fop-user');
+  var elTitle = root.querySelector('.fop-title');
+  var elImg   = root.querySelector('.fop-img');
+  var elImgL  = root.querySelector('.fop-img-link');
+  var elTime  = root.querySelector('.fop-time');
+
+  var users      = rawData.users;
+  var delayMs    = rawData.delayMs;
+  var displayMs  = rawData.displayMs;
+  var collection = rawData.collection;
+
+  var products  = [];
+  var stopped   = false;
+  var lastPi    = -1;
+  var timer     = null;
+
+  closer.addEventListener('click', function () {
+    stopped = true;
+    clearTimeout(timer);
+    hide();
+  });
+
+  function randInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
+  function pick(arr, exclude) {
+    if (!arr.length) return -1;
+    if (arr.length === 1) return 0;
+    var idx;
+    do { idx = randInt(0, arr.length - 1); } while (idx === exclude);
+    return idx;
+  }
+
+  function show(product, user) {
+    elUser.textContent  = user;
+    elTitle.textContent = product.title;
+    elTitle.href        = product.url;
+    elImgL.href         = product.url;
+    elTime.textContent  = randInt(2, 59) + ' minutes ago';
+
+    if (product.img) {
+      elImg.src          = product.img;
+      elImg.alt          = product.title;
+      elImg.style.display = '';
+    } else {
+      elImg.style.display = 'none';
+    }
+
+    root.style.opacity = '';
+    root.classList.remove('fop-hide');
+    void root.offsetWidth; // reflow
+    root.classList.add('fop-show');
+
+    bar.classList.remove('fop-bar-run');
+    void bar.offsetWidth;
+    bar.style.animationDuration = displayMs + 'ms';
+    bar.classList.add('fop-bar-run');
+
+    timer = setTimeout(function () {
+      hide();
+      if (!stopped) {
+        timer = setTimeout(next, delayMs);
+      }
+    }, displayMs);
+  }
+
+  function hide() {
+    root.classList.remove('fop-show');
+    root.classList.add('fop-hide');
+    bar.classList.remove('fop-bar-run');
+  }
+
+  function next() {
+    if (stopped || !products.length) return;
+    var pi = pick(products, lastPi);
+    lastPi = pi;
+    var ui = pick(users, -1);
+    show(products[pi], users[ui] || 'Someone');
+  }
+
+  function start() {
+    if (!products.length) return;
+    timer = setTimeout(next, delayMs);
+  }
+
+  if (collection) {
+    fetch('/collections/' + collection + '/products.json?limit=20')
+      .then(function (r) { return r.json(); })
+      .then(function (data) {
+        products = (data.products || []).map(function (p) {
+          return {
+            title : p.title,
+            url   : '/products/' + p.handle,
+            img   : p.images && p.images[0] ? p.images[0].src : '',
+          };
+        });
+        start();
+      })
+      .catch(start);
+  } else {
+    start();
+  }
+})();
+</script>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Fake Order Popup",
+  "tag": "div",
+  "class": "fop-section-wrap",
+  "limit": 1,
+  "settings": [
+    {
+      "type": "header",
+      "content": "General"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable",
+      "label": "Enable popup",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_on_mobile",
+      "label": "Hide on mobile",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "position",
+      "label": "Popup position",
+      "default": "bottom-left",
+      "options": [
+        { "value": "bottom-left",  "label": "Bottom left" },
+        { "value": "bottom-right", "label": "Bottom right" },
+        { "value": "top-left",    "label": "Top left" },
+        { "value": "top-right",   "label": "Top right" }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Timing"
+    },
+    {
+      "type": "range",
+      "id": "delay_time",
+      "label": "Delay between popups (seconds)",
+      "min": 2,
+      "max": 30,
+      "step": 1,
+      "default": 6
+    },
+    {
+      "type": "range",
+      "id": "display_time",
+      "label": "How long each popup is visible (seconds)",
+      "min": 2,
+      "max": 15,
+      "step": 1,
+      "default": 5
+    },
+    {
+      "type": "header",
+      "content": "Products"
+    },
+    {
+      "type": "text",
+      "id": "collection_handle",
+      "label": "Collection handle",
+      "default": "all",
+      "info": "Products from this collection will be shown. Find the handle in your collection URL, e.g. 'all' or 'best-sellers'."
+    },
+    {
+      "type": "header",
+      "content": "Fake Users"
+    },
+    {
+      "type": "textarea",
+      "id": "fake_users",
+      "label": "User names (separate with |)",
+      "default": "Priya (Jaipur) | Rahul (Mumbai) | Sneha (Delhi) | Arjun (Bangalore) | Meera (Chennai) | Vikram (Pune) | Ananya (Hyderabad) | Rohan (Kolkata)",
+      "info": "Add names separated by | — e.g. Priya (Jaipur) | Rahul (Mumbai)"
+    },
+    {
+      "type": "header",
+      "content": "Text Labels"
+    },
+    {
+      "type": "text",
+      "id": "purchased_text",
+      "label": "Purchased label",
+      "default": "purchased"
+    },
+    {
+      "type": "text",
+      "id": "verify_text",
+      "label": "Verified label",
+      "default": "Verified"
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "color",
+      "id": "bar_color",
+      "label": "Progress bar color",
+      "default": "#111111"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Fake Order Popup"
+    }
+  ]
+}
+{% endschema %}

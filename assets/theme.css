@@ -22,7 +22,10 @@ body {
   margin: 0;
   position: relative;
 }
-
+html, body {
+  overflow-x: hidden;
+  max-width: 100%;
+}
 hr {
   border-top-width: 1px;
   height: 0;

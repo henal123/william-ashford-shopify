@@ -13,20 +13,61 @@
   "sections": {
     "cart-drawer": {
       "type": "cart-drawer",
-      "settings": {}
+      "settings": {
+        "color_scheme": "",
+        "show_cart_note": true,
+        "show_shipping_text": true,
+        "show_view_cart_button": false,
+        "show_checkout_button": true,
+        "show_price_in_checkout_button": true,
+        "cross_sell_products": [],
+        "cross_sell_title": "Complete with",
+        "cross_sell_stack_products": false
+      }
     },
     "newsletter-popup": {
       "type": "newsletter-popup",
-      "settings": {}
+      "disabled": true,
+      "settings": {
+        "color_scheme": "",
+        "apparition_delay": 5,
+        "show_only_on_index": true,
+        "hide_for_account_holders": true,
+        "show_only_once": true,
+        "title": "Signup for our newsletter",
+        "content": "Describe what your customers will receive when subscribing to your newsletter.",
+        "button_text": "Subscribe"
+      }
     },
     "privacy-banner": {
       "type": "privacy-banner",
-      "settings": {}
+      "settings": {
+        "color_scheme": "",
+        "title": "🍪 Cookie policy",
+        "content": "<p>We use cookies and similar technologies to provide the best experience on our website. Refer to our Privacy Policy for more information.</p>"
+      }
+    },
+    "fake_order_xF8HFY": {
+      "type": "fake-order",
+      "name": "Fake Order Popup",
+      "settings": {
+        "enable": true,
+        "hide_on_mobile": false,
+        "position": "bottom-left",
+        "delay_time": 6,
+        "display_time": 5,
+        "collection_handle": "all",
+        "fake_users": "Rahul (Mumbai) | Arjun (Bangalore) | Vikram (Pune) | Rohan (Kolkata) | Aman (Delhi) | Karan (Jaipur) | Aditya (Hyderabad) | Varun (Chandigarh) | Siddharth (Ahmedabad) | Nikhil (Indore)",
+        "purchased_text": "purchased",
+        "verify_text": "Verified",
+        "bar_color": "#111111"
+      }
     }
   },
   "order": [
     "cart-drawer",
     "newsletter-popup",
-    "privacy-banner"
+    "privacy-banner",
+    "fake_order_xF8HFY"
   ]
 }
