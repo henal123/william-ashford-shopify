@@ -1,19 +1,52 @@
-{% comment %}
-  Custom robots.txt for William Ashford
-  Manages crawler access, blocks AI training bots, allows AI search bots
-{% endcomment %}
+{%- comment -%}
+  William Ashford — Custom robots.txt
+  Explicit rules only. Does NOT inherit robots.default_groups, which can
+  emit a broad "Disallow: /" when the store is password-protected or in
+  development mode, effectively blocking all crawlers.
 
-{%- for group in robots.default_groups -%}
-{%- assign ua = group.user_agent | remove: 'User-agent: ' -%}
-User-agent: {{ ua }}
-{%- for rule in group.rules %}
-{%- assign dir = rule.directive | remove: 'Disallow: ' | remove: 'Allow: ' -%}
-{{ dir }}: {{ rule.value }}
-{%- endfor %}
+  Rule priority (Google + Bing): longest matching path wins.
+  Allow: / + Disallow: /admin → /admin is blocked (longer match), all else is open.
+{%- endcomment -%}
 
-{% endfor -%}
+# ─── Major search crawlers ─────────────────────────────────────────────────
+User-agent: Googlebot
+Disallow: /admin
+Disallow: /cart
+Disallow: /checkout
+Disallow: /orders
+Disallow: /account
+Disallow: /search
+Disallow: /*?*
+Allow: /*?sort_by=
+Allow: /*?page=
+Allow: /
 
-# Block AI training crawlers
+User-agent: Bingbot
+Disallow: /admin
+Disallow: /cart
+Disallow: /checkout
+Disallow: /orders
+Disallow: /account
+Disallow: /search
+Disallow: /*?*
+Allow: /*?sort_by=
+Allow: /*?page=
+Allow: /
+
+# ─── All other crawlers ────────────────────────────────────────────────────
+User-agent: *
+Disallow: /admin
+Disallow: /cart
+Disallow: /checkout
+Disallow: /orders
+Disallow: /account
+Disallow: /search
+Disallow: /*?*
+Allow: /*?sort_by=
+Allow: /*?page=
+Allow: /
+
+# ─── Block AI training crawlers ────────────────────────────────────────────
 User-agent: GPTBot
 Disallow: /
 
@@ -32,7 +65,13 @@ Disallow: /
 User-agent: Amazonbot
 Disallow: /
 
-# Allow AI search fetchers
+User-agent: Diffbot
+Disallow: /
+
+User-agent: omgili
+Disallow: /
+
+# ─── Allow AI search fetchers (citations, not training) ────────────────────
 User-agent: OAI-SearchBot
 Allow: /
 
@@ -42,19 +81,10 @@ Allow: /
 User-agent: PerplexityBot
 Allow: /
 
-# Block internal / non-SEO paths
-User-agent: *
-Disallow: /admin
-Disallow: /cart
-Disallow: /checkout
-Disallow: /orders
-Disallow: /account
-Disallow: /search
-Disallow: /*?*
-Allow: /*?sort_by=
-Allow: /*?page=
+User-agent: cohere-ai
+Allow: /
 
-# Sitemaps
+# ─── Sitemaps ──────────────────────────────────────────────────────────────
 Sitemap: {{ shop.url }}/sitemap.xml
 Sitemap: {{ shop.url }}/pages/sitemap-style-guides
 Sitemap: {{ shop.url }}/pages/sitemap-occasions
