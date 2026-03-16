@@ -1,0 +1,20 @@
+{
+  "sections": {
+    "main": {
+      "type": "pseo-brand-comparison",
+      "settings": {
+        "color_scheme": "scheme-1",
+        "hub_title": "Brand Comparisons",
+        "hub_url": "/pages/brand-comparisons",
+        "collection": "frontpage",
+        "products_count": 4,
+        "products_per_row": 4,
+        "products_heading": "Shop William Ashford",
+        "show_related_links": true
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

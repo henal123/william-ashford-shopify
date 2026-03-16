@@ -148,11 +148,14 @@ or change the format of some info
       "width": "1024",
       "height": "1024"
     },
+    {%- assign author_full_name = article.user.first_name | append: ' ' | append: article.user.last_name | strip -%}
+    {%- if author_full_name == blank or author_full_name == ' ' -%}
+      {%- assign author_full_name = 'William Ashford Editorial Team' -%}
+    {%- endif -%}
     "author": {
       "@type": "Person",
-      "name": "{{ article.user.first_name | escape }} {{ article.user.last_name | escape }}",
-      "givenName": {{ article.user.first_name | json }},
-      "familyName": {{ article.user.last_name | json }}
+      "name": {{ author_full_name | json }},
+      "url": "{{ shop.url }}/pages/about-us"
     },
     "publisher": {
       "@type": "Organization",
@@ -330,6 +333,7 @@ or change the format of some info
         "@type": "PostalAddress",
         "addressLocality": "Hyderabad",
         "addressRegion": "Telangana",
+        "postalCode": "500001",
         "addressCountry": "IN"
       },
       {%- if shop.brand.metafields.social_links.size > 0 -%}
@@ -340,7 +344,8 @@ or change the format of some info
         ],
       {%- else -%}
         "sameAs": [
-          "https://www.instagram.com/williamashford.in"
+          "https://www.instagram.com/williamashford.in",
+          "https://www.facebook.com/williamashford.in"
         ],
       {%- endif -%}
       "contactPoint": {

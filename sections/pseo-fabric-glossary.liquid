@@ -116,6 +116,19 @@ Renders a rich glossary page with property cards, care tips, product grid, and F
             {%- endif -%}
           </header>
 
+          {%- comment -%}Visible byline for E-E-A-T{%- endcomment -%}
+          <div class="pseo-byline" style="font-size: 0.82rem; color: rgba(var(--text-color), 0.55); margin-top: -0.5rem; margin-bottom: 1rem;">
+            By <a href="/pages/about-us" style="color: inherit; text-decoration: underline;">William Ashford Editorial Team</a>
+            {%- if page.published_at -%}
+              <span style="margin: 0 0.35rem;">·</span>
+              <time datetime="{{ page.published_at | date: '%Y-%m-%d' }}">{{ page.published_at | date: '%B %d, %Y' }}</time>
+            {%- endif -%}
+            {%- if page.updated_at -%}
+              <span style="margin: 0 0.35rem;">·</span>
+              Updated <time datetime="{{ page.updated_at | date: '%Y-%m-%d' }}">{{ page.updated_at | date: '%B %d, %Y' }}</time>
+            {%- endif -%}
+          </div>
+
           {%- comment -%}Full Definition — highlighted card{%- endcomment -%}
           {%- if entry.full_definition.value != blank -%}
             <div class="pseo-def-card" itemprop="termCode">
@@ -237,6 +250,12 @@ Renders a rich glossary page with property cards, care tips, product grid, and F
               {%- if section.settings.related_page_3_url != blank -%}
                 <a href="{{ section.settings.related_page_3_url }}" class="pseo-related-link">{{ section.settings.related_page_3_title }}</a>
               {%- endif -%}
+              {%- if section.settings.related_page_4_url != blank -%}
+                <a href="{{ section.settings.related_page_4_url }}" class="pseo-related-link">{{ section.settings.related_page_4_title }}</a>
+              {%- endif -%}
+              {%- if section.settings.related_page_5_url != blank -%}
+                <a href="{{ section.settings.related_page_5_url }}" class="pseo-related-link">{{ section.settings.related_page_5_title }}</a>
+              {%- endif -%}
               <a href="/pages/fabric-glossary" class="pseo-related-link">Full Fabric Glossary →</a>
             </div>
           </div>
@@ -267,12 +286,23 @@ Renders a rich glossary page with property cards, care tips, product grid, and F
           "description": {{ entry.short_definition.value | strip_html | truncatewords: 50 | json }},
           "url": "{{ shop.url }}{{ page.url }}",
           "author": {
-            "@type": "Organization",
-            "name": {{ shop.name | json }}
+            "@type": "Person",
+            "name": "William Ashford Editorial Team",
+            "url": "{{ shop.url }}/pages/about-us"
           },
           "publisher": {
             "@type": "Organization",
-            "name": {{ shop.name | json }}
+            "name": {{ shop.name | json }},
+            "url": "{{ shop.url }}",
+            {%- if shop.brand.logo -%}
+              "logo": {
+                "@type": "ImageObject",
+                "url": "https:{{ shop.brand.logo | image_url: width: 600 }}"
+              },
+            {%- endif -%}
+            "sameAs": [
+              "https://www.instagram.com/williamashford.in"
+            ]
           },
           "datePublished": "{{ page.published_at | date: '%Y-%m-%dT%T' }}",
           "dateModified": "{{ page.updated_at | default: page.published_at | date: '%Y-%m-%dT%T' }}",
@@ -381,6 +411,26 @@ Renders a rich glossary page with property cards, care tips, product grid, and F
       "type": "url",
       "id": "related_page_3_url",
       "label": "Related page 3 URL"
+    },
+    {
+      "type": "text",
+      "id": "related_page_4_title",
+      "label": "Related page 4 title"
+    },
+    {
+      "type": "url",
+      "id": "related_page_4_url",
+      "label": "Related page 4 URL"
+    },
+    {
+      "type": "text",
+      "id": "related_page_5_title",
+      "label": "Related page 5 title"
+    },
+    {
+      "type": "url",
+      "id": "related_page_5_url",
+      "label": "Related page 5 URL"
     }
   ]
 }

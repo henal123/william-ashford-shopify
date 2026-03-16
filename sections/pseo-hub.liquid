@@ -42,10 +42,26 @@ Renders intro content, categorized child page grid, featured products, and cross
       }
       </script>
 
-      {%- comment -%}Hero Header{%- endcomment -%}
+      {%- comment -%}Hero Header — single H1 only{%- endcomment -%}
       <header class="section-header">
         <h1 class="h2">{{ page.title }}</h1>
       </header>
+
+      {%- comment -%}CollectionPage + ItemList Schema for hub pages{%- endcomment -%}
+      <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "CollectionPage",
+        "name": {{ page.title | json }},
+        "description": {{ page.content | strip_html | truncatewords: 50 | json }},
+        "url": "{{ shop.url }}{{ page.url }}",
+        "publisher": {
+          "@type": "Organization",
+          "name": {{ shop.name | json }},
+          "url": "{{ shop.url }}"
+        }
+      }
+      </script>
 
       {%- comment -%}Intro Content — rendered from page body HTML{%- endcomment -%}
       {%- if page.content != blank -%}
@@ -102,6 +118,30 @@ Renders intro content, categorized child page grid, featured products, and cross
                 <span class="h6">{{ section.settings.cross_hub_3_title }}</span>
                 {%- if section.settings.cross_hub_3_desc != blank -%}
                   <p class="text-subdued text-sm">{{ section.settings.cross_hub_3_desc }}</p>
+                {%- endif -%}
+              </a>
+            {%- endif -%}
+            {%- if section.settings.cross_hub_4_url != blank -%}
+              <a href="{{ section.settings.cross_hub_4_url }}" class="pseo-hub__cross-link">
+                <span class="h6">{{ section.settings.cross_hub_4_title }}</span>
+                {%- if section.settings.cross_hub_4_desc != blank -%}
+                  <p class="text-subdued text-sm">{{ section.settings.cross_hub_4_desc }}</p>
+                {%- endif -%}
+              </a>
+            {%- endif -%}
+            {%- if section.settings.cross_hub_5_url != blank -%}
+              <a href="{{ section.settings.cross_hub_5_url }}" class="pseo-hub__cross-link">
+                <span class="h6">{{ section.settings.cross_hub_5_title }}</span>
+                {%- if section.settings.cross_hub_5_desc != blank -%}
+                  <p class="text-subdued text-sm">{{ section.settings.cross_hub_5_desc }}</p>
+                {%- endif -%}
+              </a>
+            {%- endif -%}
+            {%- if section.settings.cross_hub_6_url != blank -%}
+              <a href="{{ section.settings.cross_hub_6_url }}" class="pseo-hub__cross-link">
+                <span class="h6">{{ section.settings.cross_hub_6_title }}</span>
+                {%- if section.settings.cross_hub_6_desc != blank -%}
+                  <p class="text-subdued text-sm">{{ section.settings.cross_hub_6_desc }}</p>
                 {%- endif -%}
               </a>
             {%- endif -%}
@@ -236,6 +276,51 @@ Renders intro content, categorized child page grid, featured products, and cross
       "type": "url",
       "id": "cross_hub_3_url",
       "label": "Hub 3 URL"
+    },
+    {
+      "type": "text",
+      "id": "cross_hub_4_title",
+      "label": "Hub 4 title"
+    },
+    {
+      "type": "text",
+      "id": "cross_hub_4_desc",
+      "label": "Hub 4 description"
+    },
+    {
+      "type": "url",
+      "id": "cross_hub_4_url",
+      "label": "Hub 4 URL"
+    },
+    {
+      "type": "text",
+      "id": "cross_hub_5_title",
+      "label": "Hub 5 title"
+    },
+    {
+      "type": "text",
+      "id": "cross_hub_5_desc",
+      "label": "Hub 5 description"
+    },
+    {
+      "type": "url",
+      "id": "cross_hub_5_url",
+      "label": "Hub 5 URL"
+    },
+    {
+      "type": "text",
+      "id": "cross_hub_6_title",
+      "label": "Hub 6 title"
+    },
+    {
+      "type": "text",
+      "id": "cross_hub_6_desc",
+      "label": "Hub 6 description"
+    },
+    {
+      "type": "url",
+      "id": "cross_hub_6_url",
+      "label": "Hub 6 URL"
     }
   ],
   "presets": [

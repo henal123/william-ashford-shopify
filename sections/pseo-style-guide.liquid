@@ -133,6 +133,19 @@ Same data source as use-case but styled for style guide pages.
           <h1 class="h2">{{ entry.heading.value | default: page.title }}</h1>
         </header>
 
+        {%- comment -%}Visible byline for E-E-A-T{%- endcomment -%}
+        <div class="pseo-byline" style="font-size: 0.82rem; color: rgba(var(--text-color), 0.55); margin-top: -0.5rem; margin-bottom: 1rem;">
+          By <a href="/pages/about-us" style="color: inherit; text-decoration: underline;">William Ashford Editorial Team</a>
+          {%- if page.published_at -%}
+            <span style="margin: 0 0.35rem;">·</span>
+            <time datetime="{{ page.published_at | date: '%Y-%m-%d' }}">{{ page.published_at | date: '%B %d, %Y' }}</time>
+          {%- endif -%}
+          {%- if page.updated_at -%}
+            <span style="margin: 0 0.35rem;">·</span>
+            Updated <time datetime="{{ page.updated_at | date: '%Y-%m-%d' }}">{{ page.updated_at | date: '%B %d, %Y' }}</time>
+          {%- endif -%}
+        </div>
+
         {%- comment -%}Introduction Card{%- endcomment -%}
         {%- if entry.intro_text.value != blank -%}
           <div class="pseo-intro-card">
@@ -297,12 +310,18 @@ Same data source as use-case but styled for style guide pages.
               {%- if section.settings.related_page_3_url != blank -%}
                 <a href="{{ section.settings.related_page_3_url }}" class="pseo-related-link">{{ section.settings.related_page_3_title }}</a>
               {%- endif -%}
+              {%- if section.settings.related_page_4_url != blank -%}
+                <a href="{{ section.settings.related_page_4_url }}" class="pseo-related-link">{{ section.settings.related_page_4_title }}</a>
+              {%- endif -%}
+              {%- if section.settings.related_page_5_url != blank -%}
+                <a href="{{ section.settings.related_page_5_url }}" class="pseo-related-link">{{ section.settings.related_page_5_title }}</a>
+              {%- endif -%}
               <a href="{{ section.settings.hub_url | default: '/pages/style-guides' }}" class="pseo-related-link">All {{ section.settings.hub_title | default: 'Style Guides' }} →</a>
             </div>
           </div>
         {%- endif -%}
 
-        {%- comment -%}Article Schema{%- endcomment -%}
+        {%- comment -%}Article Schema with author, dates, and image{%- endcomment -%}
         <script type="application/ld+json">
         {
           "@context": "https://schema.org",
@@ -310,11 +329,28 @@ Same data source as use-case but styled for style guide pages.
           "headline": {{ entry.heading.value | default: page.title | json }},
           "description": {{ entry.intro_text.value | default: page.title | strip_html | truncatewords: 30 | json }},
           "url": "{{ shop.url }}{{ page.url }}",
+          "datePublished": "{{ page.published_at | date: '%Y-%m-%dT%T' }}",
+          "dateModified": "{{ page.updated_at | default: page.published_at | date: '%Y-%m-%dT%T' }}",
+          "author": {
+            "@type": "Person",
+            "name": "William Ashford Editorial Team",
+            "url": "{{ shop.url }}/pages/about-us"
+          },
           "publisher": {
             "@type": "Organization",
             "name": {{ shop.name | json }},
-            "url": "{{ shop.url }}"
-          }
+            "url": "{{ shop.url }}",
+            {%- if shop.brand.logo -%}
+              "logo": {
+                "@type": "ImageObject",
+                "url": "https:{{ shop.brand.logo | image_url: width: 600 }}"
+              },
+            {%- endif -%}
+            "sameAs": [
+              "https://www.instagram.com/williamashford.in"
+            ]
+          },
+          "mainEntityOfPage": "{{ shop.url }}{{ page.url }}"
         }
         </script>
 
@@ -436,6 +472,26 @@ Same data source as use-case but styled for style guide pages.
       "type": "url",
       "id": "related_page_3_url",
       "label": "Related page 3 URL"
+    },
+    {
+      "type": "text",
+      "id": "related_page_4_title",
+      "label": "Related page 4 title"
+    },
+    {
+      "type": "url",
+      "id": "related_page_4_url",
+      "label": "Related page 4 URL"
+    },
+    {
+      "type": "text",
+      "id": "related_page_5_title",
+      "label": "Related page 5 title"
+    },
+    {
+      "type": "url",
+      "id": "related_page_5_url",
+      "label": "Related page 5 URL"
     }
   ]
 }

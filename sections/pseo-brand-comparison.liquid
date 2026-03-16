@@ -1,12 +1,12 @@
 {%- comment -%}
 ----------------------------------------------------------------------------------------------------------------------
-PSEO COMPARISON SECTION
+PSEO BRAND COMPARISON SECTION
 ----------------------------------------------------------------------------------------------------------------------
-Looks up style_comparison metaobject by page handle directly.
-Renders a rich comparison page with visual cards, product grid, and FAQ.
+Looks up brand_comparison metaobject by page handle directly.
+Renders a brand comparison page with feature table, pros/cons, verdict, and product grid.
 {%- endcomment -%}
 
-{%- assign entry = shop.metaobjects.style_comparison[page.handle] -%}
+{%- assign entry = shop.metaobjects.brand_comparison[page.handle] -%}
 
 {%- if entry != blank -%}
   <style>
@@ -86,6 +86,34 @@ Renders a rich comparison page with visual cards, product grid, and FAQ.
       align-items: center;
       gap: 6px;
     }
+    .pseo-comp-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    .pseo-comp-table th {
+      text-align: left;
+      padding: 10px 14px;
+      background: rgb(var(--text-color));
+      color: rgb(var(--background));
+      font-weight: 600;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .pseo-comp-table td {
+      padding: 10px 14px;
+      border-bottom: 1px solid rgba(var(--text-color), 0.08);
+    }
+    .pseo-comp-table tr:nth-child(even) {
+      background: rgb(var(--background-secondary, 245 245 245));
+    }
+    .pseo-comp-table tr:hover td {
+      background: rgba(var(--text-color), 0.03);
+    }
+    .pseo-comp-table td:first-child {
+      font-weight: 600;
+    }
     .pseo-verdict-card {
       background: rgb(var(--background-secondary, 245 245 245));
       border-radius: 12px;
@@ -129,8 +157,8 @@ Renders a rich comparison page with visual cards, product grid, and FAQ.
   <div class="container container--md">
     <div class="section-stack">
       {%- render 'pseo-breadcrumbs',
-        hub_title: 'Style Comparisons',
-        hub_url: '/pages/style-comparisons',
+        hub_title: section.settings.hub_title,
+        hub_url: section.settings.hub_url,
         page_title: page.title
       -%}
 
@@ -163,39 +191,83 @@ Renders a rich comparison page with visual cards, product grid, and FAQ.
           </div>
         {%- endif -%}
 
-        {%- comment -%}Pros & Cons Comparison — side-by-side cards with VS badge{%- endcomment -%}
-        {%- if entry.item_a_name.value != blank -%}
+        {%- comment -%}Feature Comparison Table{%- endcomment -%}
+        {%- if entry.comparison_table.value != blank -%}
           <div class="section-spacing">
             <div class="section-header">
-              <h2 class="h3">{{ entry.item_a_name.value }} vs {{ entry.item_b_name.value }}</h2>
+              <h2 class="h3">Feature Comparison</h2>
+            </div>
+            <div style="overflow-x: auto;">
+              <table class="pseo-comp-table">
+                <thead>
+                  <tr>
+                    <th>Feature</th>
+                    <th>{{ entry.brand_a_name.value | default: 'William Ashford' }}</th>
+                    <th>{{ entry.brand_b_name.value | default: 'Competitor' }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {%- assign table_lines = entry.comparison_table.value | strip | newline_to_br | split: '<br />' -%}
+                  {%- for line in table_lines -%}
+                    {%- assign clean = line | strip | strip_html -%}
+                    {%- if clean != blank and clean contains ':' -%}
+                      {%- assign feature_split = clean | split: ':' -%}
+                      {%- assign feature_name = feature_split[0] | strip -%}
+                      {%- assign feature_values = feature_split[1] | strip -%}
+                      {%- if feature_values contains '|' -%}
+                        {%- assign val_parts = feature_values | split: '|' -%}
+                        <tr>
+                          <td>{{ feature_name }}</td>
+                          <td>{{ val_parts[0] | strip }}</td>
+                          <td>{{ val_parts[1] | strip }}</td>
+                        </tr>
+                      {%- else -%}
+                        <tr>
+                          <td>{{ feature_name }}</td>
+                          <td colspan="2">{{ feature_values }}</td>
+                        </tr>
+                      {%- endif -%}
+                    {%- endif -%}
+                  {%- endfor -%}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        {%- endif -%}
+
+        {%- comment -%}Pros & Cons — side-by-side cards with VS badge{%- endcomment -%}
+        {%- if entry.brand_a_name.value != blank -%}
+          <div class="section-spacing">
+            <div class="section-header">
+              <h2 class="h3">{{ entry.brand_a_name.value }} vs {{ entry.brand_b_name.value }}</h2>
             </div>
             <div class="pseo-vs-grid">
               <div class="pseo-vs-card">
-                <h3>{{ entry.item_a_name.value }}</h3>
-                {%- if entry.item_a_pros.value != blank -%}
+                <h3>{{ entry.brand_a_name.value }}</h3>
+                {%- if entry.brand_a_pros.value != blank -%}
                   <div>
                     <div class="pseo-pros-label">
                       <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="#16a34a" stroke-width="2"><path d="M16.7 5L7.5 14.2 3.3 10" stroke-linecap="round" stroke-linejoin="round"/></svg>
                       Pros
                     </div>
-                    {%- assign a_pros = entry.item_a_pros.value | strip | newline_to_br | split: '<br />' -%}
+                    {%- assign a_pros = entry.brand_a_pros.value | strip | newline_to_br | split: '<br />' -%}
                     <ul style="list-style:none;padding:0;margin:0;display:grid;gap:6px;">
                       {%- for line in a_pros -%}
                         {%- assign clean = line | strip | strip_html -%}
                         {%- if clean != blank -%}
-                          <li style="font-size:14px;line-height:1.6;padding-left:0;">{{ clean }}</li>
+                          <li style="font-size:14px;line-height:1.6;">{{ clean }}</li>
                         {%- endif -%}
                       {%- endfor -%}
                     </ul>
                   </div>
                 {%- endif -%}
-                {%- if entry.item_a_cons.value != blank -%}
+                {%- if entry.brand_a_cons.value != blank -%}
                   <div>
                     <div class="pseo-cons-label">
                       <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="#dc2626" stroke-width="2"><line x1="15" y1="5" x2="5" y2="15"/><line x1="5" y1="5" x2="15" y2="15"/></svg>
                       Cons
                     </div>
-                    {%- assign a_cons = entry.item_a_cons.value | strip | newline_to_br | split: '<br />' -%}
+                    {%- assign a_cons = entry.brand_a_cons.value | strip | newline_to_br | split: '<br />' -%}
                     <ul style="list-style:none;padding:0;margin:0;display:grid;gap:6px;">
                       {%- for line in a_cons -%}
                         {%- assign clean = line | strip | strip_html -%}
@@ -213,14 +285,14 @@ Renders a rich comparison page with visual cards, product grid, and FAQ.
               </div>
 
               <div class="pseo-vs-card">
-                <h3>{{ entry.item_b_name.value }}</h3>
-                {%- if entry.item_b_pros.value != blank -%}
+                <h3>{{ entry.brand_b_name.value }}</h3>
+                {%- if entry.brand_b_pros.value != blank -%}
                   <div>
                     <div class="pseo-pros-label">
                       <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="#16a34a" stroke-width="2"><path d="M16.7 5L7.5 14.2 3.3 10" stroke-linecap="round" stroke-linejoin="round"/></svg>
                       Pros
                     </div>
-                    {%- assign b_pros = entry.item_b_pros.value | strip | newline_to_br | split: '<br />' -%}
+                    {%- assign b_pros = entry.brand_b_pros.value | strip | newline_to_br | split: '<br />' -%}
                     <ul style="list-style:none;padding:0;margin:0;display:grid;gap:6px;">
                       {%- for line in b_pros -%}
                         {%- assign clean = line | strip | strip_html -%}
@@ -231,13 +303,13 @@ Renders a rich comparison page with visual cards, product grid, and FAQ.
                     </ul>
                   </div>
                 {%- endif -%}
-                {%- if entry.item_b_cons.value != blank -%}
+                {%- if entry.brand_b_cons.value != blank -%}
                   <div>
                     <div class="pseo-cons-label">
                       <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="#dc2626" stroke-width="2"><line x1="15" y1="5" x2="5" y2="15"/><line x1="5" y1="5" x2="15" y2="15"/></svg>
                       Cons
                     </div>
-                    {%- assign b_cons = entry.item_b_cons.value | strip | newline_to_br | split: '<br />' -%}
+                    {%- assign b_cons = entry.brand_b_cons.value | strip | newline_to_br | split: '<br />' -%}
                     <ul style="list-style:none;padding:0;margin:0;display:grid;gap:6px;">
                       {%- for line in b_cons -%}
                         {%- assign clean = line | strip | strip_html -%}
@@ -259,23 +331,21 @@ Renders a rich comparison page with visual cards, product grid, and FAQ.
             <div class="pseo-verdict-card">
               <h2 class="h4">Our Verdict</h2>
               <div class="prose" style="font-size:1.05rem;line-height:1.75;">
-                <p>{{ entry.verdict.value }}</p>
+                {%- assign verdict_lines = entry.verdict.value | strip | newline_to_br | split: '<br />' -%}
+                {%- for line in verdict_lines -%}
+                  {%- assign clean = line | strip | strip_html -%}
+                  {%- if clean != blank -%}
+                    <p>{{ clean }}</p>
+                  {%- endif -%}
+                {%- endfor -%}
               </div>
             </div>
 
-            {%- comment -%}Dual Collection CTAs{%- endcomment -%}
-            {%- if entry.item_a_collection.value != blank or entry.item_b_collection.value != blank -%}
-              <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:20px;justify-content:center;">
-                {%- if entry.item_a_collection.value != blank -%}
-                  <a href="{{ entry.item_a_collection.value }}" class="button button--secondary">
-                    Shop {{ entry.item_a_name.value }}
-                  </a>
-                {%- endif -%}
-                {%- if entry.item_b_collection.value != blank -%}
-                  <a href="{{ entry.item_b_collection.value }}" class="button button--secondary">
-                    Shop {{ entry.item_b_name.value }}
-                  </a>
-                {%- endif -%}
+            {%- if entry.collection_link.value != blank -%}
+              <div class="pseo-cta-bar" style="margin-top:20px;">
+                <a href="{{ entry.collection_link.value }}" class="button button--primary">
+                  Shop William Ashford Cargos
+                </a>
               </div>
             {%- endif -%}
           </div>
@@ -288,10 +358,7 @@ Renders a rich comparison page with visual cards, product grid, and FAQ.
           <div class="section-spacing">
             <div class="section-header">
               <div class="v-stack gap-2">
-                <h2 class="h3">{{ section.settings.products_heading | default: 'Recommended Products' }}</h2>
-                {%- if section.settings.products_subheading != blank -%}
-                  <p class="text-subdued">{{ section.settings.products_subheading }}</p>
-                {%- endif -%}
+                <h2 class="h3">{{ section.settings.products_heading | default: 'Shop William Ashford' }}</h2>
               </div>
             </div>
             <product-list class="product-list justify-center">
@@ -314,7 +381,7 @@ Renders a rich comparison page with visual cards, product grid, and FAQ.
         {%- if section.settings.show_related_links -%}
           <div class="section-spacing">
             <div class="section-header">
-              <h2 class="h3">Related Comparisons</h2>
+              <h2 class="h3">More Brand Comparisons</h2>
             </div>
             <div class="pseo-related-grid">
               {%- if section.settings.related_page_1_url != blank -%}
@@ -332,7 +399,7 @@ Renders a rich comparison page with visual cards, product grid, and FAQ.
               {%- if section.settings.related_page_5_url != blank -%}
                 <a href="{{ section.settings.related_page_5_url }}" class="pseo-related-link">{{ section.settings.related_page_5_title }}</a>
               {%- endif -%}
-              <a href="/pages/style-comparisons" class="pseo-related-link">All Comparisons →</a>
+              <a href="{{ section.settings.hub_url | default: '/pages/brand-comparisons' }}" class="pseo-related-link">All {{ section.settings.hub_title | default: 'Brand Comparisons' }} →</a>
             </div>
           </div>
         {%- endif -%}
@@ -384,8 +451,8 @@ Renders a rich comparison page with visual cards, product grid, and FAQ.
 
 {% schema %}
 {
-  "name": "PSEO Comparison",
-  "class": "shopify-section--pseo-comparison",
+  "name": "PSEO Brand Comparison",
+  "class": "shopify-section--pseo-brand-comparison",
   "tag": "section",
   "settings": [
     {
@@ -393,6 +460,22 @@ Renders a rich comparison page with visual cards, product grid, and FAQ.
       "id": "color_scheme",
       "label": "Color scheme",
       "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Breadcrumb & hub settings"
+    },
+    {
+      "type": "text",
+      "id": "hub_title",
+      "label": "Hub page title",
+      "default": "Brand Comparisons"
+    },
+    {
+      "type": "url",
+      "id": "hub_url",
+      "label": "Hub page URL",
+      "info": "e.g. /pages/brand-comparisons"
     },
     {
       "type": "header",
@@ -425,12 +508,7 @@ Renders a rich comparison page with visual cards, product grid, and FAQ.
       "type": "text",
       "id": "products_heading",
       "label": "Products heading",
-      "default": "Recommended Products"
-    },
-    {
-      "type": "text",
-      "id": "products_subheading",
-      "label": "Products subheading"
+      "default": "Shop William Ashford"
     },
     {
       "type": "header",

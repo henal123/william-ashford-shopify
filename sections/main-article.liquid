@@ -77,6 +77,15 @@
           {%- endif -%}
 
           <h1 class="h1">{{ article.title }}</h1>
+
+          {%- comment -%}Author byline for E-E-A-T — shows editorial team if no named author{%- endcomment -%}
+          {%- assign blog_author_name = article.author -%}
+          {%- if blog_author_name == blank or blog_author_name == ' ' -%}
+            {%- assign blog_author_name = 'William Ashford Editorial Team' -%}
+          {%- endif -%}
+          <div class="pseo-byline" style="font-size: 0.82rem; color: rgba(var(--text-color), 0.55);">
+            By <a href="/pages/about-us" style="color: inherit; text-decoration: underline;">{{ blog_author_name }}</a>
+          </div>
         </div>
 
         <div class="prose">
