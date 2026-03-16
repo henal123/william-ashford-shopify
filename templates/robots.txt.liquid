@@ -1,11 +1,6 @@
 {%- comment -%}
   William Ashford — Custom robots.txt
-  Explicit rules only. Does NOT inherit robots.default_groups, which can
-  emit a broad "Disallow: /" when the store is password-protected or in
-  development mode, effectively blocking all crawlers.
-
   Rule priority (Google + Bing): longest matching path wins.
-  Allow: / + Disallow: /admin → /admin is blocked (longer match), all else is open.
 {%- endcomment -%}
 
 # ─── Major search crawlers ─────────────────────────────────────────────────
@@ -16,9 +11,10 @@ Disallow: /checkout
 Disallow: /orders
 Disallow: /account
 Disallow: /search
-Disallow: /*?*
+Allow: /sitemap*.xml
 Allow: /*?sort_by=
 Allow: /*?page=
+Disallow: /*?*
 Allow: /
 
 User-agent: Bingbot
@@ -28,9 +24,10 @@ Disallow: /checkout
 Disallow: /orders
 Disallow: /account
 Disallow: /search
-Disallow: /*?*
+Allow: /sitemap*.xml
 Allow: /*?sort_by=
 Allow: /*?page=
+Disallow: /*?*
 Allow: /
 
 # ─── All other crawlers ────────────────────────────────────────────────────
@@ -41,9 +38,10 @@ Disallow: /checkout
 Disallow: /orders
 Disallow: /account
 Disallow: /search
-Disallow: /*?*
+Allow: /sitemap*.xml
 Allow: /*?sort_by=
 Allow: /*?page=
+Disallow: /*?*
 Allow: /
 
 # ─── Block AI training crawlers ────────────────────────────────────────────
@@ -86,7 +84,3 @@ Allow: /
 
 # ─── Sitemaps ──────────────────────────────────────────────────────────────
 Sitemap: {{ shop.url }}/sitemap.xml
-Sitemap: {{ shop.url }}/pages/sitemap-style-guides
-Sitemap: {{ shop.url }}/pages/sitemap-occasions
-Sitemap: {{ shop.url }}/pages/sitemap-fabric-glossary
-Sitemap: {{ shop.url }}/pages/sitemap-comparisons

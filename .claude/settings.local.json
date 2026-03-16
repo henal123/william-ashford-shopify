@@ -1,7 +1,10 @@
 {
   "permissions": {
     "allow": [
-      "Bash(node scripts/10-batch-pages-v2.js)"
+      "Bash(node scripts/10-batch-pages-v2.js)",
+      "Bash(shopify theme:*)",
+      "Bash(node -e \"const { occasionGuides } = require\\(''./seo-setup/new-occasion-guides.js''\\); occasionGuides.forEach\\(\\(g, i\\) => console.log\\(i+1, g.handle, ''| desc chars:'', g.seo_description.length\\)\\);\")",
+      "Bash(node -e \"const { styleGuides } = require\\(''c:/Users/yasha/william-theme/seo-setup/new-style-guides.js''\\); console.log\\(''Entries:'', styleGuides.length\\); let allOk = true; styleGuides.forEach\\(\\(g, i\\) => { const len = g.seo_description.length; const ok = len >= 140 && len <= 155; if \\(!ok\\) allOk = false; console.log\\(ok ? ''OK'' : ''FAIL'', i+1, g.handle, len + '' chars''\\); }\\); console.log\\(allOk ? ''\\\\nAll descriptions within 140-155 chars.'' : ''\\\\nSome descriptions out of range.''\\);\")"
     ]
   }
 }
